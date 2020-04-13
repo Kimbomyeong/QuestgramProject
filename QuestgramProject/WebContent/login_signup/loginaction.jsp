@@ -23,7 +23,7 @@
             session.setAttribute("loginok", "ok");
             session.setAttribute("nickname", nickname);
             session.setMaxInactiveInterval(60 * 60 * 4);
-            msg = "mainform.jsp";
+            msg = "../main.jsp";
         }
         else if(check == 0) // 비밀번호가 틀릴경우
         {
