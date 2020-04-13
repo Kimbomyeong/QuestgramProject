@@ -13,7 +13,7 @@ body{
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<link rel="shortcut icon" type="image/x-icon" href="images/instagram.ico">
+<link rel="shortcut icon" type="image/x-icon" href="images/questgram.ico">
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <link rel="stylesheet"	href="css/style.css">
 
@@ -52,7 +52,7 @@ body{
 			</div>
 			<nav>
 				<ul>
-					<li class="nav" id="home" width="35px" height="34px"><a href="#"><img src="images/home_b.PNG"/></a></li>
+					<li class="nav" id="home" width="35px" height="34px"><a href="main.jsp"><img src="images/home_b.PNG"/></a></li>
 					<li class="nav" id="compass" width="33px" height="34px"><a href="#"><img src="images/compass.PNG"/></a></li>
 					<li class="nav" id="mainheart" width="34px" height="34px"><a href="#"><img src="images/mainheart.PNG"/></a></li>
 					<li class="nav"><a href="#"><div class="info"></div></a></li>

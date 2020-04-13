@@ -12,6 +12,10 @@ a {
   color: inherit;
 }
 
+input:focus{outline:none;}
+
+textarea:focus{outline:none;}
+
 /* gb-header */
 .gb-header {
   position: fixed;
@@ -68,7 +72,6 @@ a {
 
 /* post-container */
 .post-container {
-  padding: 137px 0 60px;
   background-color: #fafafa;
 }
 .post-container > .wrap {
@@ -105,7 +108,9 @@ a {
   width: 100%;
   height: 100%;
 }
-
+.post > .post-header > a > #trigger{
+	margin-top: 5px;
+    }
 .post > .sajin {
   font-size: 0;
   margin: 0 -1px 4px;
@@ -126,9 +131,20 @@ a {
 }
 .post > .post-footer > .btn-container > li {
   display: inline-block;
-  width: 24px;
-  height: 24px;
-  margin-right: 16px;
+
+}
+.post > .post-footer > .btn-container > li > a > img {
+ 	margin-top: -3px;	
+}
+.post > .post-footer > .btn-container > li > a > #heart{
+ 	margin-left:-10px;
+    margin-right: 3px;	
+}
+
+.post > .post-footer > .btn-container > a > #bookmark{
+  	margin-right: -15px;
+  	margin-top: -3px;	
+  	
 }
 
 .post > .post-footer > .like-container {
@@ -158,6 +174,7 @@ a {
 
 .post > .post-footer > .comment-container {
   height: 56px;
+  width:580px;
   padding: 16px 28px 16px 0;
   border-top: 1px solid #efefef;
 }
@@ -168,6 +185,15 @@ a {
   font-size: 14px;
   color: #262626;
   resize: none;
+}
+.post > .post-footer > .comment-container > .gesi {
+  margin-right:-15px;
+  border: none; 
+  cursor: pointer;
+  color:#c5e7fd;
+  background-color:#fff;
+  font-weight:bold;
+  font-size:15px;
 }
 .post > .post-footer > .comment-container > gesi {
   display: block;

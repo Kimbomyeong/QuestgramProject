@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,22 +15,6 @@
   }
   .modal-footer {
     background-color: #f9f9f9;
-  }
-  
-  ul{
-  	float: left;
-  margin-left: -40px;
-  width: 435px;
-  
-  }
-  
-  li {
-  	list-style-type: none;
-  	float: left;
-  	cursor: pointer;
-  	
-  	
-  
   }
 
 </style>
@@ -51,9 +35,9 @@ $(function(){
 	
 	$('#heart').on({
 	   'click':function(){
-			var src=($(this).attr('src')==='./image/heart.png')
+			var src=($(this).attr('src')==='./image/white.png')
 			 ?'./image/red.png'
-		     :'./image/heart.png';
+		     :'./image/white.png';
 			$(this).attr('src',src);
 		}
 	
@@ -81,108 +65,17 @@ $(function(){
       <div class="post">
       
        <!--뉴스피드 헤드-->
-        <div class="post-header" style="border: solid; border-width: 1px;"align="right" >
-        
-         <!-- 프로필사진 -->
-          <a href="#" class="profile">
-          <img src="./image/0.gif" alt="" align=""></a>
-          
-          <!-- 작성자 이름,팔로우,더보기 버튼까지  -->
-          <div class="head" style="; overflow : inherit; position: relative; top:40%">
-        
-          <a href="#" style="float: left;">작성자</a>
-          <a href="#" style="float: left;">＊팔로우</a>
-          <a href="#"><img src="./image/more.PNG" width="60px" height="30px" id="trigger" 
-              name="trigger" class="trigger" alt="" style="float: right;"></a>
-              
-              <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-      
-        <div class="modal-body" style="padding:40px 50px;">
-          <form role="form">
-      			<button type="button" class="btn btn-default btn-block">게시물로 이동</button>
-                <button type="button" class="btn btn-default btn-block">링크 복사</button>
-                <button type="button" class="btn btn-default btn-block">공유하기</button>
-                <button type="button" class="btn btn-default btn-block">보관</button>
-                <button type="button" class="btn btn-default btn-block">수정</button>
-                <button type="button" class="btn btn-default btn-block">삭제</button>
-                <button type="button" class="btn btn-default btn-block">댓글 기능 해제</button>
-          </form>
-        </div>
-     </div>
-      
-    </div>
-  </div> <!-- modal 끝 -->
-              
-          </div><!-- head -->
-          
-        
-        
-        </div> <!-- 뉴스피드 헤드 끝 -->
-         <div class="text-container" align="right" style="border-width: 1px;">
-             <!-- 프로필사진 -->
-          <a href="#" class="profile">
-          <img src="./image/0.gif" alt="" align=""></a>
-             <a href="#" style="display: block; overflow: inherit; position: relative; top: 11%; float: left;" >작성자</a>
-                <span style="float: left; margin: 0px 20px 20px 20px;">
-                   4월9일 목요일 오후4시 스토리보드 발표.
-	              4월21일 화요일 중간프로젝트 발표.
-                
-                </span>
-                <time style="float: left; opacity: 0.7; clear: both; margin: 10px 20px 20px 20px; font-size: 10px;">n일전</time>
-             
-             
+        <div class="post-header" style="border: solid;"align="right">
+        </div> 
+         <div class="text-container" align="right">
          
-          </div> 
-          	<!-- 버튼 컨테이너 -->
-         <div class="btn1" align="right" style="border-width: 1px;">
-           <ul class="btn-container">
-          	
-          	<!-- 좋아요 버튼 -->
-            <li><a href="#"><img src="./image/heart.png" width="42px" height="32px" id="heart" class="heart" name="heart" alt="" ></li>
-            
-            <!-- 댓글달기 버튼 -->
-            <li><a href="#"><img src="./image/balloon.png" width="41px" height="32px" alt=""></a></li>
-            
-            <!-- 공유하기 버튼 -->
-            <li><a href="#"><img src="./image/plane.png" width="42px" height="32px" alt=""></a></li>
-            
-             <!-- 북마크 버튼 -->
-             <a href="#"><img src="./image/bookmark.png" width="43px" height="32px" id="bookmark" class="bookmark" name="bookmark" alt="" style="float: right;"></a>
-           
-          </ul>
-          	<!-- 좋아요 버튼 -->
-              <div class="like-container" style="overflow: inherit; float: left; margin-left: 10px;">
-            <a href="#">좋아요 n개</a>
-              </div>
-              <time style="float: left; opacity: 0.7; clear: both; margin-left: 10px;">n일 전</time>
-              
-         </div> <!-- 버튼 컨테이너 -->
-         
-         <!-- 댓글 -->
-         <div class="ans" align="right" style="border-width: 1px;">
-         	<!-- 댓글을 달 텍스트에리어 -->
-            <textarea name="comment" placeholder="댓글 달기..." 
-            style="float: left;width:350px; margin-top: 16px; margin-bottom: 3px; height: 25px; border: none;"></textarea>
-            
-            <!-- 댓글 게시하기 버튼 -->
-            
-            <button type="submit" class="gesi" 
-            style="border: none; color: #0095f6; cursor: pointer; opacity: 0.7; margin-top: 16px; height: 25px; margin-right: 3px;">
-                게시</button>
-         </div>
-          
+          </div>  
      
         
          <div class="sajin" style="width:598px;
 	           height: 598px;">
           <img src="./image/ramgi.jpeg" align="left" class="sajinimg" style="width:598px; 
 	            height: 598px;" alt="">
-	            
-	            
         </div>
         </div>
         </div>

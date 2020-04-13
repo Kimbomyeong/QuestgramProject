@@ -11,7 +11,7 @@ public class CommentDto {
 	private String parents_comments_id;
 	private Timestamp created_at;
 	private Timestamp updated_at;
-	
+	private String simpletime;
 	
 	public String getId() {
 		return id;
@@ -60,5 +60,12 @@ public class CommentDto {
 	}
 	public void setUpdated_at(Timestamp updated_at) {
 		this.updated_at = updated_at;
+	}
+	public String getSimpletime() {
+		return simpletime;
+	}
+	public void setSimpletime(String simpletime) {
+		this.simpletime = simpletime;
 	}	
+	
 }	

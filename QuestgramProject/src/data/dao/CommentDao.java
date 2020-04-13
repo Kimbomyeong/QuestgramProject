@@ -111,6 +111,41 @@ public class CommentDao {
 			}
 			return dto;
 		}
+		public CommentDto getCommentCount(String id)
+		{
+			Connection conn=null;
+			PreparedStatement pstmt=null;
+			ResultSet rs=null;
+			CommentDto dto= new CommentDto();
+			String sql="select count(*) from comment where id=?";
+			
+			conn=db.getConnection();
+			try {
+				pstmt=conn.prepareStatement(sql);
+				pstmt.setString(1, id);
+				rs=pstmt.executeQuery();
+				
+				if(rs.next())
+				{
+					dto.setId(rs.getString("id"));
+					dto.setBoard_id(rs.getString("board_id"));
+					dto.setUser_id(rs.getString("user_id"));
+					dto.setContent(rs.getString("Content"));
+					dto.setLike_count(rs.getString("like_count"));
+					dto.setParents_comments_id(rs.getString("parents_comments_id"));
+					dto.setCreated_at(rs.getTimestamp("created_at"));
+					dto.setUpdated_at(rs.getTimestamp("updated_at"));
+					
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("select ¿À·ù:"+e.getMessage());
+				e.printStackTrace();
+			}finally{
+				db.dbClose(rs, pstmt, conn);
+			}
+			return dto;
+		}
 		
 		public void updateComment(String content, String id)
 		{
