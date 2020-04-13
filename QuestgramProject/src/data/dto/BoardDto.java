@@ -3,6 +3,8 @@ package data.dto;
 import java.sql.Timestamp;
 
 public class BoardDto {
+	private String id;
+	
 	private String user_id;
 	private String content;
 	private String comment_count;
@@ -18,6 +20,13 @@ public class BoardDto {
 	
 	private String origin_name;
 	private String save_name;
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	
 	public String getUser_id() {
 		return user_id;
