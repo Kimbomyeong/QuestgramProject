@@ -151,10 +151,10 @@
 				data-auto-logout-link="true" data-use-continue-as="false"></fb:login-button>
 			<br>
 			<br>
-			<hr style="width: 120px; border: 0.5px solid #BDBDBD;">
+			<hr style="width: 120px; border: 0.5px solid #BDBDBD; margin-bottom: -5px; margin-left: 1px;">
 			<p style="color: #BDBDBD; font-weight: bold; margin-top: -5px;">또는</p>
-			<hr
-				style="width: 120px; border: 0.5px solid #BDBDBD; float: right; margin-top: -10px;">
+			<hr style="width: 120px; border: 0.5px solid #BDBDBD; float: right; margin-top: -10px;">
+			<br>
 			<div class="inputDiv">
 				<input class="input1" type="text" id="email" name="email"
 					oninput="buttonColor()" placeholder=" 이메일" required="required"

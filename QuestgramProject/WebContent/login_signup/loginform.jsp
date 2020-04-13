@@ -1,4 +1,3 @@
-<%@page import="data.dao.UserDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -103,7 +102,7 @@
 				<button class="act" type="submit">로그인</button>
 			</div>
 			<br>
-			<hr style="width: 120px; border: 0.5px solid #BDBDBD;">
+			<hr style="width: 120px; border: 0.5px solid #BDBDBD; margin-bottom: -5px; margin-left: 1px;">
 			<p style="color: #BDBDBD; font-weight: bold; margin-top: -5px;">또는</p>
 			<hr style="width: 120px; border: 0.5px solid #BDBDBD; float: right; margin-top: -10px;">
 			<br>
