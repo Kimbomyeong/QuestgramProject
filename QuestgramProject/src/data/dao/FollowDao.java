@@ -14,26 +14,47 @@ import mysql.db.DbConnect;
 public class FollowDao {
 	DbConnect db = new DbConnect();
 	
-	// 팔로우 (미완성)
-	public void insert(String a, String b) {
+	// 팔로우 (미완성: 인서트는 되지만 중복제거 조건 걸어야 함)
+	public void insertFollow(String add, String target) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String sql = "insert into follow values(null, ?, ?, now())";
+		String sql = "INSERT INTO follow VALUES(null, ?, ?, now())";
 		
 		conn = db.getConnection();
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, a);
-			pstmt.setString(2, b);
+			pstmt.setString(1, add);
+			pstmt.setString(2, target);
 			
 			pstmt.execute();
 			
 		} catch (SQLException e) {
-			System.out.println("get followers error : " + e.getMessage());
+			System.out.println("insert follow error : " + e.getMessage());
 		} finally {
 			db.dbClose(pstmt, conn);
 		}
 		
+	}
+	
+	// 팔로우 삭제
+	public void deleteFollow(String add, String target) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "DELETE FROM follow WHERE add_user_id = ? AND target_user_id = ?";
+		
+		conn = db.getConnection();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, add);
+			pstmt.setString(2, target);
+			
+			pstmt.execute();
+			
+		} catch (SQLException e) {
+			System.out.println("delete follow error : " + e.getMessage());
+		} finally {
+			db.dbClose(pstmt, conn);
+		}
 	}
 	
 	// 팔로워 리스트 가져오기
