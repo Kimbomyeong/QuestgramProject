@@ -1,0 +1,205 @@
+/* common */
+* {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+input:focus{outline:none;}
+
+textarea:focus{outline:none;}
+
+/* gb-header */
+.gb-header {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 77px;
+  border-bottom: 1px solid rgba(0, 0, 0, .0975);
+  background-color: #ffffff;
+}
+.gb-header > .wrap {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  max-width: 1010px;
+  padding: 0 40px;
+  margin: 0 auto;
+}
+.gb-header > .wrap > * {
+  flex: 1;
+}
+
+.gb-header .logo {
+  height: 35px;
+}
+
+.gb-header .search > input {
+  display: block;
+  width: 215px;
+  height: 28px;
+  padding: 3px 10px;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+  margin: 0 auto;
+  background-color: #fafafa;
+  font-size: 14px;
+  color: #262626;
+}
+
+.gb-header .menu {
+  list-style: none;
+  height: 24px;
+  font-size: 0;
+  text-align: right;
+}
+.gb-header .menu > li {
+  display: inline-block;
+  margin-right: 30px;
+}
+.gb-header .menu > li:last-child {
+  margin: 0;
+}
+
+
+/* post-container */
+.post-container {
+  background-color: #fafafa;
+}
+.post-container > .wrap {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.post-container .post {
+  margin-bottom: 60px;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+  background-color: #ffffff;
+}
+
+.post > .post-header {
+  height: 60px;
+  padding: 16px 16px 16px 56px;
+  border-bottom: 1px solid #efefef;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 28px;
+  color: #262626;
+}
+.post > .post-header > .profile {
+  display: block;
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+.post > .post-header > .profile > img {
+  width: 100%;
+  height: 100%;
+}
+.post > .post-header > a > #trigger{
+	margin-top: 5px;
+    }
+.post > .sajin {
+  font-size: 0;
+  margin: 0 -1px 4px;
+}
+.post > .sajin > img {
+  width: 100%;
+}
+
+.post > .post-footer {
+  padding: 0 16px;
+}
+
+.post > .post-footer > .btn-container {
+  list-style: none;
+  height: 40px;
+  padding: 8px 0;
+  font-size: 0;
+}
+.post > .post-footer > .btn-container > li {
+  display: inline-block;
+
+}
+.post > .post-footer > .btn-container > li > a > img {
+ 	margin-top: -3px;	
+}
+.post > .post-footer > .btn-container > li > a > #heart{
+ 	margin-left:-10px;
+    margin-right: 3px;	
+}
+
+.post > .post-footer > .btn-container > a > #bookmark{
+  	margin-right: -15px;
+  	margin-top: -3px;	
+  	
+}
+
+.post > .post-footer > .like-container {
+  height: 18px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 18px;
+  color: #262626;
+}
+
+.post > .post-footer > .text-container {
+  font-size: 14px;
+  line-height: 18px;
+}
+.post > .post-footer > .text-container > a {
+  font-weight: 600;
+}
+
+.post > .post-footer > .time-container {
+  height: 18px;
+  margin-bottom: 8px;
+  font-size: 10px;
+  line-height: 18px;
+  color: #999999;
+}
+
+.post > .post-footer > .comment-container {
+  height: 56px;
+  width:580px;
+  padding: 16px 28px 16px 0;
+  border-top: 1px solid #efefef;
+}
+.post > .post-footer > .comment-container > textarea {
+  
+  height: 100%;
+  border: none;
+  font-size: 14px;
+  color: #262626;
+  resize: none;
+}
+.post > .post-footer > .comment-container > .gesi {
+  margin-right:-15px;
+  border: none; 
+  cursor: pointer;
+  color:#c5e7fd;
+  background-color:#fff;
+  font-weight:bold;
+  font-size:15px;
+}
+.post > .post-footer > .comment-container > gesi {
+  display: block;
+  position: absolute;
+  top: 20px;
+  right: 6px;
+  width: 16px;
+  height: 16px;
+}

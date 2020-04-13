@@ -1,0 +1,358 @@
+@charset "utf-8";
+/* 기본 설정*/
+li{
+	list-style:none; text-decoration:none;
+	display:inline-block;
+}
+a{
+	cursor:pointer;
+}
+body{
+	background-color:#fafafa;
+	overflow-x: hidden;
+}
+
+input:focus{outline:none;}
+button:focus{outline:none;}
+textarea:focus{outline:none;}
+
+/* header */
+header{
+	background-color:white;
+	position:fixed;
+	width:100%;
+	height:55px;
+	border-bottom:1px solid #dbdbdb;
+	z-index:999;
+}
+#box{
+	max-width:980px;
+	min-width:490px;
+	margin:0 auto;
+}
+#logo{
+	float:left; 
+	margin:15px 0 0 20px;
+	z-index:9999;
+}
+#logo img{
+	 width:105px; 
+	 height:30px;
+}
+#search{
+	float:left;
+	width: 500px;
+    height: 60px;
+    position:absolute;
+}
+#search #glass{
+	color:#dbdbdb;
+	position: relative;
+    left:85%;
+    top:18px;
+    z-index:9999;
+}
+#search input{
+	background-color:#fafafa;
+	border:1px solid #dbdbdb;
+	border-radius:3px;
+	width:215px;
+	height:30px;
+	margin-top: 12px;
+	position: absolute;
+    left: 70%;
+}
+#search input::placeholder{
+	color:#8e8e8e;
+	text-align:center;
+	}
+nav{
+	float:right;
+}
+nav img{
+	margin-top: -20px;
+	margin-right:5px;
+}
+.nav:hover{
+	cursor:pointer;
+}
+.info{
+	background-color:#dbdbdb; 
+	margin-left:10px;
+	margin-top:13px;
+	width:25px; 
+	height:25px; 
+	border-radius:100%;
+}
+.info:hover{
+	cursor:pointer;
+}
+
+/* wrapper */
+wrapper{
+	background-color:#fafafa;
+	width:100%;
+	height:100%;
+}
+#maincontent{
+	width:1000px;
+	height:1000px;
+	margin:0 auto;
+	padding-top:100px;
+}
+#board{
+	float:left;
+	width:699px;
+	height:1000px;
+}
+#profile{
+	float:right;
+	border:1px solid red;
+	color:red;
+	width:299px;
+	height:60px;
+}
+#profile .id{
+	margin-top:10px;
+	margin-left:10px;
+	float:left;
+	color:red;
+}
+#profile #name{
+	color:#777;
+	font-size:10px;
+	float:left;
+	margin-top:30px;
+	margin-left:-40px;
+	
+}
+#notice{
+	float:right;
+	border:1px solid red;
+	color:red;
+	width:299px;
+	height:300px;
+}
+#recommand{
+	float:right;
+	border:1px solid red;
+	color:red;
+	width:299px;
+	height:200px;
+}
+#qna{
+	float:right;
+	border:1px solid red;
+	color:red;
+	width:299px;
+	height:100px;
+}
+
+
+
+
+
+
+
+/*반응형 디자인*/
+@media(max-width:1030px){
+	nav{
+	margin-right:3%;
+	}	 
+}
+@media(max-width:1000px){
+	#maincontent{
+	width:1000px;
+	}
+	#side{
+	display:none;
+	}
+	#board{
+	margin:0 auto;
+	float:none;
+	}
+	 
+}
+@media(max-width:950px){
+	#search{
+	left:-1%;
+	}
+	#maincontent{
+	width:950px;
+	}
+	#board{
+	max-width:950px;
+	}
+	
+}
+@media(max-width:900px){
+	#search{
+	left:-5%;
+	}
+	#maincontent{
+	width:900px;
+	}
+	#board{
+	max-width:900px;
+	}
+	
+}
+@media(max-width:850px){
+	#search{
+	left:-10%;
+	}
+	#maincontent{
+	width:850px;
+	}
+	#board{
+	max-width:850px;
+	}
+}
+@media(max-width:800px){
+	#search{
+	left:-15%;
+	}
+	#maincontent{
+	width:800px;
+	}
+	#board{
+	max-width:800px;
+	}
+}
+@media(max-width:750px){
+	#search{
+	left:-20%;
+	}
+	#maincontent{
+	width:750px;
+	}
+	#board{
+	max-width:750px;
+	}
+}
+@media(max-width:700px){
+	#search{
+	left:-25%;
+	}
+	#maincontent{
+	width:700px;
+	}
+	#board{
+	max-width:700px;
+	}
+}
+@media(max-width:670px){
+	#search{
+	left:-27%;
+	}
+	#maincontent{
+	width:670px;
+	}
+	#board{
+	max-width:670px;
+	}
+}
+@media(max-width:640px){
+	#search{
+	left:-30%;
+	}
+	#maincontent{
+	width:640px;
+	}
+	#board{
+	max-width:640px;
+	width:auto;
+	margin:0 auto;
+	/*게시판 아이디 나오는 쪽 흰색 배경 사라짐*/
+	}
+}
+
+@media(max-width:590px){
+	#search{
+	left:-35%;
+	}
+	#maincontent{
+	width:590px;
+	}
+	#board{
+	max-width:590px;
+	}
+	
+}
+@media(max-width:575px){
+	#search{
+	display:none;
+	}
+	#maincontent{
+	width:540px;
+	}
+	#board{
+	max-width:540px;
+	}
+}
+@media(max-width:540px){
+	#maincontent{
+	width:500px;
+	}
+	#board{
+	max-width:500px;
+	}
+	
+}
+@media(max-width:500px){
+	#maincontent{
+	width:500px;
+	}
+	#board{
+	max-width:500px;
+	}
+}
+@media(max-width:490px){
+	#maincontent{
+	width:490px;
+	}
+	#board{
+	max-width:490px;
+	}
+}
+@media(max-width:440px){
+	#maincontent{
+	width:440px;
+	}
+	#board{
+	max-width:440px;
+	}
+}
+@media(max-width:390px){
+	#maincontent{
+	width:390px;
+	}
+	#board{
+	max-width:390px;
+	}
+}
+@media(max-width:340px){
+	#maincontent{
+	width:340px;
+	}
+	#board{
+	max-width:340px;
+	}
+}
+@media(max-width:290px){
+	#maincontent{
+	width:290px;
+	}
+	#board{
+	max-width:290px;
+	}
+}
+@media(max-width:240px){
+	#maincontent{
+	width:240px;
+	}
+	#board{
+	max-width:240px;
+	}
+}
+
