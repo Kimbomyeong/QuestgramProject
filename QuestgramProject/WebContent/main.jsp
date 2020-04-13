@@ -80,9 +80,9 @@ body{
 				<div id="qna">
 					고객센터
 				</div>
-				<button type="button" class="btn btn-danger btn-me" style="width: 100px;"
-				onclick="location.href='login_signup/logoutaction.jsp'">로그아웃</button>
 			</div>
+			<button type="button" class="btn btn-danger btn-me" style="width: 100px;"
+				onclick="location.href='login_signup/logoutaction.jsp'">로그아웃</button>
 		</div>
 	</wrapper>
 	<bottom>
