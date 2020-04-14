@@ -1,41 +1,82 @@
 @charset "utf-8";
 
-.post-container{
-	
-	width:1000px;
-	height:1000px;
-	margin:0 auto;
-	padding-top:100px;
+
+.post-container {
+	width: 1000px;
+	height: 800px;
+	margin: 0 auto;
+	padding-top: 100px;
 }
 
-.sajin{
-	
-	position:absolute;
+.sajin {
+	position: absolute;
 	width: 598px;
 	height: 598px;
 	float: left;
-	
 }
 
-.post-header{
-	
-	
+.post-header {
 	width: 400px;
 	height: 90px;
 	float: right;
 }
 
-.text-container{
-	
-	
+.text-container {
+	clear: both;
 	width: 400px;
-	height: 250px;
+	height: 350px;
+	border: solid;
 	
+	float: right;
+}
+
+.btn1 {
+	clear: both;
+	float: right;
+	width: 400px;
+	height: 100px;
 	border: solid;
 }
 
+.ans {
+	clear: both;
+	float: right;
+	width: 400px;
+	height: 58px;
+	border: solid;
+}
 
+a.profile {
+	overflow: inherit;
+	display: inline;
+	padding: 0;
+	left: 16px;
+	float: left;
+	width: 70px;
+	height: 90px;
+}
 
+.profile>img {
+	display: block;
+	overflow: inherit;
+	position: relative;
+	top: 30%;
+	left: -30%;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+}
+
+.profile>img {
+	display: block;
+	overflow: inherit;
+	position: relative;
+	top: 30%;
+	left: -30%;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+}
 
 
 /*반응형 디자인*/
