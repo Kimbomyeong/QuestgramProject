@@ -379,4 +379,32 @@ public class UserDao {
 
 		return check;
 	}
+	
+	// 유저 고유 id 반환
+	public String getId(String email) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String id = "";
+		String sql = "";
+
+		conn = db.getConnection();
+		sql = "select id from User where email = ?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, email);
+			rs = pstmt.executeQuery();
+
+			if(rs.next()) {
+				id = rs.getString("id");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(rs, pstmt, conn);
+		}
+
+		return id; 
+	}
 }

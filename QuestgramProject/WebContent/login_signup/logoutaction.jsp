@@ -5,10 +5,12 @@
 	session.removeAttribute("loginok");
 	session.removeAttribute("loginid");
 	session.removeAttribute("nickname");
+	session.removeAttribute("userid");
 	
 	System.out.println(session.getAttribute("loginid"));
     System.out.println(session.getAttribute("loginok"));
     System.out.println(session.getAttribute("nickname"));
+    System.out.println(session.getAttribute("userid"));
 	
 	response.sendRedirect("loginform.jsp");
 %>

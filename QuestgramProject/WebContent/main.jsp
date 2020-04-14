@@ -56,6 +56,9 @@ body{
 					<li class="nav" id="compass" width="33px" height="34px"><a href="#"><img src="images/compass.PNG"/></a></li>
 					<li class="nav" id="mainheart" width="34px" height="34px"><a href="#"><img src="images/mainheart.PNG"/></a></li>
 					<li class="nav"><a href="#"><div class="info"></div></a></li>
+					<a href="login_signup/logoutaction.jsp">
+          			<span class="glyphicon glyphicon-off" style="font-size: 25px; margin-left: 20px; "></span>
+        			</a>		
 				</ul>
 			</nav>
 		</div>
@@ -81,8 +84,6 @@ body{
 					고객센터
 				</div>
 			</div>
-			<button type="button" class="btn btn-danger btn-me" style="width: 100px;"
-				onclick="location.href='login_signup/logoutaction.jsp'">로그아웃</button>
 		</div>
 	</wrapper>
 	<bottom>
