@@ -10,7 +10,7 @@
 	<div class="outDiv">
 		<form name="changePassword" method="post" action="changepwdaction.jsp">
 			<div class="inputDiv">
-				<input class="input1" type="text" id="password" name="password" oninput="buttonColor()"
+				<input class="input1" type="password" id="password" name="password" oninput="buttonColor()"
 					placeholder=" 새로운 비밀번호" required="required">
 			</div>
 			<div class="buttonDiv">

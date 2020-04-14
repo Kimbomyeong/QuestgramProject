@@ -8,6 +8,7 @@
         // 로그인 화면에 입력된 아이디와 비밀번호를 가져온다
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String id = new UserDao().getId(email);
         
         // DB에서 아이디, 비밀번호 확인
         UserDao dao = new UserDao();
@@ -22,6 +23,7 @@
             session.setAttribute("loginid", email);
             session.setAttribute("loginok", "ok");
             session.setAttribute("nickname", nickname);
+            session.setAttribute("userid", id);
             session.setMaxInactiveInterval(60 * 60 * 4);
             msg = "../main.jsp";
         }
@@ -39,4 +41,5 @@
         System.out.println(session.getAttribute("loginid"));
         System.out.println(session.getAttribute("loginok"));
         System.out.println(session.getAttribute("nickname"));
+        System.out.println(session.getAttribute("userid"));
 %>
