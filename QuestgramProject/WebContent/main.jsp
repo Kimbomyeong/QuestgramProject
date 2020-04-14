@@ -83,6 +83,10 @@ body{
 				<div id="qna">
 					고객센터
 				</div>
+				
+				<!-- 게시물 올리기 확인용 버튼 -->
+				<button type="button" onclick="location.href='Post/Post_insert_Form.jsp'">게시물올리기</button>
+				
 			</div>
 		</div>
 	</wrapper>

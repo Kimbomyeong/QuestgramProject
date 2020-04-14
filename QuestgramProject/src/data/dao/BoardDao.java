@@ -60,13 +60,15 @@ public class BoardDao {
 	
 	//게시물 올리기(추가)
 	
+	//게시물 올리기(추가)
+	
 		public void insertBoard(BoardDto dto)
 		{
-			Connection conn=null;
+			Connection conn=db.getConnection();
 			PreparedStatement pstmt=null;
 			String sql="INSERT INTO board (user_id, content, comment_count,"
 					+ "like_count, view_count, share_count, created_at, updated_at) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, now(), now())";
+					+ "VALUES (?, ?, 0, 0, 0, 0, now(), now())";
 			
 			try {
 				pstmt = conn.prepareStatement(sql); //sql 검사
@@ -74,10 +76,7 @@ public class BoardDao {
 				//바인딩
 				pstmt.setString(1, dto.getUser_id());
 				pstmt.setString(2, dto.getContent());
-				pstmt.setString(3, dto.getComment_count());
-				pstmt.setString(4, dto.getLike_count());
-				pstmt.setString(5, dto.getView_count());
-				pstmt.setString(6, dto.getShare_count());
+			
 				
 				pstmt.execute(); //실행
 				
@@ -91,6 +90,7 @@ public class BoardDao {
 			}
 			
 		} //insert 끝
+		
 		
 		//게시글 삭제
 		public void deleteBoard(String id)
