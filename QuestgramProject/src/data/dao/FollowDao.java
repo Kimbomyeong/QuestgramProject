@@ -165,7 +165,7 @@ public class FollowDao {
 	}
 	
 	// 팔로우 추천
-	// 기준: "내" 친구가 팔로우하는 친구들 리스트를,
+	// 기준: "내" 친구가 팔로우하는 친구들 리스트를
 	// 내 친구가 가장 최근에 팔로우한 순서대로
 	public List<FollowDto> rcmmdFollow(String id) {
 		List<FollowDto> list = new ArrayList<FollowDto>();
