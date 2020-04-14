@@ -146,9 +146,10 @@
 				<img class="act" src="../images/logo.png" />
 			</div>
 			<fb:login-button scope="public_profile,email"
-				onlogin="checkLoginState();" data-width="60" data-size="medium"
-				data-button-type="login_with" data-layout="default"
-				data-auto-logout-link="true" data-use-continue-as="false"></fb:login-button>
+			onlogin="checkLoginState();" data-width="60" data-size="medium"
+			data-button-type="login_with" data-layout="default"
+			data-auto-logout-link="true" data-use-continue-as="false"></fb:login-button>
+			<div id="fb-root"></div>
 			<br>
 			<br>
 			<hr style="width: 120px; border: 0.5px solid #BDBDBD; margin-bottom: -5px; margin-left: 1px;">

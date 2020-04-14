@@ -18,7 +18,7 @@ public class UserDao {
 	// 회원가입 유저추가
 	public void insertUser(UserDto dto) {
 		Connection conn = db.getConnection();
-		String sql = "INSERT INTO user (password, nickname, name, email, created_at, updated_at) "
+		String sql = "INSERT INTO User (password, nickname, name, email, created_at, updated_at) "
 				+ "VALUES (?, ?, ?, ?, now(), now())";
 		PreparedStatement pstmt = null;
 		String encryptPwd = "";
@@ -61,7 +61,7 @@ public class UserDao {
 	public List<UserDto> getAllUsers(){
 		List<UserDto> list = new ArrayList<UserDto>();
 		Connection conn = db.getConnection();
-		String sql = "SELECT * FROM user ORDER BY id";
+		String sql = "SELECT * FROM User ORDER BY id";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
@@ -100,7 +100,7 @@ public class UserDao {
 	public UserDto getUser(String id) {
 		UserDto dto = new UserDto();
 		Connection conn = db.getConnection();
-		String sql = "SELECT * FROM user WHERE ID = ?";
+		String sql = "SELECT * FROM User WHERE ID = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
@@ -138,7 +138,7 @@ public class UserDao {
 	// 휴대폰, 우편번호, 주소, 업데이트날짜 변경
 	public void updateUser(UserDto dto) {
 		Connection conn = db.getConnection();
-		String sql = "UPDATE user SET password=?, nickname=?, name=?, birth=?, "
+		String sql = "UPDATE User SET password=?, nickname=?, name=?, birth=?, "
 				+ "gender=?, email=?, phone=?, zipcode=?, address1=?, address2=?, updated_at=now() WHERE ID = ?";
 		PreparedStatement pstmt = null;
 		try {
@@ -162,42 +162,6 @@ public class UserDao {
 		}
 	}
 
-	// 이메일 인증시 유저 정보
-	public UserDto getUserForEmail(String email) {
-		UserDto dto = new UserDto();
-		Connection conn = db.getConnection();
-		String sql = "SELECT * FROM user WHERE email = ?";
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, email);
-			rs = pstmt.executeQuery();
-
-			if(rs.next()) {
-				dto.setId(rs.getString("id"));
-				dto.setPassword(rs.getString("password"));
-				dto.setNickname(rs.getString("nickname"));
-				dto.setName(rs.getString("name"));
-				dto.setBirth(rs.getString("birth"));
-				dto.setGender(rs.getString("gender"));
-				dto.setEmail(rs.getString("email"));
-				dto.setPhone(rs.getString("phone"));
-				dto.setZipcode(rs.getString("zipcode"));
-				dto.setAddress1(rs.getString("address1"));
-				dto.setAddress2(rs.getString("address2"));
-				dto.setProfile_img(rs.getString("profile_img"));
-				dto.setCreated_at(rs.getTimestamp("created_at"));
-				dto.setUpdated_at(rs.getTimestamp("updated_at"));
-			}
-		} catch (SQLException e) {
-			System.out.println("email에 해당하는 유저정보 출력 : "+e.getMessage());
-		} finally {
-			db.dbClose(rs, pstmt, conn);
-		}
-		return dto;
-	}
-
 	// 로그인
 	public int loginCheck(String email, String password) {
 		Connection conn = null;
@@ -216,7 +180,7 @@ public class UserDao {
 
 		try {
 			// 쿼리 - 먼저 입력된 아이디로 DB에서 비밀번호를 조회한다.
-			sql = "select password from user where email = ?";
+			sql = "select password from User where email = ?";
 
 			conn = db.getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -255,7 +219,7 @@ public class UserDao {
 		Connection conn=null;
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
-		String sql = "select name from user where email = ?";
+		String sql = "select name from User where email = ?";
 
 		conn = db.getConnection();
 		try {
@@ -283,7 +247,7 @@ public class UserDao {
 		Connection conn=null;
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
-		String sql = "select nickname from user where email = ?";
+		String sql = "select nickname from User where email = ?";
 
 		conn = db.getConnection();
 		try {
@@ -314,7 +278,7 @@ public class UserDao {
 		String sql = "";
 
 		conn = db.getConnection();
-		sql = "select * from user where email = ?";
+		sql = "select * from User where email = ?";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, email);
@@ -342,13 +306,68 @@ public class UserDao {
 		String sql = "";
 
 		conn = db.getConnection();
-		sql = "select * from user where nickname = ?";
+		sql = "select * from User where nickname = ?";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, nickname);
 			rs = pstmt.executeQuery();
 
 			if(nickname == null || rs.next() == true) {
+				check = false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(rs, pstmt, conn);
+		}
+
+		return check;
+	}
+
+	// 미완성
+	public void changePassword(String email, String password) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String encryptPwd = "";
+		String sql = "";
+
+		conn = db.getConnection();
+		sql = "update User set password = ? where email = ?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			boolean isSuccess = encrypt.encryption(password);
+			if(isSuccess) {
+				encryptPwd = encrypt.getPassword();
+				pstmt.setString(1, encryptPwd);
+			}
+			pstmt.setString(2, email);
+
+			pstmt.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(pstmt, conn);
+		}
+	}
+
+	// 이메일 존재 여부
+	public boolean checkEmail(String email) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		boolean check = true;
+		String sql = "";
+
+		conn = db.getConnection();
+		sql = "select * from User where email = ?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, email);
+			rs = pstmt.executeQuery();
+
+			if(rs.next() == false) {
 				check = false;
 			}
 		} catch (SQLException e) {

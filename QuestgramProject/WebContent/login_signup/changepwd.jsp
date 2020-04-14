@@ -3,18 +3,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>find_password</title>
+<title>change_password</title>
 <link href="../css/login.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<div class="outDiv">
-		<form name="findPassword" method="post" action="findpasswordaction.jsp">
+	<div class="outDiv">
+		<form name="changePassword" method="post" action="changepwdaction.jsp">
 			<div class="inputDiv">
-				<input class="input1" type="text" id="email" name="email" oninput="buttonColor()"
-					placeholder=" 이메일" required="required">
+				<input class="input1" type="text" id="password" name="password" oninput="buttonColor()"
+					placeholder=" 새로운 비밀번호" required="required">
 			</div>
 			<div class="buttonDiv">
-				<button class="act" type="submit">이메일 인증번호 발송</button>
+				<button class="act" type="submit">비밀번호 변경</button>
 			</div>
 			<br>
 			<hr style="width: 120px; border: 0.5px solid #BDBDBD; margin-bottom: -5px; margin-left: 1px;">
@@ -30,6 +30,6 @@
 			style="text-decoration: none; font-weight: bold; color: #4FC9DE;">로그인으로 돌아가기</a>
 		</form>
 	</div>
-	<script src="../js/findpwd.js"></script>
+	<script src="../js/changepwd.js"></script>
 </body>
 </html>

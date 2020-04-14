@@ -110,9 +110,9 @@
 			<fb:login-button scope="public_profile,email" onlogin="checkLoginState();"
 			data-width="60" data-size="medium" data-button-type="login_with" data-layout="default" 
 			data-auto-logout-link="true" data-use-continue-as="false"></fb:login-button>
-			<div class="passwordDiv">
-				<p class="act">비밀번호를 잊으셨나요?</p>
-			</div>
+			<div id="fb-root"></div>
+			<br>
+			<a href="findpassword.jsp" style="text-decoration: none; font-size: 9pt; color: blue">비밀번호를 잊으셨나요?</a>
 			<br>
 			<br>
 			<span style="font-size: 14px;">계정이 없으신가요?

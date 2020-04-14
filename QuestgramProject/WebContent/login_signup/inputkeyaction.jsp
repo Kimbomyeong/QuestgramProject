@@ -3,15 +3,19 @@
 <%
 	// 한글 인코딩
 	request.setCharacterEncoding("utf-8");	
-%>
-<jsp:useBean id="dto" class="data.dto.UserDto"/>
-<jsp:useBean id="dao" class="data.dao.UserDao"/>
-
-<jsp:setProperty property="email" name="dto"/>
-<jsp:setProperty property="password" name="dto"/>
-<jsp:setProperty property="nickname" name="dto"/>
-<jsp:setProperty property="name" name="dto"/>
-<%
-	// insert
-	dao.insertUser(dto);
+	
+	String key = request.getParameter("key");
+	String authkey = (String)session.getAttribute("AuthenticationKey");
+	if(key.equals(authkey)) {
+		session.removeAttribute("AuthenticationKey");
+		System.out.println("Success");
+		response.sendRedirect("changepwd.jsp");
+	} else {
+		session.removeAttribute("AuthenticationKey");
+		%>
+		<script type="text/javascript">
+			alert("인증번호가 틀렸습니다.");
+			history.back();
+		</script>
+	<%}
 %>
