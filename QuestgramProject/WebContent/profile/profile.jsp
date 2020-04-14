@@ -39,7 +39,14 @@
 
 		});
 	});
-	
+	function goPopup(){
+		// 주소검색을 수행할 팝업 페이지를 호출합니다.
+		// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(http://www.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다.
+		var pop = window.open("../popup/jusoPopup.jsp","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
+		
+		// 모바일 웹인 경우, 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(http://www.juso.go.kr/addrlink/addrMobileLinkUrl.do)를 호출하게 됩니다.
+	    //var pop = window.open("/popup/jusoPopup.jsp","pop","scrollbars=yes, resizable=yes"); 
+	}
 </script>
 </head>
 <body>
@@ -90,14 +97,16 @@
 				<div class="tab-content" style="min-height: 333px;">
 					<!-- 1. id가 profile일때 -->
 					<div class="tab-pane in active" id="profile">
-						<form class="form-horizontal">
+						<form class="form-horizontal" name="frm">
 							<div class="form-group">
 								<div class="col-sm-3 control-label">
 									<img src="../images/basic.png" class="profile_image">
 								</div>
 								<div class="col-sm-9 control-label " id="basic">
 									<div style="float: left;">
-										<div style="font-size: 20px;"></div>
+										<br><br>
+										<div style="font-size: 20px; float: left;">사용자</div>
+										<br>
 										<label class="btn-file"
 											style="cursor: pointer; color: #6699ff;"> 프로필 사진 수정 <input
 											type="file" style="display: none;">
@@ -126,7 +135,9 @@
 							<div class="form-group">
 								<label for="web" class="col-sm-3 control-label">주소</label>
 								<div class="col-sm-9">
-									<input multiple type="text" class="form-control" id="web" />
+									<input type="text" id="addr" name="addr" class="form-control" placeholder="Enter Addr" readonly="true"/>
+									<br>
+									<button type="submit" class="btn btn-primary" onclick="goPopup()">주소검색</button>
 								</div>
 							</div>
 							<div class="form-group">
