@@ -21,13 +21,15 @@ public class BoardDao {
 		ResultSet rs = null;
 		String sql = "SELECT board.*, user.name, user.nickname, user.profile_img "
 				+ "FROM board JOIN user "
-				+ "WHERE board.id < ? AND user.id = board.user_id "
-				+ "ORDER BY board.id DESC limit 5;";
-		
+				+ "WHERE board.id < (SELECT IF(? = 'start', MAX(id), ?) FROM board) "
+				+ "AND user.id = board.user_id ORDER BY board.id DESC limit 30;";
+				// SELECT IF(조건, 값1, 값2)
+				// : 조건이 참이면 값1, 거짓이면 값2를 반환
 		conn = db.getConnection();
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, board_id);
+			pstmt.setString(2, board_id);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
