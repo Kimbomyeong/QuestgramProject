@@ -1,3 +1,4 @@
+<%@page import="data.dao.UserDao"%>
 <%@page import="data.dto.FollowDto"%>
 <%@page import="java.util.List"%>
 <%@page import="data.dao.FollowDao"%>
@@ -79,13 +80,14 @@ $(function() {
 <%
 	// id 에는 임의값 "1"을 넣었지만, 나중에는 보고 있던 유저 프로필의 id값을 넘겨줄 예정
 	// myid 에는 임의값 "3"을 넣었지만, 쿠키or세션으로 보는 '나'의 id값을 넘겨줄 예정
-	String id = "1";
-	String myid = "3";
+	UserDao udao = new UserDao();
+	String id = "";
+	String userid = (String)session.getAttribute("userid");
 	FollowDao fdao = new FollowDao();
 	
 %>
 	<span id="btnFollow"
-		style="cursor: pointer; width: 20px; border: 1px solid pink;"><%=fdao.followNow(id, myid) %></span>
+		style="cursor: pointer; width: 20px; border: 1px solid pink;"><%=fdao.followNow(id, userid) %></span>
 
 <%--	(안 먹혀서 위에 줬음)
 	<script type="text/javascript">
