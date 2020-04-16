@@ -102,7 +102,7 @@ wrapper{
 }
 #board{
 	float:left;
-	width:699px;
+	width:690px;
 	height:1000px;
 }
 #profile{
@@ -125,6 +125,10 @@ wrapper{
 	margin-top:30px;
 	margin-left:-40px;
 	
+}
+#side{
+	width:300px;
+	float:right;
 }
 #notice{
 	float:right;

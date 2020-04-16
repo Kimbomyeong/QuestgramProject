@@ -108,7 +108,7 @@ textarea:focus{outline:none;}
   width: 100%;
   height: 100%;
 }
-.post > .post-header > a > #trigger{
+.post > .post-header > a > .trigger{
 	margin-top: 5px;
     }
 .post > .sajin {
@@ -120,7 +120,7 @@ textarea:focus{outline:none;}
 }
 
 .post > .post-footer {
-  padding: 0 16px;
+
 }
 
 .post > .post-footer > .btn-container {
@@ -128,6 +128,7 @@ textarea:focus{outline:none;}
   height: 40px;
   padding: 8px 0;
   font-size: 0;
+  padding: 8px 15px;
 }
 .post > .post-footer > .btn-container > li {
   display: inline-block;
@@ -136,13 +137,13 @@ textarea:focus{outline:none;}
 .post > .post-footer > .btn-container > li > a > img {
  	margin-top: -3px;	
 }
-.post > .post-footer > .btn-container > li > a > #heart{
+.post > .post-footer > .btn-container > li > a > .heart{
  	margin-left:-10px;
     margin-right: 3px;	
 }
 
-.post > .post-footer > .btn-container > a > #bookmark{
-  	margin-right: -15px;
+.post > .post-footer > .btn-container > a > .bookmark{
+  	margin-right: -10px;
   	margin-top: -3px;	
   	
 }
@@ -154,52 +155,31 @@ textarea:focus{outline:none;}
   font-weight: 600;
   line-height: 18px;
   color: #262626;
+  padding: 0 16px;
 }
 
 .post > .post-footer > .text-container {
   font-size: 14px;
   line-height: 18px;
+  padding: 0 16px;
 }
 .post > .post-footer > .text-container > a {
   font-weight: 600;
 }
 
-.post > .post-footer > .time-container {
+.time-container {
+  margin-left:20px; 
+  color:#8e8e8e; 
+  font-size:8pt; 
+  clear:both;
   height: 18px;
   margin-bottom: 8px;
-  font-size: 10px;
   line-height: 18px;
   color: #999999;
 }
 
 .post > .post-footer > .comment-container {
-  height: 56px;
-  width:580px;
-  padding: 16px 28px 16px 0;
-  border-top: 1px solid #efefef;
+  height: auto;
+  padding-top: 3px;
 }
-.post > .post-footer > .comment-container > textarea {
-  
-  height: 100%;
-  border: none;
-  font-size: 14px;
-  color: #262626;
-  resize: none;
-}
-.post > .post-footer > .comment-container > .gesi {
-  margin-right:-15px;
-  border: none; 
-  cursor: pointer;
-  color:#c5e7fd;
-  background-color:#fff;
-  font-weight:bold;
-  font-size:15px;
-}
-.post > .post-footer > .comment-container > gesi {
-  display: block;
-  position: absolute;
-  top: 20px;
-  right: 6px;
-  width: 16px;
-  height: 16px;
-}
+

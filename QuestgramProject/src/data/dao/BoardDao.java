@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import data.dto.BoardDto;
 import mysql.db.DbConnect;
@@ -60,13 +61,15 @@ public class BoardDao {
 	
 	//게시물 올리기(추가)
 	
+	//게시물 올리기(추가)
+	
 		public void insertBoard(BoardDto dto)
 		{
-			Connection conn=null;
+			Connection conn=db.getConnection();
 			PreparedStatement pstmt=null;
 			String sql="INSERT INTO board (user_id, content, comment_count,"
 					+ "like_count, view_count, share_count, created_at, updated_at) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, now(), now())";
+					+ "VALUES (?, ?, 0, 0, 0, 0, now(), now())";
 			
 			try {
 				pstmt = conn.prepareStatement(sql); //sql 검사
@@ -74,10 +77,7 @@ public class BoardDao {
 				//바인딩
 				pstmt.setString(1, dto.getUser_id());
 				pstmt.setString(2, dto.getContent());
-				pstmt.setString(3, dto.getComment_count());
-				pstmt.setString(4, dto.getLike_count());
-				pstmt.setString(5, dto.getView_count());
-				pstmt.setString(6, dto.getShare_count());
+			
 				
 				pstmt.execute(); //실행
 				
@@ -91,6 +91,7 @@ public class BoardDao {
 			}
 			
 		} //insert 끝
+		
 		
 		//게시글 삭제
 		public void deleteBoard(String id)
@@ -261,4 +262,45 @@ public class BoardDao {
 				db.dbClose(pstmt, conn);
 			}
 		}//조회수 끝
+		
+		public List<BoardDto> getAllDatas2()
+		{
+			List<BoardDto> list2 = new Vector<BoardDto>();
+			Connection conn = null;
+			PreparedStatement pstmt=null;
+			ResultSet rs = null;
+			String sql ="SELECT * FROM board ORDER BY created_at DESC";
+			
+			conn=db.getConnection();
+			
+			try {
+				pstmt=conn.prepareStatement(sql);
+				rs=pstmt.executeQuery();
+				while(rs.next())
+				{
+					BoardDto dto = new BoardDto();
+					dto.setId(rs.getString("id"));
+					dto.setUser_id(rs.getString("user_id"));
+					dto.setContent(rs.getString("content"));
+					dto.setComment_count(rs.getString("comment_count"));
+					dto.setLike_count(rs.getString("like_count"));
+					dto.setView_count(rs.getString("view_count"));
+					dto.setCreated_at(rs.getTimestamp("created_at"));
+					dto.setUpdated_at(rs.getTimestamp("updated_at"));
+					
+					list2.add(dto);
+					
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("list2 출력 오류: "+e.getMessage());
+				
+			}
+			finally {
+				db.dbClose(rs, pstmt, conn);
+			}
+			
+			return list2;
+		}
+		//list2 끝
 }

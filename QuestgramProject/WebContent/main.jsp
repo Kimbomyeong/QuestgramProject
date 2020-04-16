@@ -65,9 +65,6 @@ body{
 	</header>
 	<wrapper>
 		<div id="maincontent">
-			<div id="board">
-			  	<jsp:include page="Post/form1.jsp"/>
-			</div>
 			<div id="side">
 				<div id="profile">
 					<a href="#"><div class="info" style="width:50px; margin-top: 3px; height:50px; float:left;"> </div></a>
@@ -84,7 +81,13 @@ body{
 					고객센터
 				</div>
 			</div>
+			<div id="board">
+			  	<jsp:include page="Post/form1.jsp"/>
+			</div>
 		</div>
+		<!-- 게시물 올리기 확인용 버튼 -->
+		<button type="button" onclick="location.href='Post/Post_insert_Form.jsp'">게시물올리기</button>
+				
 	</wrapper>
 	<bottom>
 	
