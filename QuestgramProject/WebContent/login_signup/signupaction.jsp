@@ -25,8 +25,13 @@
 		
 		// insert
 		dao.insertUser(dto);
-		response.sendRedirect("loginform.jsp");
-	} else if(dupcheckemail == false || dupchecknick == false) {%>
+		%>
+		
+		<script type="text/javascript">
+			alert("회원가입이 성공적으로 이루어졌습니다.");
+			location.href = "loginform.jsp";
+		</script>
+	<%} else if(dupcheckemail == false || dupchecknick == false) {%>
 		<script type="text/javascript">
 			alert("이메일 또는 사용자 이름이 중복되어 사용할 수 없습니다.");
 			history.back();

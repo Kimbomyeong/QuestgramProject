@@ -45,7 +45,7 @@ public class UserDao {
 	// 유저삭제(회원탈퇴)
 	public void deleteUser(String id) {
 		Connection conn = db.getConnection();
-		String sql = "DELETE FROM user WHERE ID = ?";
+		String sql = "DELETE FROM User WHERE ID = ?";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -57,6 +57,7 @@ public class UserDao {
 			db.dbClose(pstmt, conn);
 		}
 	}
+	
 	// 전체 유저 조회
 	public List<UserDto> getAllUsers(){
 		List<UserDto> list = new ArrayList<UserDto>();
@@ -135,7 +136,7 @@ public class UserDao {
 	public void updateUser(UserDto dto, String id) {
 		Connection conn = db.getConnection();
 		String sql = "UPDATE User SET nickname=?, gender=?, "
-				+ "phone=?, address=?, introduce=?, updated_at=now() WHERE ID = ?";
+				+ "phone=?, address=?, introduce=?, profile_img=?, updated_at=now() WHERE ID = ?";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -144,7 +145,8 @@ public class UserDao {
 			pstmt.setString(3, dto.getPhone());
 			pstmt.setString(4, dto.getAddress());
 			pstmt.setString(5, dto.getIntroduce());
-			pstmt.setString(6, id);
+			pstmt.setString(6, dto.getProfile_img());
+			pstmt.setString(7, id);
 
 			pstmt.execute();
 		} catch (SQLException e) {
@@ -323,16 +325,17 @@ public class UserDao {
 		PreparedStatement pstmt = null;
 		String encryptPwd = "";
 		String sql = "";
-
+		
+		boolean isSuccess = encrypt.encryption(password);
+		if(isSuccess) {
+			encryptPwd = encrypt.getPassword();
+		}
+		
 		conn = db.getConnection();
 		sql = "update User set password = ? where email = ?";
 		try {
 			pstmt = conn.prepareStatement(sql);
-			boolean isSuccess = encrypt.encryption(password);
-			if(isSuccess) {
-				encryptPwd = encrypt.getPassword();
-				pstmt.setString(1, encryptPwd);
-			}
+			pstmt.setString(1, encryptPwd);
 			pstmt.setString(2, email);
 
 			pstmt.execute();
@@ -371,7 +374,40 @@ public class UserDao {
 
 		return check;
 	}
-	
+
+	// 비밀번호 확인
+	public boolean checkPassword(String password, String email) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		boolean check = false;
+		String sql = "";
+		
+		conn = db.getConnection();
+		sql = "select * from User where password = ? and email = ?";
+		String encryptPwd = "";
+		boolean isSuccess = encrypt.encryption(password);
+		if(isSuccess) {
+			encryptPwd = encrypt.getPassword();
+		}
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, encryptPwd);
+			pstmt.setString(2, email);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				check = true;
+			}
+		} catch (SQLException e) {
+			System.out.println("Insert문 오류 : "+e.getMessage());
+		} finally {
+			db.dbClose(rs, pstmt, conn);
+		}
+		return check;
+	}
+
 	// 유저 고유 id 반환
 	public String getId(String email) {
 		Connection conn = null;

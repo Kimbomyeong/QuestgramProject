@@ -40,6 +40,20 @@
 			$(this).parent().addClass("a_click");
 
 		});
+		// 프로필 사진 업로드 시 미리보기
+		function readURL(input) {
+	        if (input.files && input.files[0]) {
+	            var reader = new FileReader();
+	            reader.onload = function(e) {
+	                $('#profile_image').attr('src', e.target.result);
+	            }
+	            reader.readAsDataURL(input.files[0]);
+	        }
+	    }
+
+	    $("#update_profile_image").change(function() {
+	        readURL(this);
+	    });
 	});
 	function goPopup() {
 		// 주소검색을 수행할 팝업 페이지를 호출합니다.
@@ -103,16 +117,13 @@
 		<div class="row " style="border: 1px solid #BDBDBD;">
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 hidden-xs">
 				<ul class="nav nav-stacked">
-					<li class="a_click active"><a href="#profile"
-						data-toggle="tab" class="menu">프로필 편집</a></li>
-					<li><a href="#pwd" data-toggle="tab" class="menu">비밀번호 변경
-					</a></li>
+					<li class="a_click active"><a href="#profile" data-toggle="tab" class="menu">프로필 편집</a></li>
+					<li><a href="#pwd" data-toggle="tab" class="menu">비밀번호 변경</a></li>
 					<li><a href="#app" data-toggle="tab" class="menu">허가된 앱</a></li>
 					<li><a href="#comment" data-toggle="tab" class="menu">댓글</a></li>
-					<li><a href="#emails" data-toggle="tab" class="menu">이메일 및
-							SMS</a></li>
-					<li><a href="#phones" data-toggle="tab" class="menu">연락처
-							관리 </a></li>
+					<li><a href="#emails" data-toggle="tab" class="menu">이메일 및 SMS</a></li>
+					<li><a href="#phones" data-toggle="tab" class="menu">연락처 관리 </a></li>
+					<li><a href="#withdrawal" data-toggle="tab" class="menu">회원탈퇴</a></li>
 				</ul>
 			</div>
 			<!-- col-xs-4 -->
@@ -125,7 +136,9 @@
 							action="profileaction.jsp" method="post">
 							<div class="form-group">
 								<div class="col-sm-3 control-label">
-									<img src="../images/basic.png" class="profile_image">
+									<img <%if(dto.getProfile_img() == null) {%>src="../images/basic.png"
+									<%} else {%> src="<%=dto.getProfile_img() %>"<%} %> class="profile_image"
+									id="profile_image">
 								</div>
 								<div class="col-sm-9 control-label " id="basic">
 									<div style="float: left;">
@@ -135,7 +148,8 @@
 										</div>
 										<br> <br> <label class="btn-file"
 											style="cursor: pointer; color: #6699ff;">프로필 사진 수정 <input
-											type="file" style="display: none;">
+											type="file" style="display: none;" id="update_profile_image" 
+											name="update_profile_image">
 										</label>
 									</div>
 
@@ -231,6 +245,8 @@
 						</form>
 					</div>
 					<!-- id=profile (프로필 변경 ) -->
+					
+					
 					<div class="tab-pane" id="pwd">
 						<div class="form-horizontal pwdDiv">
 							<form action="pwdchange.jsp" name="pwdForm" id="pwdForm" method="post">
@@ -260,10 +276,6 @@
 									<div class="col-sm-6 col-sm-offset-3">
 										<button id="pwdBtn" type="submit" 
 										class="btn btn-primary">비밀번호 변경</button>
-									</div>
-									<br>
-									<div class="col-sm-9 col-sm-offset-3">
-										<p id="pwdCheck"></p>
 									</div>
 								</div>
 							</form>
@@ -395,6 +407,29 @@
 							</div>
 						</div>
 
+					</div>
+					
+					
+					<div class="tab-pane" id="withdrawal">
+						<div class="form-horizontal withdrawalDiv">
+							<form action="withdrawalaction.jsp" name="withdrawalForm" id="withdrawalForm" method="post">
+								<br>
+								<div class="form-group">
+									<label class="col-sm-3 control-label">비밀번호 입력</label>
+									<div class="col-sm-9">
+										<input type="password" class="form-control" id="password"
+											name="password">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<div class="col-sm-6 col-sm-offset-3">
+										<button id="withdrawalBtn" type="submit" 
+										class="btn btn-danger">회원탈퇴</button>
+									</div>
+								</div>
+							</form>
+						</div>
 					</div>
 				</div>
 
