@@ -14,11 +14,12 @@ import mysql.db.DbConnect;
 public class FollowDao {
 	DbConnect db = new DbConnect();
 	
-	// 팔로우 (미완성: 인서트는 되지만 중복제거 조건 걸어야 함)
+	// 팔로우
+	// (중복제거 조건 구현 안 함. 팔로우 버튼이 활성화되지 않으므로.)
 	public void insertFollow(String add, String target) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String sql = "INSERT INTO follow VALUES(null, ?, ?, now())";
+		String sql = "INSERT follow VALUES(null, ?, ?, now())";
 		
 		conn = db.getConnection();
 		try {
@@ -135,7 +136,7 @@ public class FollowDao {
 	}
 	
 	// 내가 팔로우하는지 알아보기
-	public String followNow(String id, String myid) {
+	public String followNow(String id, String userid) {
 		String now = "follow";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -146,12 +147,12 @@ public class FollowDao {
 		conn = db.getConnection();
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, myid);
+			pstmt.setString(1, userid);
 			pstmt.setString(2, id);
 			rs = pstmt.executeQuery();
 			
 			if (rs.next()) {
-				if (rs.getInt(1) == 1)
+				if (rs.getInt(1) > 0)
 					now = "unfollow";
 			}
 			
@@ -165,20 +166,24 @@ public class FollowDao {
 	}
 	
 	// 팔로우 추천
-	// 기준: "내" 친구가 팔로우하는 친구들 리스트를
-	// 내 친구가 가장 최근에 팔로우한 순서대로
-	public List<FollowDto> rcmmdFollow(String id) {
+	// 내 친구가 팔로우하는 친구들 리스트를, 가장 최근에 팔로우한 순서대로
+	public List<FollowDto> rcmmdFollow(String userid) {
 		List<FollowDto> list = new ArrayList<FollowDto>();
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = "";
+		String sql = "SELECT user.id, user.name, user.nickname, user.profile_img, follow.created_at "
+				+ "FROM user JOIN (SELECT * FROM follow "
+				+ "WHERE add_user_id IN (SELECT target_user_id FROM follow "
+				+ "WHERE add_user_id = ?)) follow "
+				+ "ON user.id = follow.target_user_id "
+				+ "ORDER BY follow.created_at DESC;";
 		
 		conn = db.getConnection();
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
+			pstmt.setString(1, userid);
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
