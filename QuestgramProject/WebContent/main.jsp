@@ -64,7 +64,7 @@ body{
 		</div>
 	</header>
 	<wrapper>
-		<div id="maincontent">
+		<div id="maincontent" >
 			<div id="side">
 				<div id="profile">
 					<a href="#"><div class="info" style="width:50px; margin-top: 3px; height:50px; float:left;"> </div></a>
