@@ -6,11 +6,13 @@
 	session.removeAttribute("loginid");
 	session.removeAttribute("nickname");
 	session.removeAttribute("userid");
+	session.removeAttribute("username");
 	
 	System.out.println(session.getAttribute("loginid"));
     System.out.println(session.getAttribute("loginok"));
     System.out.println(session.getAttribute("nickname"));
     System.out.println(session.getAttribute("userid"));
+    System.out.println(session.getAttribute("username"));
 	
 	response.sendRedirect("loginform.jsp");
 %>

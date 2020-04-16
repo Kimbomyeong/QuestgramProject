@@ -14,12 +14,22 @@
 	UserDto dto = new UserDto();
 	UserDao dao = new UserDao();
 	
-	dto.setEmail(email);
-	dto.setName(name);
-	dto.setNickname(nickname);
-	dto.setPassword(password);
+	boolean dupcheckemail = dao.dupCheckEmail(email);
+	boolean dupchecknick = dao.dupCheckNickname(nickname);
 	
-	// insert
-	dao.insertUser(dto);
-	response.sendRedirect("loginform.jsp");
+	if(dupcheckemail == true && dupchecknick == true) {
+		dto.setEmail(email);
+		dto.setName(name);
+		dto.setNickname(nickname);
+		dto.setPassword(password);
+		
+		// insert
+		dao.insertUser(dto);
+		response.sendRedirect("loginform.jsp");
+	} else if(dupcheckemail == false || dupchecknick == false) {%>
+		<script type="text/javascript">
+			alert("이메일 또는 사용자 이름이 중복되어 사용할 수 없습니다.");
+			history.back();
+		</script>
+	<%}
 %>

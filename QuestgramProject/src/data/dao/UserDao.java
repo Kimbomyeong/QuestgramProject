@@ -79,10 +79,9 @@ public class UserDao {
 				dto.setGender(rs.getString("gender"));
 				dto.setEmail(rs.getString("email"));
 				dto.setPhone(rs.getString("phone"));
-				dto.setZipcode(rs.getString("zipcode"));
-				dto.setAddress1(rs.getString("address1"));
-				dto.setAddress2(rs.getString("address2"));
+				dto.setAddress(rs.getString("address"));
 				dto.setProfile_img(rs.getString("profile_img"));
+				dto.setIntroduce(rs.getString("introduce"));
 				dto.setCreated_at(rs.getTimestamp("created_at"));
 				dto.setUpdated_at(rs.getTimestamp("updated_at"));
 
@@ -109,7 +108,6 @@ public class UserDao {
 			rs = pstmt.executeQuery();
 
 			if(rs.next()) {
-
 				dto.setId(rs.getString("id"));
 				dto.setPassword(rs.getString("password"));
 				dto.setNickname(rs.getString("nickname"));
@@ -118,10 +116,9 @@ public class UserDao {
 				dto.setGender(rs.getString("gender"));
 				dto.setEmail(rs.getString("email"));
 				dto.setPhone(rs.getString("phone"));
-				dto.setZipcode(rs.getString("zipcode"));
-				dto.setAddress1(rs.getString("address1"));
-				dto.setAddress2(rs.getString("address2"));
+				dto.setAddress(rs.getString("address"));
 				dto.setProfile_img(rs.getString("profile_img"));
+				dto.setIntroduce(rs.getString("introduce"));
 				dto.setCreated_at(rs.getTimestamp("created_at"));
 				dto.setUpdated_at(rs.getTimestamp("updated_at"));
 			}
@@ -134,25 +131,20 @@ public class UserDao {
 	}
 
 
-	// 회원정보 수정 - 비밀번호, 닉네임, 이름, 생년월일, 성별, 이메일,
-	// 휴대폰, 우편번호, 주소, 업데이트날짜 변경
-	public void updateUser(UserDto dto) {
+	// 회원정보 수정
+	public void updateUser(UserDto dto, String id) {
 		Connection conn = db.getConnection();
-		String sql = "UPDATE User SET password=?, nickname=?, name=?, birth=?, "
-				+ "gender=?, email=?, phone=?, zipcode=?, address1=?, address2=?, updated_at=now() WHERE ID = ?";
+		String sql = "UPDATE User SET nickname=?, gender=?, "
+				+ "phone=?, address=?, introduce=?, updated_at=now() WHERE ID = ?";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, dto.getPassword());
-			pstmt.setString(2, dto.getNickname());
-			pstmt.setString(3, dto.getName());
-			pstmt.setString(4, dto.getBirth());
-			pstmt.setString(5, dto.getGender());
-			pstmt.setString(6, dto.getEmail());
-			pstmt.setString(7, dto.getPhone());
-			pstmt.setString(8, dto.getAddress1());
-			pstmt.setString(9, dto.getAddress2());
-			pstmt.setString(10, dto.getId());
+			pstmt.setString(1, dto.getNickname());
+			pstmt.setString(2, dto.getGender());
+			pstmt.setString(3, dto.getPhone());
+			pstmt.setString(4, dto.getAddress());
+			pstmt.setString(5, dto.getIntroduce());
+			pstmt.setString(6, id);
 
 			pstmt.execute();
 		} catch (SQLException e) {
@@ -325,7 +317,7 @@ public class UserDao {
 		return check;
 	}
 
-	// 미완성
+	// 로그인 폼에서 비밀번호 변경
 	public void changePassword(String email, String password) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
