@@ -19,8 +19,11 @@
 		// FB.getLoginStatus().의 레퍼런스에서 더 자세한 내용이 참조 가능하다. 
 		if (response.status === 'connected') { 
 			// 페이스북을 통해서 로그인이 되어있다. 
-			testAPI();
-			location.href = "mainform.jsp";
+			FB.api('/me', {fields: 'name,email'}, function(response) {
+		        var facebookname = response.name;
+		        var facebookemail = response.email;
+		        window.location.replace("http://" + window.location.hostname + ( (location.port==""||location.port==undefined)?"":":" + location.port) + "/QuestProject/login_signup/facebooksignup.jsp?facebookname="+facebookname+"&facebookemail="+facebookemail);
+		    });
 		} else if (response.status === 'not_authorized') { 
 			// 페이스북에는 로그인 했으나, 앱에는 로그인이 되어있지 않다.
 			
@@ -73,7 +76,7 @@
 	
 	// 로그인이 성공한 다음에는 간단한 그래프API를 호출한다. 
 	// 이 호출은 statusChangeCallback()에서 이루어진다. 
-	function testAPI() { 
+	/* function testAPI() { 
 		console.log('Welcome! Fetching your information.... '); 
 		FB.api('/me', function(response) { 
 			console.log('Successful login for: ' + response.name); 
@@ -82,7 +85,7 @@
 		FB.api('/me', {fields: "email"},function(response) { 
 			console.log(response.email);
 		}); 
-	}
+	} */
 	//SMTP 포트 : 465, 보안 연결(SSL) 필요
 </script>
 	<div class="outDiv">
@@ -109,7 +112,7 @@
 			<!-- <p style="float: center;">페이스북로그인</p> -->
 			<fb:login-button scope="public_profile,email" onlogin="checkLoginState();"
 			data-width="60" data-size="medium" data-button-type="login_with" data-layout="default" 
-			data-auto-logout-link="true" data-use-continue-as="false"></fb:login-button>
+			data-auto-logout-link="false" data-use-continue-as="false">페이스북으로 회원가입</fb:login-button>
 			<div id="fb-root"></div>
 			<br>
 			<a href="findpassword.jsp" style="text-decoration: none; font-size: 9pt; color: blue">비밀번호를 잊으셨나요?</a>
