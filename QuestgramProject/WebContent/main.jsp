@@ -41,6 +41,9 @@ body{
 </script>
 </head>
 <body>
+<%
+	String thisId = (String)session.getAttribute("userid");
+%>
 	<header>
 		<div id="box">
 			<div id="logo" >
@@ -55,7 +58,7 @@ body{
 					<li class="nav" id="home" width="35px" height="34px"><a href="main.jsp"><img src="images/home_b.PNG"/></a></li>
 					<li class="nav" id="compass" width="33px" height="34px"><a href="#"><img src="images/compass.PNG"/></a></li>
 					<li class="nav" id="mainheart" width="34px" height="34px"><a href="#"><img src="images/mainheart.PNG"/></a></li>
-					<li class="nav"><a href="#"><div class="info"></div></a></li>
+					<li class="nav"><a href="profile/usertime.jsp?thisId=<%=thisId %>"><div class="info"></div></a></li>
 					<a href="login_signup/logoutaction.jsp">
           			<span class="glyphicon glyphicon-off" style="font-size: 25px; margin-left: 20px; "></span>
         			</a>		
