@@ -3,6 +3,7 @@ package data.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -17,58 +18,59 @@ public class CommentDao {
 			{
 				Connection conn=null;
 				PreparedStatement pstmt=null;
-				String sql="insert into comment values (null, board_id=?, user_id=?, content=?, like_count=?, parents_comments_id=?, now(),now()";
-			
+				String sql="insert into Comment values (null, ?, ?, ?, 0, ?, now(),now())";
+	
 				conn=db.getConnection();
 				try {
 					pstmt=conn.prepareStatement(sql);
-					pstmt.setString(1, dto.getId());
-					pstmt.setString(2, dto.getBoard_id());
-					pstmt.setString(3, dto.getUser_id());
-					pstmt.setString(4, dto.getContent());
-					pstmt.setString(5, dto.getLike_count());
-					pstmt.setString(6, dto.getParents_comments_id());
+					pstmt.setString(1, dto.getBoard_id());
+					pstmt.setString(2, dto.getUser_id());
+					pstmt.setString(3, dto.getContent());
+					pstmt.setString(4, dto.getParents_comments_id());
 					pstmt.execute();
 					
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					System.out.println("insert ¿À·ù:"+e.getMessage());
+					System.out.println("insert ï¿½ï¿½ï¿½ï¿½:"+e.getMessage());
 					e.printStackTrace();
 				}finally{
 					db.dbClose(pstmt, conn);
 				}
 			}
 		
-		public List<CommentDto> getAllCommentList()
+
+		
+		public List<CommentDto> getComment(String board_id)
 		{
 			Connection conn=null;
 			PreparedStatement pstmt=null;
 			ResultSet rs=null;
-			List<CommentDto> list=new Vector<CommentDto>();
-			String sql="select * from comment order by id";
-			
+			List<CommentDto> list=new ArrayList<>();
+			String sql="SELECT User.id userNum, User.nickname id, User.profile_img, Comment.id commentNo, Comment.content, Comment.like_count, Comment.parents_comments_id, Comment.created_at, Comment.board_id FROM Comment JOIN User ON Comment.user_id = User.id WHERE board_id = ? ORDER BY Comment.created_at";
 			conn=db.getConnection();
 			try {
 				pstmt=conn.prepareStatement(sql);
+				pstmt.setString(1, board_id);
 				rs=pstmt.executeQuery();
 				
 				while(rs.next())
-				{
+				{	
 					CommentDto dto= new CommentDto();
+
+					dto.setUsernum(rs.getString("usernum"));
 					dto.setId(rs.getString("id"));
-					dto.setBoard_id(rs.getString("board_id"));
-					dto.setUser_id(rs.getString("user_id"));
-					dto.setContent(rs.getString("Content"));
+					dto.setProfile_img(rs.getString("profile_img"));
+					dto.setCommentno(rs.getString("commentno"));
+					dto.setContent(rs.getString("content"));
 					dto.setLike_count(rs.getString("like_count"));
 					dto.setParents_comments_id(rs.getString("parents_comments_id"));
 					dto.setCreated_at(rs.getTimestamp("created_at"));
-					dto.setUpdated_at(rs.getTimestamp("updated_at"));
-					
+					dto.setBoard_id(rs.getString("board_id"));
 					list.add(dto);
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				System.out.println("select ¿À·ù:"+e.getMessage());
+				System.out.println("select ï¿½ï¿½ï¿½ï¿½:"+e.getMessage());
 				e.printStackTrace();
 			}finally{
 				db.dbClose(rs, pstmt, conn);
@@ -76,48 +78,13 @@ public class CommentDao {
 			return list;
 		}
 		
-		public CommentDto getComment(String id)
-		{
-			Connection conn=null;
-			PreparedStatement pstmt=null;
-			ResultSet rs=null;
-			CommentDto dto= new CommentDto();
-			String sql="select * from comment where id=? order by id";
-			
-			conn=db.getConnection();
-			try {
-				pstmt=conn.prepareStatement(sql);
-				pstmt.setString(1, id);
-				rs=pstmt.executeQuery();
-				
-				if(rs.next())
-				{
-					dto.setId(rs.getString("id"));
-					dto.setBoard_id(rs.getString("board_id"));
-					dto.setUser_id(rs.getString("user_id"));
-					dto.setContent(rs.getString("Content"));
-					dto.setLike_count(rs.getString("like_count"));
-					dto.setParents_comments_id(rs.getString("parents_comments_id"));
-					dto.setCreated_at(rs.getTimestamp("created_at"));
-					dto.setUpdated_at(rs.getTimestamp("updated_at"));
-					
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				System.out.println("select ¿À·ù:"+e.getMessage());
-				e.printStackTrace();
-			}finally{
-				db.dbClose(rs, pstmt, conn);
-			}
-			return dto;
-		}
 		public CommentDto getCommentCount(String id)
 		{
 			Connection conn=null;
 			PreparedStatement pstmt=null;
 			ResultSet rs=null;
 			CommentDto dto= new CommentDto();
-			String sql="select count(*) from comment where id=?";
+			String sql="select count(*) from Comment where id=?";
 			
 			conn=db.getConnection();
 			try {
@@ -129,17 +96,15 @@ public class CommentDao {
 				{
 					dto.setId(rs.getString("id"));
 					dto.setBoard_id(rs.getString("board_id"));
-					dto.setUser_id(rs.getString("user_id"));
 					dto.setContent(rs.getString("Content"));
 					dto.setLike_count(rs.getString("like_count"));
 					dto.setParents_comments_id(rs.getString("parents_comments_id"));
 					dto.setCreated_at(rs.getTimestamp("created_at"));
 					dto.setUpdated_at(rs.getTimestamp("updated_at"));
-					
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				System.out.println("select ¿À·ù:"+e.getMessage());
+				System.out.println("select ï¿½ï¿½ï¿½ï¿½:"+e.getMessage());
 				e.printStackTrace();
 			}finally{
 				db.dbClose(rs, pstmt, conn);
@@ -151,7 +116,7 @@ public class CommentDao {
 		{
 			Connection conn=null;
 			PreparedStatement pstmt=null;
-			String sql="update comment set content=?,updated_at=now() where id=?";
+			String sql="update Comment set content=?,updated_at=now() where id=?";
 		
 			conn=db.getConnection();
 			try {
@@ -163,7 +128,7 @@ public class CommentDao {
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				System.out.println("update ¿À·ù:"+e.getMessage());
+				System.out.println("update ï¿½ï¿½ï¿½ï¿½:"+e.getMessage());
 				e.printStackTrace();
 			}finally{
 				db.dbClose(pstmt, conn);
@@ -173,7 +138,7 @@ public class CommentDao {
 		public void deleteComment(String id) {
 			Connection conn=null;
 			PreparedStatement pstmt=null;
-			String sql="delete from comment where id=?";
+			String sql="delete from Comment where id=?";
 		
 			conn=db.getConnection();
 			try {
@@ -183,7 +148,7 @@ public class CommentDao {
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				System.out.println("delete ¿À·ù:"+e.getMessage());
+				System.out.println("delete ï¿½ï¿½ï¿½ï¿½:"+e.getMessage());
 				e.printStackTrace();
 			}finally{
 				db.dbClose(pstmt, conn);

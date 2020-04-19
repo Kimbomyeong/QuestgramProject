@@ -11,13 +11,11 @@ public class UserDto {
 	private String gender;
 	private String email;
 	private String phone;
-	private String zipcode;
-	private String address1;
-	private String address2;
+	private String address;
 	private String profile_img;
+	private String introduce;
 	private Timestamp created_at;
 	private Timestamp updated_at;
-	
 	
 	public String getId() {
 		return id;
@@ -67,29 +65,23 @@ public class UserDto {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public String getZipcode() {
-		return zipcode;
+	public String getAddress() {
+		return address;
 	}
-	public void setZipcode(String zipcode) {
-		this.zipcode = zipcode;
-	}
-	public String getAddress1() {
-		return address1;
-	}
-	public void setAddress1(String address1) {
-		this.address1 = address1;
-	}
-	public String getAddress2() {
-		return address2;
-	}
-	public void setAddress2(String address2) {
-		this.address2 = address2;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	public String getProfile_img() {
 		return profile_img;
 	}
 	public void setProfile_img(String profile_img) {
 		this.profile_img = profile_img;
+	}
+	public String getIntroduce() {
+		return introduce;
+	}
+	public void setIntroduce(String introduce) {
+		this.introduce = introduce;
 	}
 	public Timestamp getCreated_at() {
 		return created_at;
@@ -102,5 +94,8 @@ public class UserDto {
 	}
 	public void setUpdated_at(Timestamp updated_at) {
 		this.updated_at = updated_at;
-	}	
+	}
+	
+	
+		
 }

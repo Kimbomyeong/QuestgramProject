@@ -6,259 +6,445 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import data.dto.BoardDto;
 import mysql.db.DbConnect;
 
 public class BoardDao {
-	DbConnect db = new DbConnect();
-	
-	// °Ô½Ã±Û Ãâ·Â (ÃÖ½Å¼ø, ÆäÀÌÁöÀÇ ¸¶Áö¸· °Ô½Ã¹°·ÎºÎÅÍ 5°³¸¸! ´õ ·Îµå)
-	public List<BoardDto> getAllDatas(String board_id) {
-		List<BoardDto> list = new ArrayList<BoardDto>();
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = "SELECT board.*, user.name, user.nickname, user.profile_img "
-				+ "FROM board JOIN user "
-				+ "WHERE board.id < (SELECT IF(? = 'start', MAX(id), ?) FROM board) "
-				+ "AND user.id = board.user_id ORDER BY board.id DESC limit 30;";
-				// SELECT IF(Á¶°Ç, °ª1, °ª2)
-				// : Á¶°ÇÀÌ ÂüÀÌ¸é °ª1, °ÅÁşÀÌ¸é °ª2¸¦ ¹İÈ¯
-		conn = db.getConnection();
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, board_id);
-			pstmt.setString(2, board_id);
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				BoardDto dto = new BoardDto();
-				dto.setUser_id(rs.getString("user_id"));
-				dto.setContent(rs.getString("content"));
-				dto.setComment_count(rs.getString("comment_count"));
-				dto.setLike_count(rs.getString("like_count"));
-				dto.setView_count(rs.getString("view_count"));
-				dto.setShare_count(rs.getString("share_count"));
-				dto.setCreated_at(rs.getTimestamp("created_at"));
-				dto.setUpdated_at(rs.getTimestamp("updated_at"));
-				
-				dto.setName(rs.getString("name"));
-				dto.setNickname(rs.getString("nickname"));
-				dto.setProfile_img(rs.getString("profile_img"));
-				
-				list.add(dto);
-			}
-		} catch (SQLException e) {
-			System.out.println("getAllDatas method error : " + e.getMessage());
-		} finally {
-			db.dbClose(rs, pstmt, conn);
-		}
-		
-		return list;
-	} //Ãâ·Â ³¡
-	
-	//°Ô½Ã¹° ¿Ã¸®±â(Ãß°¡)
-	
-	//°Ô½Ã¹° ¿Ã¸®±â(Ãß°¡)
-	
-		public void insertBoard(BoardDto dto)
-		{
-			Connection conn=db.getConnection();
-			PreparedStatement pstmt=null;
-			String sql="INSERT INTO board (user_id, content, comment_count,"
-					+ "like_count, view_count, share_count, created_at, updated_at) "
-					+ "VALUES (?, ?, 0, 0, 0, 0, now(), now())";
-			
-			try {
-				pstmt = conn.prepareStatement(sql); //sql °Ë»ç
-				
-				//¹ÙÀÎµù
-				pstmt.setString(1, dto.getUser_id());
-				pstmt.setString(2, dto.getContent());
-			
-				
-				pstmt.execute(); //½ÇÇà
-				
-				
-				
-			} catch (SQLException e) {
-				System.out.println("Insert¹® ¿À·ù: "+ e.getMessage());
-				e.printStackTrace();
-			} finally {
-				db.dbClose(pstmt, conn);
-			}
-			
-		} //insert ³¡
-		
-		
-		//°Ô½Ã±Û »èÁ¦
-		public void deleteBoard(String id)
-		{
-			Connection conn = db.getConnection();
-			String sql = "DELETE FROM board WHERE ID = ?";
-			PreparedStatement pstmt = null;
-			
-			try {
-				pstmt = conn.prepareStatement(sql);
-				
-				pstmt.setString(1, id);
-				pstmt.execute();
-				
-			} catch (SQLException e) {
-				System.out.println("DELETE¹® ¿À·ù: "+e.getMessage());
-				e.printStackTrace();
-			}
-		} //»èÁ¦ ³¡
-		
-		//À¯Àúid·Î ÇØ´ç À¯ÀúÀÇ Á¤º¸ ¼öÁ¤Æû¿¡ dto¸¦ º¸³¾ ¸Ş¼Òµå
-		public BoardDto getBoardData(String id)
-		{
-			BoardDto dto = new BoardDto();
-			
-			Connection conn = null;
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			String sql="SELECT * FROM board WHERE ID = ?";
-			
-			conn=db.getConnection();
-			
-			try {
-				pstmt = conn.prepareStatement(sql);
-				
-				pstmt.setString(1, id);
-				rs=pstmt.executeQuery();
-				
-				if(rs.next())
-				{
-					dto.setId(rs.getString("id"));
-					dto.setUser_id(rs.getString("user_id"));
-					dto.setContent(rs.getString("content"));
-					dto.setComment_count(rs.getString("comment_count"));
-					dto.setLike_count(rs.getString("like_count"));
-					dto.setView_count(rs.getString("view_count"));
-					dto.setShare_count(rs.getString("share_count"));
-					dto.setCreated_at(rs.getTimestamp("created_at"));
-					dto.setUpdated_at(rs.getTimestamp("updated_at"));
-					
-					
-				}
-			} catch (SQLException e) {
-				System.out.println("getBoardData ¿À·ù : "+e.getMessage());
-				
-				e.printStackTrace();
-			}finally {
-				db.dbClose(rs, pstmt, conn);
-			}
-			
-			return dto;
-		}//getBoardData ³¡
-		
-		//°Ô½Ã¹° ¼öÁ¤
-		//³»¿ë(content), ¼öÁ¤³¯Â¥(updated_at) 
-		public void updateBoard(BoardDto dto) 
-		{
-			Connection conn = db.getConnection();
-			String sql = "UPDATE board SET content=?, update_at=now() WHERE ID = ?";
-			PreparedStatement pstmt = null;
-			
-			try {
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, dto.getContent());
-				
-				pstmt.execute();
-			} catch (SQLException e) {
-				System.out.println("°Ô½Ã¹° ¼öÁ¤ ¿À·ù : "+ e.getMessage());
-				e.printStackTrace();
-				
-			}finally {
-				db.dbClose(pstmt, conn);
-			}
-		} //¼öÁ¤ ³¡
-		
-		//ÁÁ¾Æ¿ä
-		public void updateLikecount(String like_count,String id)
-		{
-			Connection conn=null;
-			PreparedStatement pstmt=null;
-			String sql="";
-			
-			conn=db.getConnection();
-			
-			if(like_count.equals("1"))
-			{
-				sql="UPDATE board SET like_count = like_count+1 WHERE id = ?";
-			}
-			else
-				sql="UPDATE board SET like_count = like_count-1 WHERE id = ?";
-			
-			try {
-				pstmt=conn.prepareStatement(sql);
-				pstmt.setString(1, id);
-				pstmt.execute();
-			} catch (SQLException e) {
-				System.out.println("ÁÁ¾Æ¿ä ¿À·ù: "+e.getMessage());
-				e.printStackTrace();
-				
-			}finally {
-				db.dbClose(pstmt, conn);
-			}
-		} //ÁÁ¾Æ¿ä ³¡
-		
-		//id¿¡ ÇØ´çÇÏ´Â ÁÁ¾Æ¿ä ¼ıÀÚ ¹İÈ¯ ¸Ş¼Òµå
-		public int getLikecount(String id)
-		{
-			Connection conn=null;
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			String sql="";
-			int j=0;
-			
-			conn=db.getConnection();
-			sql="SELECT like_count FROM board WHERE id=?";
-			
-			try {
-				pstmt=conn.prepareStatement(sql);
-				pstmt.setString(1, id);
-				rs=pstmt.executeQuery();
-				
-				if(rs.next())
-				{
-					j=rs.getInt(1);//Ä®·³¸íÀ¸·Îµµ °¡´É
-				}
-				
-			} catch (SQLException e) {
-				System.out.println("ÁÁ¾Æ¿ä ¹İÈ¯ ¿À·ù: "+e.getMessage());
-				e.printStackTrace();
-			}finally {
-				db.dbClose(rs, pstmt, conn);
-			}
-			
-			
-			return j;
-		}//ÁÁ¾Æ¿ä ¼ıÀÚ¹İÈ¯ ³¡
-		
-		//id¿¡ ÇØ´çÇÏ´Â Á¶È¸¼ö 1Áõ°¡ ¸Ş¼Òµå
-		public void updateViewcount(String id)
-		{
-			Connection conn=null;
-			PreparedStatement pstmt=null;
-			String sql="UPDATE board SET view_count=view count+1 WHERE id=?";
-			
-			conn=db.getConnection();
-			
-			try {
-				pstmt=conn.prepareStatement(sql);
-				pstmt.setString(1, id);
-				pstmt.execute();
-				
-			} catch (SQLException e) {
-				System.out.println("Á¶È¸¼ö Áõ°¡¹® ¿À·ù: "+e.getMessage());
-				e.printStackTrace();
-				
-			}finally
-			{
-				db.dbClose(pstmt, conn);
-			}
-		}//Á¶È¸¼ö ³¡
+   DbConnect db = new DbConnect();
+   
+   // ìœ ì € í”„ë¡œí•„ì˜ ê²Œì‹œë¬¼ë§Œ 5ê°œì”© ê°€ì ¸ì˜¤ê¸°
+      public List<BoardDto> getPrfBoard(String thisId, String boardId) {
+         List<BoardDto> list = new ArrayList<BoardDto>();
+         Connection conn = null;
+         PreparedStatement pstmt = null;
+         ResultSet rs = null;
+         String sql = "SELECT Board.*, User.name, User.nickname, User.profile_img "
+               + "FROM Board JOIN User "
+               + "ON Board.user_id = ? "
+               + "WHERE Board.id < (SELECT IF(? = 'start', MAX(id)+1, ?) FROM Board) "
+               + "GROUP BY Board.id ORDER BY Board.id DESC LIMIT 5;";
+         
+         conn = db.getConnection();
+         try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, thisId);
+            pstmt.setString(2, boardId);
+            pstmt.setString(3, boardId);
+            rs = pstmt.executeQuery();
+            
+            while(rs.next()) {
+               BoardDto dto = new BoardDto();
+               dto.setUser_id(rs.getString("user_id"));
+               dto.setContent(rs.getString("content"));
+               dto.setComment_count(rs.getString("comment_count"));
+               dto.setLike_count(rs.getString("like_count"));
+               dto.setView_count(rs.getString("view_count"));
+               dto.setShare_count(rs.getString("share_count"));
+               dto.setCreated_at(rs.getTimestamp("created_at"));
+               dto.setUpdated_at(rs.getTimestamp("updated_at"));
+               
+               dto.setName(rs.getString("name"));
+               dto.setNickname(rs.getString("nickname"));
+               dto.setProfile_img(rs.getString("profile_img"));
+               
+               list.add(dto);
+            }
+         } catch (SQLException e) {
+            System.out.println("getAllDatas method error : " + e.getMessage());
+         } finally {
+            db.dbClose(rs, pstmt, conn);
+         }
+         return list;
+      }
+      
+      // ìœ ì €ì˜ ì „ì²´ ê²Œì‹œë¬¼ ê°¯ìˆ˜ êµ¬í•˜ê¸°
+      public String howMany(String thisId) {
+         String howMany = "";
+         Connection conn = null;
+         PreparedStatement pstmt = null;
+         ResultSet rs = null;
+         String sql = "SELECT count(*) FROM Board WHERE user_id = ?";
+         
+         conn = db.getConnection();
+         try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, thisId);
+            rs = pstmt.executeQuery();
+            
+            if(rs.next()) {
+               howMany = Integer.toString(rs.getInt(1));
+            }
+         } catch (SQLException e) {
+            System.out.println("getAllDatas method error : " + e.getMessage());
+         } finally {
+            db.dbClose(rs, pstmt, conn);
+         }
+         return howMany;
+      }
+   
+   
+   public List<BoardDto> getAllDatas2()
+   {
+      List<BoardDto> list2 = new Vector<BoardDto>();
+      Connection conn = null;
+      PreparedStatement pstmt=null;
+      ResultSet rs = null;
+      String sql ="SELECT * FROM Board ORDER BY created_at DESC";
+      
+      conn=db.getConnection();
+      
+      try {
+         pstmt=conn.prepareStatement(sql);
+         rs=pstmt.executeQuery();
+         while(rs.next())
+         {
+            BoardDto dto = new BoardDto();
+            dto.setId(rs.getString("id"));
+            dto.setUser_id(rs.getString("user_id"));
+            dto.setContent(rs.getString("content"));
+            dto.setComment_count(rs.getString("comment_count"));
+            dto.setLike_count(rs.getString("like_count"));
+            dto.setView_count(rs.getString("view_count"));
+            dto.setCreated_at(rs.getTimestamp("created_at"));
+            dto.setUpdated_at(rs.getTimestamp("updated_at"));
+            
+            list2.add(dto);
+            
+         }
+      } catch (SQLException e) {
+         // TODO Auto-generated catch block
+         System.out.println("list2 ì¶œë ¥ ì˜¤ë¥˜: "+e.getMessage());
+         
+      }
+      finally {
+         db.dbClose(rs, pstmt, conn);
+      }
+      
+      return list2;
+   }
+   //list2 ë
+   
+   
+   
+   // ê²Œì‹œê¸€ ì¶œë ¥
+      // ìµœì‹ ìˆœ, í˜ì´ì§€ì˜ ë§ˆì§€ë§‰ ê²Œì‹œë¬¼ë¡œë¶€í„° 5ê°œë§Œ! ë” ë¡œë“œ
+      // ë‚˜ ìì‹ ê³¼, ë‚´ íŒ”ë¡œì›Œë“¤ì˜ ê²Œì‹œë¬¼ë§Œ ë°›ì•„ì˜´
+      public List<BoardDto> getAllDatas(String user_id, String board_id) {
+         List<BoardDto> list = new ArrayList<BoardDto>();
+         Connection conn = null;
+         PreparedStatement pstmt = null;
+         ResultSet rs = null;
+         String sql = "SELECT Board.*, User.name, User.nickname, User.profile_img "
+               + "FROM Board JOIN (SELECT DISTINCT * FROM User "
+               + "WHERE User.id IN ((SELECT target_user_id FROM Follow WHERE add_user_id = ?),?)) User "
+               + "ON Board.user_id = User.id "
+               + "WHERE Board.id < (SELECT IF(? = 'start', MAX(id)+1, ?) FROM Board) "
+               + "ORDER BY Board.id DESC LIMIT 5";
+               // SELECT IF(ì¡°ê±´, ê°’1, ê°’2)
+               // : ì¡°ê±´ì´ ì°¸ì´ë©´ ê°’1, ê±°ì§“ì´ë©´ ê°’2ë¥¼ ë°˜í™˜
+         conn = db.getConnection();
+         try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, user_id);
+            pstmt.setString(2, user_id);
+            pstmt.setString(3, board_id);
+            pstmt.setString(4, board_id);
+            rs = pstmt.executeQuery();
+            
+            while(rs.next()) {
+               BoardDto dto = new BoardDto();
+               dto.setId(rs.getString("id"));
+               dto.setUser_id(rs.getString("user_id"));
+               dto.setContent(rs.getString("content"));
+               dto.setComment_count(rs.getString("comment_count"));
+               dto.setLike_count(rs.getString("like_count"));
+               dto.setView_count(rs.getString("view_count"));
+               dto.setShare_count(rs.getString("share_count"));
+               dto.setCreated_at(rs.getTimestamp("created_at"));
+               dto.setUpdated_at(rs.getTimestamp("updated_at"));
+               
+               dto.setName(rs.getString("name"));
+               dto.setNickname(rs.getString("nickname"));
+               dto.setProfile_img(rs.getString("profile_img"));
+               
+               list.add(dto);
+            }
+         } catch (SQLException e) {
+            System.out.println("getAllDatas method error : " + e.getMessage());
+         } finally {
+            db.dbClose(rs, pstmt, conn);
+         }
+         
+         return list;
+      } //ì¶œë ¥ ë
+   
+   
+   //ê²Œì‹œë¬¼ ì˜¬ë¦¬ê¸°(ì¶”ê°€)
+   
+      public void insertBoard(BoardDto dto)
+      {
+         Connection conn=db.getConnection();
+         PreparedStatement pstmt=null;
+         String sql="INSERT INTO Board (user_id, content, comment_count,"
+               + "like_count, view_count, share_count, created_at, updated_at) "
+               + "VALUES (?, ?, 0, 0, 0, 0, now(), now())";
+         
+         try {
+            pstmt = conn.prepareStatement(sql); //sql ê²€ì‚¬
+            
+            //ë°”ì¸ë”©
+            pstmt.setString(1, dto.getUser_id());
+            pstmt.setString(2, dto.getContent());
+         
+            
+            pstmt.execute(); //ì‹¤í–‰
+            
+            
+            
+         } catch (SQLException e) {
+            System.out.println("Insertë¬¸ ì˜¤ë¥˜: "+ e.getMessage());
+            e.printStackTrace();
+         } finally {
+            db.dbClose(pstmt, conn);
+         }
+         
+      } //insert ë
+      
+      
+      //ê²Œì‹œê¸€ ì‚­ì œ
+      public void deleteBoard(String id)
+      {
+         Connection conn = db.getConnection();
+         String sql = "DELETE FROM Board WHERE ID = ?";
+         PreparedStatement pstmt = null;
+         
+         try {
+            pstmt = conn.prepareStatement(sql);
+            
+            pstmt.setString(1, id);
+            pstmt.execute();
+            
+         } catch (SQLException e) {
+            System.out.println("DELETEë¬¸ ì˜¤ë¥˜: "+e.getMessage());
+            e.printStackTrace();
+         }
+      } //ì‚­ì œ ë
+      
+      //ìœ ì €idë¡œ í•´ë‹¹ ìœ ì €ì˜ ì •ë³´ ìˆ˜ì •í¼ì— dtoë¥¼ ë³´ë‚¼ ë©”ì†Œë“œ
+      public BoardDto getBoardData(String id)
+      {
+         BoardDto dto = new BoardDto();
+         
+         Connection conn = null;
+         PreparedStatement pstmt = null;
+         ResultSet rs = null;
+         String sql="SELECT * FROM Board WHERE ID = ?";
+         
+         conn=db.getConnection();
+         
+         try {
+            pstmt = conn.prepareStatement(sql);
+            
+            pstmt.setString(1, id);
+            rs=pstmt.executeQuery();
+            
+            if(rs.next())
+            {
+               dto.setId(rs.getString("id"));
+               dto.setUser_id(rs.getString("user_id"));
+               dto.setContent(rs.getString("content"));
+               dto.setComment_count(rs.getString("comment_count"));
+               dto.setLike_count(rs.getString("like_count"));
+               dto.setView_count(rs.getString("view_count"));
+               dto.setShare_count(rs.getString("share_count"));
+               dto.setCreated_at(rs.getTimestamp("created_at"));
+               dto.setUpdated_at(rs.getTimestamp("updated_at"));
+               
+               
+            }
+         } catch (SQLException e) {
+            System.out.println("getBoardData ì˜¤ë¥˜ : "+e.getMessage());
+            
+            e.printStackTrace();
+         }finally {
+            db.dbClose(rs, pstmt, conn);
+         }
+         
+         return dto;
+      }//getBoardData ë
+      
+      //ê²Œì‹œë¬¼ ìˆ˜ì •
+      //ë‚´ìš©(content), ìˆ˜ì •ë‚ ì§œ(updated_at) 
+      public void updateBoard(BoardDto dto) 
+      {
+         Connection conn = db.getConnection();
+         String sql = "UPDATE Board SET content=?, updated_at=now() WHERE ID = ?";
+         PreparedStatement pstmt = null;
+         
+         try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, dto.getContent());
+            pstmt.setString(2, dto.getId());
+            
+            pstmt.execute();
+         } catch (SQLException e) {
+            System.out.println("ê²Œì‹œë¬¼ ìˆ˜ì • ì˜¤ë¥˜ : "+ e.getMessage());
+            e.printStackTrace();
+            
+         }finally {
+            db.dbClose(pstmt, conn);
+         }
+      } //ìˆ˜ì • ë
+      
+      //ì¢‹ì•„ìš”
+      public void updateLikecount(String like_count,String id)
+      {
+         System.out.println(like_count);
+         System.out.println(id);
+         Connection conn=null;
+         PreparedStatement pstmt=null;
+         String sql="";
+         
+         conn=db.getConnection();
+         
+         if(like_count.equals("1"))
+         {
+            sql="UPDATE Board SET like_count = like_count+1 WHERE id = ?";
+         }
+         else
+            sql="UPDATE Board SET like_count = like_count-1 WHERE id = ?";
+         
+         try {
+            pstmt=conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            pstmt.execute();
+         } catch (SQLException e) {
+            System.out.println("ì¢‹ì•„ìš” ì˜¤ë¥˜: "+e.getMessage());
+            e.printStackTrace();
+            
+         }finally {
+            db.dbClose(pstmt, conn);
+         }
+      } //ì¢‹ì•„ìš” ë
+      
+      //idì— í•´ë‹¹í•˜ëŠ” ì¢‹ì•„ìš” ìˆ«ì ë°˜í™˜ ë©”ì†Œë“œ
+      public int getLikecount(String id)
+      {
+         Connection conn=null;
+         PreparedStatement pstmt = null;
+         ResultSet rs = null;
+         String sql="";
+         int j=0;
+         
+         conn=db.getConnection();
+         sql="SELECT like_count FROM Board WHERE id=?";
+         
+         try {
+            pstmt=conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            rs=pstmt.executeQuery();
+            
+            if(rs.next())
+            {
+               j=rs.getInt(1);//ì¹¼ëŸ¼ëª…ìœ¼ë¡œë„ ê°€ëŠ¥
+               
+            }
+            
+         } catch (SQLException e) {
+            System.out.println("ì¢‹ì•„ìš” ë°˜í™˜ ì˜¤ë¥˜: "+e.getMessage());
+            e.printStackTrace();
+         }finally {
+            db.dbClose(rs, pstmt, conn);
+         }
+         
+         
+         return j;
+      }//ì¢‹ì•„ìš” ìˆ«ìë°˜í™˜ ë
+      
+      //idì— í•´ë‹¹í•˜ëŠ” ì¡°íšŒìˆ˜ 1ì¦ê°€ ë©”ì†Œë“œ
+      public void updateViewcount(String id)
+      {
+         Connection conn=null;
+         PreparedStatement pstmt=null;
+         String sql="UPDATE Board SET view_count=view count+1 WHERE id=?";
+         
+         conn=db.getConnection();
+         
+         try {
+            pstmt=conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            pstmt.execute();
+            
+         } catch (SQLException e) {
+            System.out.println("ì¡°íšŒìˆ˜ ì¦ê°€ë¬¸ ì˜¤ë¥˜: "+e.getMessage());
+            e.printStackTrace();
+            
+         }finally
+         {
+            db.dbClose(pstmt, conn);
+         }
+      }//ì¡°íšŒìˆ˜ ë
+
+      
+   // board_idë¡œ ì‘ì„±ìì˜ user_id ì–»ê¸°
+         public String getUser_id(String board_id) {
+            String user_id = "";
+            Connection conn = db.getConnection();
+            String sql = "SELECT user_id FROM Board WHERE id = ?";
+            PreparedStatement pstmt = null;
+            ResultSet rs = null;
+            try {
+               pstmt = conn.prepareStatement(sql);
+            } catch (SQLException e) {
+               System.out.println("board_idë¡œ user_idì–»ê¸° : "+e.getMessage());
+            } finally {
+               db.dbClose(rs, pstmt, conn);
+            }
+            return user_id;   
+         }
+   
+   //ë³´ë“œidë¡œ í•´ë‹¹ ë³´ë“œ ë°ì´í„°ë¥¼ ê°€ì ¸ì˜¤ëŠ” ë©”ì†Œë“œ
+   public BoardDto getBoardDataWithUser(String board_id){
+      BoardDto dto = new BoardDto();
+
+      Connection conn = null;
+      PreparedStatement pstmt = null;
+      ResultSet rs = null;
+      String sql="SELECT Board.id, Board.content, Board.user_id, Board.comment_count, Board.like_count, Board.view_count, Board.share_count, Board.created_at, Board.updated_at, User.id usernum, User.name, User.nickname, User.profile_img FROM Board JOIN User ON Board.user_id = User.id WHERE Board.ID = ?";
+
+      conn=db.getConnection();
+
+      try {
+         pstmt = conn.prepareStatement(sql);
+
+         pstmt.setString(1, board_id);
+         rs=pstmt.executeQuery();
+
+         if(rs.next())
+         {
+            dto.setId(rs.getString("id"));
+            dto.setUser_id(rs.getString("user_id"));
+            dto.setContent(rs.getString("content"));
+            dto.setComment_count(rs.getString("comment_count"));
+            dto.setLike_count(rs.getString("like_count"));
+            dto.setView_count(rs.getString("view_count"));
+            dto.setShare_count(rs.getString("share_count"));
+            dto.setCreated_at(rs.getTimestamp("created_at"));
+            dto.setUpdated_at(rs.getTimestamp("updated_at"));
+            dto.setNickname(rs.getString("nickname"));
+            dto.setName(rs.getString("name"));
+            dto.setProfile_img(rs.getString("Profile_img"));
+         }
+      } catch (SQLException e) {
+         System.out.println("getBoardData ì˜¤ë¥˜ : "+e.getMessage());
+
+         e.printStackTrace();
+      }finally {
+         db.dbClose(rs, pstmt, conn);
+      }
+
+      return dto;
+   }
 }

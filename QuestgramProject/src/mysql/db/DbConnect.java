@@ -9,7 +9,7 @@ import java.sql.Statement;
 
 public class DbConnect {
 	String driver = "com.mysql.jdbc.Driver";
-	String url = "jdbc:mysql://localhost:3306/questgramdb";
+	String url = "jdbc:mysql://localhost:3306/questgramdb?useUnicode=true&characterEncoding=utf8";
 	
 	public DbConnect() {
 		// TODO Auto-generated constructor stub

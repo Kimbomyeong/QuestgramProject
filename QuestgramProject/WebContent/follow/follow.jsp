@@ -1,4 +1,3 @@
-<%@page import="data.dao.UserDao"%>
 <%@page import="data.dto.FollowDto"%>
 <%@page import="java.util.List"%>
 <%@page import="data.dao.FollowDao"%>
@@ -13,6 +12,14 @@
 	.ui-dialog {
 		border: 1px solid gray;
 	}
+	#btnFollow {
+		color: white;
+		font-size: 11pt; font-weight: bold;
+		background-color: #0067a3;
+		padding: 5px;
+		width: 100px; height: 25px;
+		border-radius: 10%;
+	}
 </style>
 
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
@@ -22,17 +29,19 @@
 $(function() {
 	
 	$("#btnFollow").on("click", function() {
-		var now = $(this).text();
-		var myid = 3;
-		var id = 1;
+		var now = $(this).attr("now");
+		var userid = $(this).attr("userid");
+		var thisid = 3;		// 임의값. 변경해야 함.
+		
 		$.ajax({
 			type: "post",
 			dataType: "xml",
-			data: {"myid":myid, "id":id, "now":now},
-			url: "followaction.jsp",
+			data: {"userid":userid, "thisid":thisid, "now":now},
+			url: "follow/followaction.jsp",
 			success: function(data) {
 				var result = $(data).find("now").text();
 				$("#btnFollow").text(result);
+				$("#btnFollow").attr("now", result);
 			}
 		});
 	});
@@ -78,18 +87,18 @@ $(function() {
 
 <body>
 <%
-	// id 에는 임의값 "1"을 넣었지만, 나중에는 보고 있던 유저 프로필의 id값을 넘겨줄 예정
-	// myid 에는 임의값 "3"을 넣었지만, 쿠키or세션으로 보는 '나'의 id값을 넘겨줄 예정
-	UserDao udao = new UserDao();
-	String id = "";
+	String thisid = "3";	// 임의값. 보고 있던 유저 프로필의 id값을 넘겨줄 예정.
+	//String thisid = request.getParameter("thisid"); 
 	String userid = (String)session.getAttribute("userid");
+
 	FollowDao fdao = new FollowDao();
+	String now = fdao.followNow(thisid, userid);
 	
 %>
-	<span id="btnFollow"
-		style="cursor: pointer; width: 20px; border: 1px solid pink;"><%=fdao.followNow(id, userid) %></span>
+	<span id="btnFollow" userid="<%=userid %>" now="<%=now %>"
+		style="cursor: pointer;"><%=now %></span>
 
-<%--	(안 먹혀서 위에 줬음)
+<%--	(안 먹혀서 위에 줬음..)
 	<script type="text/javascript">
 		$("#btnFollow").on("click", function() {
 			var now = $(this).text();
@@ -105,11 +114,11 @@ $(function() {
 		});
 	</script>
 --%>
-	
+	<hr>
 	<div class="fmodal" id="show-followers" title="팔로워">
 	<%
-		// 프로필의 팔로워들
-		List<FollowDto> werlist = fdao.getFollowers(id);
+		// 보던 프로필의 팔로워들
+		List<FollowDto> werlist = fdao.getFollowers(thisid);
 		for (FollowDto wer: werlist) {
 	%>		<span>
 				<a href="#">사진 url : <%=wer.getProfile_img() %></a>
@@ -121,8 +130,8 @@ $(function() {
 	
 	<div class="fmodal" id="show-followings" title="팔로잉">
 	<%
-		// 프로필의 팔로잉들
-		List<FollowDto> inglist = fdao.getFollowings(id);
+		// 보던 프로필의 팔로잉들
+		List<FollowDto> inglist = fdao.getFollowings(thisid);
 		for (FollowDto ing: inglist) {
 	%>		<span>
 				<a href="#">사진 url : <%=ing.getProfile_img() %></a>
@@ -136,5 +145,21 @@ $(function() {
 		<button type="button" id="followers">followers</button>
 		<button type="button" id="followings">followings</button>
 	</div>
+	
+	<hr>
+	<div id="recommend">
+		<h3>팔로워 추천</h3>
+	<%	
+		List<FollowDto> rlist = fdao.rcmmdFollow(userid);
+		for (FollowDto rcm: rlist) {
+	%>		<span>
+				<a href="#">사진 url : <%=rcm.getProfile_img() %></a>
+				<b><%=rcm.getNickname() %> (<%=rcm.getName() %>)</b>
+			</span><br>
+	<%	}
+	%>	
+
+	</div>
+	
 </body>
 </html>

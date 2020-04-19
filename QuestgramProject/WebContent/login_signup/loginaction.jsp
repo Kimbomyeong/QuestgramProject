@@ -9,6 +9,7 @@
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String id = new UserDao().getId(email);
+        String name = new UserDao().getName(email);
         
         // DB에서 아이디, 비밀번호 확인
         UserDao dao = new UserDao();
@@ -24,6 +25,7 @@
             session.setAttribute("loginok", "ok");
             session.setAttribute("nickname", nickname);
             session.setAttribute("userid", id);
+            session.setAttribute("username", name);
             session.setMaxInactiveInterval(60 * 60 * 4);
             msg = "../main.jsp";
         }
@@ -42,4 +44,5 @@
         System.out.println(session.getAttribute("loginok"));
         System.out.println(session.getAttribute("nickname"));
         System.out.println(session.getAttribute("userid"));
+        System.out.println(session.getAttribute("username"));
 %>

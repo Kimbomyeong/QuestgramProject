@@ -61,7 +61,7 @@ function init(){
 		document.form.submit();
 	}else{
 		<%-- opener.jusoCallBack("<%=roadFullAddr%>","<%=roadAddrPart1%>","<%=addrDetail%>","<%=roadAddrPart2%>","<%=engAddr%>","<%=jibunAddr%>","<%=zipNo%>", "<%=admCd%>", "<%=rnMgtSn%>", "<%=bdMgtSn%>", "<%=detBdNmList%>", "<%=bdNm%>", "<%=bdKdcd%>", "<%=siNm%>", "<%=sggNm%>", "<%=emdNm%>", "<%=liNm%>", "<%=rn%>", "<%=udrtYn%>", "<%=buldMnnm%>", "<%=buldSlno%>", "<%=mtYn%>", "<%=lnbrMnnm%>", "<%=lnbrSlno%>", "<%=emdNo%>"); --%>
-		opener.frm.addr.value = "<%=roadFullAddr%> <%=zipNo%>";
+		opener.frm.address.value = "(<%=zipNo%>) <%=roadFullAddr%>";
 		window.close();
 	}
 }

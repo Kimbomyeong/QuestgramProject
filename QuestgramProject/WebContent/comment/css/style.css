@@ -1,0 +1,22 @@
+@charset "utf-8";
+
+.content {
+  border: none;
+  font-size: 14px;
+  color: #262626;
+  resize: none;
+  height: 45pt;
+  padding-left: 20px;
+  line-height: 45pt;
+  float: left; 
+  width:550px;
+}
+.send{
+  margin-right:-20px;
+  border: none; 
+  cursor: pointer;
+  color:#c5e7fd;
+  background-color:#fff;
+  font-weight:bold;
+  font-size:15px;
+}

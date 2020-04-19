@@ -1,3 +1,4 @@
+<%@page import="data.dao.ImageDao"%>
 <%@page import="data.dto.UserDto"%>
 <%@page import="data.dao.UserDao"%>
 <%@page import="data.dto.BoardDto"%>
@@ -12,7 +13,28 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+// 미리보기
+function readURL(input){
+	if (input.files && input.files[0]) {
+        var reader = new FileReader();
 
+        reader.onload = function (e) {
+            $('#blah')
+                .attr('src', e.target.result);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+	
+}
+
+$(function(){
+	$("input.form-control").click(function(){
+		var val = $(this).val();
+	});	
+});
+</script>
 <style type="text/css">
 
 html{
@@ -74,9 +96,18 @@ border: solid;
 
 %>
 <body>
-<form action="Post_insert_Action.jsp" method="post">	
-<!-- hidden -->
-<input type="hidden" name="user_id" value="<%=user_id%>"><!-- 작성자,닉네임 -->
+
+<form action="Post_insert_Action.jsp" method="post" enctype="multipart/form-data">	
+	<!-- hidden -->
+	<input type="hidden" name="user_id" value="<%=user_id%>"><!-- 작성자,닉네임 -->
+	
+	<!-- hidden 임의로 1을넣었음  -->
+	<%
+	ImageDao dao = new ImageDao();
+	String board_id = dao.getBoard_id(user_id);
+	System.out.println("보드 아이디 : "+board_id);
+	%>
+	<input type="hidden" name="board_id" value="<%= board_id %>" />
 
 
 
@@ -86,6 +117,8 @@ border: solid;
 	<h2 style="overflow:inherit;">&nbsp;&nbsp; 새 게시물
 	<button type="submit" style="float: right; overflow: inherit; opacity: 0.4; border: none;
 				margin-right: 5%; width: 50px; height: 40px; color: blue; font-size: medium; cursor: pointer;">공 유</button>
+	
+				
 	</h2>
 	
 	
@@ -97,9 +130,10 @@ border: solid;
 	
 <!-- 올릴 사진 -->
 <div class="sajin">
-	<a href="#"><img src="./image/gom.jpg" alt="" style="float: left;
-	 width: 200px; height: 200px;"></a>
-	
+	<img id="blah" src="http://placehold.it/180" style="max-width: 250px; float: left; width: 150px;" />	
+<input type="file" name="imageUpload" id="imageUpload" style="float: left; verflow: inherit; 
+	opacity: 0.4; border: none; margin-right: 5%; width: 150px; height: 40px; color: blue; 
+	font-size: medium; cursor: pointer;" onchange="readURL(this);" multiple="multiple" class="form-control">	
 	<!-- 올릴 내용 -->
 	
 
