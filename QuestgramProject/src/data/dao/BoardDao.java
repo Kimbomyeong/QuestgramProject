@@ -447,4 +447,102 @@ public class BoardDao {
 
       return dto;
    }
+   
+   
+// 해시태그 생성
+   public void insertHashtag(String board_id, String hashtag) {
+ 	  Connection conn = null;
+ 	  PreparedStatement pstmt = null;
+ 	  String sql = "insert into Hashtag (board_id, hashtag, created_at) values (?, ?, now())";
+ 	  
+ 	  conn = db.getConnection();
+ 	  
+ 	  try {
+ 		  pstmt = conn.prepareStatement(sql);
+ 		  pstmt.setString(1, board_id);
+ 		  pstmt.setString(2, hashtag);
+ 		  
+ 		  pstmt.execute();
+ 	  } catch (SQLException e) {
+ 		  // TODO Auto-generated catch block
+ 		  e.printStackTrace();
+ 	  } finally {
+ 		  db.dbClose(pstmt, conn);
+ 	  }
+   }
+   
+   // 해시태그 출력
+   public List<String> hashtagList(String board_id) {
+ 	  List<String> list = new Vector<String>();
+ 	  Connection conn = null;
+ 	  PreparedStatement pstmt = null;
+ 	  ResultSet rs = null;
+ 	  String sql = "select hashtag from Hashtag where board_id = ?";
+ 	  
+ 	  conn = db.getConnection();
+ 	  
+ 	  try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, board_id);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				list.add(rs.getString("hashtag"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(rs, pstmt, conn);
+		}
+ 	  return list;
+   }
+   
+   // 해시태그 번호 값 반환
+   public String getHashId(String board_id, String hashtag) {
+ 	  String hashid = "";
+ 	  Connection conn = null;
+ 	  PreparedStatement pstmt = null;
+ 	  ResultSet rs = null;
+ 	  String sql = "select id from Hashtag where board_id = ? and hashtag = ?";
+ 	  
+ 	  conn = db.getConnection();
+ 	  
+ 	  try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, board_id);
+			pstmt.setString(2, hashtag);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				hashid = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(rs, pstmt, conn);
+		}
+ 	  
+ 	  return hashid;
+   }
+   
+   // 해시태그 삭제
+   public void deleteHash(String hashid) {
+ 	  Connection conn = null;
+ 	  PreparedStatement pstmt = null;
+ 	  String sql = "delete from Hashtag where id = ?";
+ 	  
+ 	  conn = db.getConnection();
+ 	  
+ 	  try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, hashid);
+			pstmt.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(pstmt, conn);
+		}
+   }
+   
 }

@@ -20,6 +20,8 @@ body{
 <link rel="shortcut icon" type="image/x-icon" href="images/questgram.ico">
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <link rel="stylesheet"	href="css/style.css">
+<link rel="stylesheet" href="css/jquery.tag-editor.css" />
+<link rel="stylesheet" href="css/questionform.css" />
 <script src="profile/usersearch.js"></script>
 
 <script src="js/script.js"></script>
@@ -45,6 +47,11 @@ body{
 		
 	});
 </script>
+<%
+			String userId = (String)session.getAttribute("userId");
+			UserDao udao = new UserDao();
+			UserDto udto = udao.getUser(userId);
+			%>
 </head>
 <body>
 	<header>
@@ -55,7 +62,7 @@ body{
 			<div id="search">
 				<span id="glass"><i class="xi-search si-x"></i></span>
 				<input type="text" placeholder="검색" id="searchForm">
-				<ul>
+				<ul >
 				</ul>
 			</div>
 			<nav>
@@ -63,7 +70,7 @@ body{
 					<li class="nav" id="home" width="35px" height="34px"><a href="main.jsp"><img src="images/home_b.PNG"/></a></li>
 					<li class="nav" id="compass" width="33px" height="34px"><a href="#"><img src="images/compass.PNG"/></a></li>
 					<li class="nav" id="mainheart" width="34px" height="34px"><a href="#"><img src="images/mainheart.PNG"/></a></li>
-					<li class="nav"><a href="#" class="info">
+					<li class="nav"><a href="./profile/usermain.jsp?id=<%= userId %>" class="info">
 						<img src="profile/images/tempimage.png" class="img-responsive img-circle" style="width: 25px; margin: -20px 5px 0px 0px;" />
 					</a></li>
 					<a href="login_signup/logoutaction.jsp">
@@ -75,14 +82,10 @@ body{
 	</header>
 	<wrapper>
 		<div id="maincontent">
-			<%
-			String userId = (String)session.getAttribute("userId");
-			UserDao udao = new UserDao();
-			UserDto udto = udao.getUser(userId);
-			%>
+			
 			<div id="side">
 				<div id="profile">
-					<a href="#"><div class="info" style="width:50px; margin-top: 3px; height:50px; float:left;"> 
+					<a href="./profile/usermain.jsp?id=<%= userId %>"> <div class="info" style="width:50px; margin-top: 3px; height:50px; float:left;"> 
 						<img src="profile/images/tempimage.png" name="profileimg" style="border-radius:100%; width: 50px; height:50px;" />
 					</div></a>
 					<a href="#"><span class="id"><%= udto.getNickname() %></span></a>

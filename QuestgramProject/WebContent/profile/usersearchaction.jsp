@@ -8,6 +8,8 @@
 
 	UserDao udao = new UserDao();
 	List<UserDto> list = udao.searchUser(keyword);
+	
+	String context = request.getContextPath();
 %>
 <list>
 	<%
@@ -17,6 +19,7 @@
 		<username><%= dto.getName() %> </username>
 		<usernickname><%= dto.getNickname() %></usernickname>
 		<userprofileimg><%= dto.getProfile_img() %></userprofileimg>
+		<context><%= context %></context>
 	</data>
 	<% 	
 	}

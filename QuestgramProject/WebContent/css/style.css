@@ -69,13 +69,37 @@ header{
 	
 #search ul {
 	position: absolute;
-	border: 1px solid #dbdbdb;
-	border-radius: 3px;
-	width: 215px;
-	height: 30px;
 	margin-top: 21px;
 	left: 70%;
 }
+
+#search ul li{
+	cursor: pointer;
+	width: 215px;
+	height: 50px;
+	font-size: 18px;
+	vertical-align: middle;
+	background-color:#fafafa;
+	border:1px solid #dbdbdb;
+	border-radius:3px;
+	line-height: 50px;
+}
+
+#search ul li:hover {
+	background-color: #5AAEFF;
+}
+
+#search ul li div {
+	width: 50px;
+	align-items: center;
+}
+
+#search ul li img {
+	width: 30px;
+	border-radius: 100px;
+	float: left;
+}
+
 nav{
 	float:right;
 }
@@ -369,4 +393,6 @@ wrapper{
 	max-width:240px;
 	}
 }
+
+
 

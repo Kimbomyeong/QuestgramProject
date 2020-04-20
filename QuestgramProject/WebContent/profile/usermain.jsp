@@ -513,7 +513,7 @@ textarea:focus{outline:none;}
 	<header>
 		<div id="box">
 			<div id="logo" >
-				<a href="main.jsp"><img src="../images/logo.png"></a>
+				<a href="../main.jsp"><img src="../images/logo.png"></a>
 			</div>
 			<div id="search">
 				<span id="glass"><i class="xi-search si-x"></i></span>

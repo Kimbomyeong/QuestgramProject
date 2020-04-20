@@ -68,7 +68,7 @@ $(function(){
          success:function(data){
             //alert(data.joayo);
 
-            $(this).parent().parent().next().find(".cnt").html(data.joayo);
+            $(sthis).parent().parent().next().find(".cnt").html(data.joayo);
          }
       }); //ajax 끝
       
@@ -125,7 +125,7 @@ $(function(){
 
 
 //모달 열기
- $(document).on("click","#trigger",function(){
+ $(document).on("click",".trigger",function(){
     $("#myModal").modal();
  });
 // 모달 끝
@@ -338,6 +338,51 @@ $(function(){
            
           </ul>
           
+
+<div class="super">
+						<table class="formtable">
+							<tr>
+								<th style="width: 50px;">#</th>
+								<td style="width: 600px;"><input class="hashtag" name="hashtag"
+									style="width: 450px;" type="text"
+									onkeyup="if(event.keyCode == 13) {var board_id = <%=boardId %>; var hashtag = value; 
+										console.log($(this).val());
+										$.ajax({
+											type: 'post',
+											dataType: 'html',
+											data: {'board_id': board_id, 'hashtag': hashtag},
+											url: '../QuestProject/hashtag/hashtagaction.jsp',
+											success: function(data) {
+												// 데이터 존재 x
+											}
+										});										
+										location.reload();
+										$(this).val('');
+										$(this).focus();
+									}"
+									/>
+									<br>
+									<span>
+									<%
+										List<String> hashlist = bdb.hashtagList(boardId);
+										String hashtag = "";
+										String hashid = "";
+										String str = "";
+										for(String hash:hashlist){
+											hashtag = "#" + hash + " ";
+											hashid = bdb.getHashId(boardId, hash);
+											str = "<a href=\"#\">" + hashtag + "</a>" + "<a href=\"hashtag/deletehashtag.jsp?hashid=" + hashid + "\">x</a>";
+											%>
+												<%=str %>
+											<%
+										}
+										%>
+									</span>
+									</td>
+								
+							</tr>
+						</table>
+					</div>
           
           
           <!-- 좋아요 텍스트 -->
@@ -500,7 +545,7 @@ $(function(){
 	              
 	                   var image = "";
 	                   // 이미지가 있는 글에만 이미지 추가 
-	                   if(imageList.length > 1){
+	                   if(imageList.length >= 1){
 	                	   
 	                   
 	                	   
