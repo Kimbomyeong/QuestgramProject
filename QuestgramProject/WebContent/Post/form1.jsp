@@ -30,12 +30,6 @@
 <link rel="stylesheet" href="Post/css/style.css">
 <script type="text/javascript">
 $(function(){
-	$(".form2").click(function(){
-		var b=$("#board_id").val();
-		var u=$("#user_id").val();
-		$("#maincontent").html("<embed class='embed' src='Post/form2.jsp?board_id="+b+"&user_id="+u+"'/>");
-		$(".embed").css("width","1050px").css("height","2300px").css("margin-left","-25px").css("margin-top","-50px");
-	});
 	//하트 클릭
 	$('.heart').on({
 	   'click':function(){
@@ -213,7 +207,7 @@ $(document).ready(function(){
            CommentDao cdao=new CommentDao();
            List<CommentDto> list=cdao.getComment(board_id);
            if(list.size()>2){ %>
-           <a class="form2" style="cursor:pointer; margin-left:15px; color:#8e8e8e;">댓글 <%=list.size()%>개 모두 보기</a>
+           <a class="form2" href="Post/form2.jsp?board_id=<%=board_id%>&user_id=<%=user_id%>" style="cursor:pointer; margin-left:15px; color:#8e8e8e;">댓글 <%=list.size()%>개 모두 보기</a>
            <div class="ex-comment">
 	           <% for(int j=0;j<2;j++){
 	          	 CommentDto cdto=list.get(j);%>
@@ -223,7 +217,7 @@ $(document).ready(function(){
 						<p style="display:inline; width: 350px; background-color: white; border: none;"><%=cdto.getContent()%></p>
 					</div>
 					<div style="float:right;">
-						<a href="#" class="joayo" onclick="change()"><img src="images/mainheart.PNG"width="19px" height="19px" style="opacity: 0.6;"/></a>
+						<a href="#" class="joayo"><img src="images/mainheart.PNG"width="19px" height="19px" style="opacity: 0.6;"/></a>
 					</div>
         		</div>
         	<%}
@@ -233,6 +227,7 @@ $(document).ready(function(){
 				 <jsp:param value="<%=user_id%>" name="user_id" />      
 		       </jsp:include>
 	       <%} %>
+	       </div>
 	       </div>
 	       
 	       <!-- 몇분전에 올린 게시글인지 표시 -->
@@ -248,10 +243,7 @@ $(document).ready(function(){
     </div> <!-- wrap -->
   </div> <!-- post-container -->
   <!-- post-container -->
-  	<span id="hide">
-  	<span id="board_id"><%=board_id%></span>
-  	<span id="user_id"><%=user_id%></span>
-  	</span>
+  
  <%}%>
   
       <!-- 다른 앱에 게시, 링크 복사, 공유하기, 보관, 수정, 삭제, 댓글기능 해제 -->

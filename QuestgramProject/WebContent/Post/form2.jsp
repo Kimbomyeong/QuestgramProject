@@ -1,3 +1,5 @@
+<%@page import="data.dto.BoardDto"%>
+<%@page import="data.dao.BoardDao"%>
 <%@page import="java.util.List"%>
 <%@page import="data.dto.CommentDto"%>
 <%@page import="data.dao.CommentDao"%>
@@ -43,12 +45,12 @@ a {
 	cursor: pointer;
 	color: black;
 }
-
-ul {
-	float: left;
-	margin-left: -40px;
-	width: 435px;
-}
+  ul{
+  	float: left;
+  margin-left: -40px;
+  width: 435px;
+  
+  }
 
 li {
 	list-style-type: none;
@@ -99,11 +101,36 @@ $(function(){
 <%
 String board_id=request.getParameter("board_id");
 String user_id=request.getParameter("user_id");
-
-CommentDao cdao=new CommentDao();
+BoardDao bdao=new BoardDao();
+BoardDto bdto=bdao.getBoardDataWithUser(board_id); 
+System.out.println("보드아이디"+board_id);
+String root=request.getContextPath();
+System.out.println(root);
 %>
 <body>
-
+<header>
+		<div id="box">
+			<div id="logo" >
+		
+				<a href="../main.jsp"><img src="../images/logo.png"></a>
+			</div>
+			<div id="search">
+				<span id="glass"><i class="xi-search si-x"></i></span>
+				<input type="text" placeholder="검색">
+			</div>
+			<nav>
+				<ul class="form2nav">
+					<li class="nav" id="home" width="35px" height="34px"><a href="../main.jsp"><img src="../images/home_b.PNG"/></a></li>
+					<li class="nav" id="compass" width="33px" height="34px"><a href="#"><img src="../images/compass.PNG"/></a></li>
+					<li class="nav" id="mainheart" width="34px" height="34px"><a href="#"><img src="../images/mainheart.PNG"/></a></li>
+					<li class="nav"><a href="#"><div class="info"></div></a></li>
+					<li class="nav" id="logout"><a href="../login_signup/logoutaction.jsp">
+          			<span class="glyphicon glyphicon-off" style="font-size: 25px; margin-left: 20px; "></span>
+        			</a></li>		
+				</ul>
+			</nav>
+		</div>
+	</header>
 
 	<!-- 게시글, -->
 	<div class="post-container">
@@ -122,65 +149,40 @@ CommentDao cdao=new CommentDao();
 					<div class="head"
 						style="overflow: inherit; position: relative; top: 40%">
 
-						<a href="#" style="float: left; font-weight: bold;">작성자</a> <span
+						<a href="#" style="float: left; font-weight: bold;"><%=bdto.getNickname() %></a> <span
 							style="float: left; font-weight: bold; padding: 0 3px;">·</span>
-						<a href="#" style="float: left; font-weight: bold;">팔로우</a> <a
+						<a href="#" style="float: left; font-weight: bold;">팔로잉</a> <a
 							href="#"><img src="./image/more.PNG" width="26px"
 							height="18px" class="trigger" name="trigger" class="trigger"
 							alt="" style="float: right; margin-right: 10px;"></a>
-
-						<div class="modal fade" class="myModal" role="dialog">
-							<div class="modal-dialog">
-
-								<!-- Modal content-->
-								<div class="modal-content">
-
-									<div class="modal-body" style="padding: 40px 50px;">
-										<form role="form">
-											<button type="button" class="btn btn-default btn-block">게시물로
-												이동</button>
-											<button type="button" class="btn btn-default btn-block">링크
-												복사</button>
-											<button type="button" class="btn btn-default btn-block">공유하기</button>
-											<button type="button" class="btn btn-default btn-block">보관</button>
-											<button type="button" class="btn btn-default btn-block">수정</button>
-											<button type="button" class="btn btn-default btn-block">삭제</button>
-											<button type="button" class="btn btn-default btn-block">댓글
-												기능 해제</button>
-										</form>
-									</div>
-								</div>
-
-							</div>
-						</div>
-						<!-- modal 끝 -->
-
 					</div>
 					<!-- head -->
-
-
-
 				</div>
 				<!-- 뉴스피드 헤드 끝 -->
 				<div class="text-container" align="right"
-					style="border-top: 1px solid #efefef;">
+					style="border-top: 1px solid #efefef; overflow-y:scroll;">
 					<!-- 프로필사진 -->
-					<a href="#" class="profile"> <img src="./image/0.gif" alt=""
-						align=""></a> <a href="#"
-						style="display: block; overflow: inherit; position: relative; top: 11%; float: left; font-weight: bold">작성자</a>
-					<span style="float: left; margin: -10px 50px 10px 60px;"> 
+					<a href="#" class="profile"	style="display: inline; overflow: hidden;"> <img src="./image/0.gif" alt=""
+						align=""></a> 
+					<a href="#"	style="display: inline; overflow: hidden; position: relative; top: 11%; float: left; font-weight: bold"><%=bdto.getNickname() %></a>
+					<span style="word-break: break-word; float: left; width: 150px; height: auto; margin: -10px 50px 10px 60px;"> <%=bdto.getContent() %>
 					</span>
 					<time style="float: left; opacity: 0.7; clear: both; margin: 10px 20px 20px 60px; font-size: 10px;">n일전</time>
 					<!--댓글 리스트 출력-->
-					<%List<CommentDto> cdto=cdao.getComment(board_id);
+					<%
+					CommentDao cdao=new CommentDao();
+					List<CommentDto> cdto=cdao.getComment(board_id);
 					for(CommentDto dto:cdto){%>
-						<span><img src="<%=dto.getProfile_img()%>"/></span>
-						<span><%=dto.getId()%></span>
-						<span><%=dto.getContent()%></span>
-						<span style="float:right; width:15px; height:15px;"><img src="images/mainheart.PNG"/></span>
-						<div>
-						<span><%=dto.getCreated_at() %></span>&nbsp;&nbsp;&nbsp;
-						<span><a style="font-weight:bold; color:#717171;">답글 달기</a></span>
+						<br>
+						<div class="commentincontent" style="">
+							<span style="float:left;"><img src="<%=dto.getProfile_img()%>"/></span>
+							<b style="float:left;"><%=dto.getId()%></b>
+							<span style="float:left;"><%=dto.getContent()%></span>
+							<span><img style="float:right; width:15px; height:15px;" src="../images/mainheart.PNG"/></span>
+							<div style="float:left;">
+							<span><%=dto.getCreated_at() %></span>&nbsp;&nbsp;&nbsp;
+							<span><a style="font-weight:bold; color:#717171;">답글 달기</a></span>
+							</div>
 						</div>
 						<%} %>
 				</div>
@@ -222,12 +224,23 @@ CommentDao cdao=new CommentDao();
 				<!-- 댓글 -->
 				<div class="ans" align="right"
 					style="border-top: 1px solid #efefef;">
-					<!-- 댓글을 달 텍스트에리어 -->
-					<textarea name="comment" class="comment" placeholder="댓글 달기..."></textarea>
-
+					<form action="../comment/commentadd2.jsp" method="post" style="height:45pt;">
+					<%
+					CommentDao cdb = new CommentDao();
+					%>
+					<input type="hidden" name="user_id" value="<%=user_id%>"> 	
+					<input type="hidden" name="board_id" value="<%=board_id%>"> 
+					<input type="hidden" name="parents_comments_id" value="<%=1%>"> 
+		       		<table>
+					<tr>
+					<td><!-- 댓글을 달 텍스트에리어 -->
+					<textarea  name="content" style="resize: none;"class="comment" placeholder="댓글 달기..."></textarea>
+					</td>
 					<!-- 댓글 게시하기 버튼 -->
-
-					<button type="submit" class="gesi">게시</button>
+					<td>
+					<button type="submit" class="gesi">게시</button></td></tr>
+					</table>
+					</form>
 				</div>
 
 
@@ -252,11 +265,10 @@ CommentDao cdao=new CommentDao();
 
 
 	<main>
-
 		<div class="container">
 
 			<div class="gallery">
-
+			<%for (int j=0; j<12; j++) {%>
 				<div class="gallery-item" tabindex="0">
 
 					<img src="./image/0.gif" class="gallery-image" alt="">
@@ -264,257 +276,16 @@ CommentDao cdao=new CommentDao();
 					<div class="gallery-item-info">
 
 						<ul>
-							<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
-								class="fas fa-heart" aria-hidden="true"></i> 56</li>
-							<li class="gallery-item-comments"><span
-								class="visually-hidden">Comments:</span><i
-								class="fas fa-comment" aria-hidden="true"></i> 2</li>
+							<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span>
+							<i class="fas fa-heart xi-heart" aria-hidden="true"></i> 56</li>
+							<li class="gallery-item-comments"><span	class="visually-hidden">Comments:</span>
+								<i class="fas fa-comment xi-speech" aria-hidden="true"></i> 2</li>
 						</ul>
 
 					</div>
 
 				</div>
-
-				<div class="gallery-item" tabindex="0">
-
-					<img src="./image/0.gif" class="gallery-image" alt="">
-
-					<div class="gallery-item-info">
-
-						<ul>
-							<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
-								class="fas fa-heart" aria-hidden="true"></i> 89</li>
-							<li class="gallery-item-comments"><span
-								class="visually-hidden">Comments:</span><i
-								class="fas fa-comment" aria-hidden="true"></i> 5</li>
-						</ul>
-
-					</div>
-
-				</div>
-
-				<div class="gallery-item" tabindex="0">
-
-					<img src="./image/0.gif" class="gallery-image" alt="">
-
-					<div class="gallery-item-type">
-
-						<span class="visually-hidden">Gallery</span><i
-							class="fas fa-clone" aria-hidden="true"></i>
-
-					</div>
-
-					<div class="gallery-item-info">
-
-						<ul>
-							<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
-								class="fas fa-heart" aria-hidden="true"></i> 42</li>
-							<li class="gallery-item-comments"><span
-								class="visually-hidden">Comments:</span><i
-								class="fas fa-comment" aria-hidden="true"></i> 1</li>
-						</ul>
-
-					</div>
-
-				</div>
-
-				<div class="gallery-item" tabindex="0">
-
-					<img src="./image/0.gif" class="gallery-image" alt="">
-
-					<div class="gallery-item-type">
-
-						<span class="visually-hidden">Video</span><i class="fas fa-video"
-							aria-hidden="true"></i>
-
-					</div>
-
-					<div class="gallery-item-info">
-
-						<ul>
-							<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
-								class="fas fa-heart" aria-hidden="true"></i> 38</li>
-							<li class="gallery-item-comments"><span
-								class="visually-hidden">Comments:</span><i
-								class="fas fa-comment" aria-hidden="true"></i> 0</li>
-						</ul>
-
-					</div>
-
-				</div>
-
-				<div class="gallery-item" tabindex="0">
-
-					<img src="./image/0.gif" class="gallery-image" alt="">
-
-					<div class="gallery-item-type">
-
-						<span class="visually-hidden">Gallery</span><i
-							class="fas fa-clone" aria-hidden="true"></i>
-
-					</div>
-
-					<div class="gallery-item-info">
-
-						<ul>
-							<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
-								class="fas fa-heart" aria-hidden="true"></i> 47</li>
-							<li class="gallery-item-comments"><span
-								class="visually-hidden">Comments:</span><i
-								class="fas fa-comment" aria-hidden="true"></i> 1</li>
-						</ul>
-
-					</div>
-
-				</div>
-
-				<div class="gallery-item" tabindex="0">
-
-					<img src="./image/0.gif" class="gallery-image" alt="">
-
-					<div class="gallery-item-info">
-
-						<ul>
-							<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
-								class="fas fa-heart" aria-hidden="true"></i> 94</li>
-							<li class="gallery-item-comments"><span
-								class="visually-hidden">Comments:</span><i
-								class="fas fa-comment" aria-hidden="true"></i> 3</li>
-						</ul>
-
-					</div>
-
-				</div>
-
-				<div class="gallery-item" tabindex="0">
-
-					<img src="./image/0.gif" class="gallery-image" alt="">
-
-					<div class="gallery-item-type">
-
-						<span class="visually-hidden">Gallery</span><i
-							class="fas fa-clone" aria-hidden="true"></i>
-
-					</div>
-
-					<div class="gallery-item-info">
-
-						<ul>
-							<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
-								class="fas fa-heart" aria-hidden="true"></i> 52</li>
-							<li class="gallery-item-comments"><span
-								class="visually-hidden">Comments:</span><i
-								class="fas fa-comment" aria-hidden="true"></i> 4</li>
-						</ul>
-
-					</div>
-
-				</div>
-
-				<div class="gallery-item" tabindex="0">
-
-					<img src="./image/0.gif" class="gallery-image" alt="">
-
-					<div class="gallery-item-info">
-
-						<ul>
-							<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
-								class="fas fa-heart" aria-hidden="true"></i> 66</li>
-							<li class="gallery-item-comments"><span
-								class="visually-hidden">Comments:</span><i
-								class="fas fa-comment" aria-hidden="true"></i> 2</li>
-						</ul>
-
-					</div>
-
-				</div>
-
-				<div class="gallery-item" tabindex="0">
-
-					<img src="./image/0.gif" class="gallery-image" alt="">
-
-					<div class="gallery-item-type">
-
-						<span class="visually-hidden">Gallery</span><i
-							class="fas fa-clone" aria-hidden="true"></i>
-
-					</div>
-
-					<div class="gallery-item-info">
-
-						<ul>
-							<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
-								class="fas fa-heart" aria-hidden="true"></i> 45</li>
-							<li class="gallery-item-comments"><span
-								class="visually-hidden">Comments:</span><i
-								class="fas fa-comment" aria-hidden="true"></i> 0</li>
-						</ul>
-
-					</div>
-
-				</div>
-
-				<div class="gallery-item" tabindex="0">
-
-					<img src="./image/0.gif" class="gallery-image" alt="">
-
-					<div class="gallery-item-info">
-
-						<ul>
-							<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
-								class="fas fa-heart" aria-hidden="true"></i> 34</li>
-							<li class="gallery-item-comments"><span
-								class="visually-hidden">Comments:</span><i
-								class="fas fa-comment" aria-hidden="true"></i> 1</li>
-						</ul>
-
-					</div>
-
-				</div>
-
-				<div class="gallery-item" tabindex="0">
-
-					<img src="./image/0.gif" class="gallery-image" alt="">
-
-					<div class="gallery-item-info">
-
-						<ul>
-							<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
-								class="fas fa-heart" aria-hidden="true"></i> 41</li>
-							<li class="gallery-item-comments"><span
-								class="visually-hidden">Comments:</span><i
-								class="fas fa-comment" aria-hidden="true"></i> 0</li>
-						</ul>
-
-					</div>
-
-				</div>
-
-				<div class="gallery-item" tabindex="0">
-
-					<img src="./image/0.gif" class="gallery-image" alt="">
-
-					<div class="gallery-item-type">
-
-						<span class="visually-hidden">Video</span><i class="fas fa-video"
-							aria-hidden="true"></i>
-
-					</div>
-
-					<div class="gallery-item-info">
-
-						<ul>
-							<li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
-								class="fas fa-heart" aria-hidden="true"></i> 30</li>
-							<li class="gallery-item-comments"><span
-								class="visually-hidden">Comments:</span><i
-								class="fas fa-comment" aria-hidden="true"></i> 2</li>
-						</ul>
-
-					</div>
-
-				</div>
-
+			<%} %>
 			</div>
 			<!-- End of gallery -->
 
@@ -524,9 +295,32 @@ CommentDao cdao=new CommentDao();
 		<!-- End of container -->
 
 	</main>
+	<!--modal-->
+	<div class="modal fade" class="myModal" role="dialog">
+							<div class="modal-dialog">
 
-<% System.out.println(board_id); %>
-<% System.out.println(user_id); %>
+								<!-- Modal content-->
+								<div class="modal-content">
+
+									<div class="modal-body" style="padding: 40px 50px;">
+										<form role="form">
+											<button type="button" class="btn btn-default btn-block">게시물로
+												이동</button>
+											<button type="button" class="btn btn-default btn-block">링크
+												복사</button>
+											<button type="button" class="btn btn-default btn-block">공유하기</button>
+											<button type="button" class="btn btn-default btn-block">보관</button>
+											<button type="button" class="btn btn-default btn-block">수정</button>
+											<button type="button" class="btn btn-default btn-block">삭제</button>
+											<button type="button" class="btn btn-default btn-block">댓글
+												기능 해제</button>
+										</form>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- modal 끝 -->
 
 </body>
 </html>

@@ -104,6 +104,10 @@ border: solid;
 	
 
 </div>
+<div>
+	<textarea name="hashtag" placeholder="해시태그 입력..." 
+  style="float: left;width:500px; height: 194px; border: none;"></textarea>
+</div>
 
 <div> 
 

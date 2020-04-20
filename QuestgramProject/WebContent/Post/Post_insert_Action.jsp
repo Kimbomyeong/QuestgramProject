@@ -1,3 +1,5 @@
+<%@page import="data.dto.BoardDto"%>
+<%@page import="data.dto.FollowDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
@@ -15,12 +17,17 @@
 <jsp:setProperty property="content" name="dto"/>
 <%
 	//insert 메소드 호출
+	BoardDto bdto = new BoardDto();
 	
 	String id = request.getParameter("user_id");
 	String content = request.getParameter("content");
+	String hashtag = request.getParameter("hashtag");
+	
 	
 	dao.insertBoard(dto);
-    System.out.println(id); 
+	String board_id = dto.getId();
+	System.out.println("hashtag :" + hashtag + "board_id :" + board_id);
+    
     response.sendRedirect("../main.jsp");	
 
 

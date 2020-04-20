@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>USER MAIN</title>
+<title>MAIN COPY</title>
 <style>
 body{
 	background-color:#fafafa;
@@ -117,81 +117,12 @@ body{
 		
 	}
 	
-	.typeof-view {
-		box-sizing: border-box;
-		-webkit-box-align: center;
-		align-items: center;
-		border-top: 1px solid rgba(var(--b38,219,219,219),1);
-		color: #8e8e8e;
-		display: flex;
-		-webkit-box-orient: horizontal;
-		-webkit-box-direction: normal;
-		flex-direction: row;
-		font-size: 15px;
-		font-weight: 600;
-		-webkit-box-pack: center;
-		justify-content: center;
-		letter-spacing: 1px;
-		text-align: center;
-	}
-	.select-view {
-		margin-right: 60px;
-		cursor: pointer;
-		display: flex;
-		-webkit-box-orient: horizontal;
-		-webkit-box-direction: normal;
-		flex-direction: row;
-		height: 52px;
-		-webkit-box-pack: center;
-		justify-content: center;
-		text-transform: uppercase;
-		margin-right: 60px;
-	}
-	.grid-view {
-		-webkit-box-align: stretch;
-		align-items: stretch;
-		border: 0 solid #000;
-		box-sizing: border-box;
-		display: flex;
-		-webkit-box-orient: vertical;
-		-webkit-box-direction: normal;
-		flex-direction: column;
-		position: relative;
-		vertical-align: baseline;
-		-webkit-box-align: stretch;
-	}
-	.container {
-		-webkit-box-orient: horizontal;
-		-webkit-box-direction: normal;
-		flex-direction: row;
-		margin-bottom: 30px;
-	}
-	.gallery {
-		justify-content: center;
-		box-align: stretch;
-		width: auto;
-	}
-	.gallery-item img {
-		-webkit-box-flex: 1;
-		flex: 1 0 0%;
-		/* display: block; */
-		position: relative;
-		width: 200px;
-	}
-	.gallery-item img {
-		width: 200px;
-		height: 200px;
-	}
-	
 * {
   position: relative;
   padding: 0;
   margin: 0;
-  
+  box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  -webkit-box-sizing: border-box;
-  	-moz-box-sizing: border-box;
-  		box-sizing: border-box;
 }
 
 a {
@@ -410,28 +341,6 @@ textarea:focus{outline:none;}
 			$("#mainheart img").attr("src","../images/mainheart_b.PNG");
 		});
 		
-		//하트 클릭
-		$('.heart').on({
-		   'click':function(){
-				var src=($(this).attr('src')==='Post/image/heart.png')
-				 ?'Post/image/red.png'
-			     :'Post/image/heart.png';
-				$(this).attr('src',src);
-			}
-		
-		}); // 하트 클릭 
-		
-		//북마크 클릭
-		$('.bookmark').on({
-		   'click':function(){
-				var src=($(this).attr('src')==='Post/image/bookmark.png')
-				 ?'Post/image/black.png'
-			     :'Post/image/bookmark.png';
-				$(this).attr('src',src);
-			}
-		
-		}); // 북마크 클릭 
-		
 		
 //		*************여기서부터 팔로우 영역***************
 		
@@ -440,7 +349,7 @@ textarea:focus{outline:none;}
 			var now = $(this).attr("now");
 			var userId = $(this).attr("userId");
 			var thisId = $(this).attr("thisId");		// 임의값. 변경해야 함.
-			
+			console.log(now, userId, thisId);
 			$.ajax({
 				type: "post",
 				dataType: "xml",
@@ -489,15 +398,6 @@ textarea:focus{outline:none;}
 			$("#show-followings").dialog("open");
 		});
 //		*************팔로우 영역 끝***************	
-
-
-//		*************게시글 영역 시작***************
-		
-		// 시작 시 뉴스피드 타입 게시글 hide
-		$(document).ready(function() {
-			$(".timeline-view").hide();
-		});
-		// 뉴스피드/그리드 게시글 선택 토글
 		
 	});
 </script>
@@ -552,11 +452,6 @@ textarea:focus{outline:none;}
 			</nav>
 		</div>
 	</header>
-	
-	
-	
-	
-	
 	<!-- ***********본문 페이지 영역 시작************ -->
 	
 	<wrapper>
@@ -610,220 +505,181 @@ textarea:focus{outline:none;}
 			</div>
 		</section>
 	</div>
-<!-- *************프로필 영역 끝*************** -->
+<!-- *************프로필 영역 끝*************** -->					
 
-
-
-
-
-<!-- *****게시글 타입 선택***** -->
-	<div class="typeof-view">
-		<a class="select-view" view="grid-view">
-			<img src="../images/gridtype.jpg" style="width: 100px; height: 40px;">
-		</a>
-		<a class="select-view" view="timeline-view">
-			<img src="../images/newstype.jpg" style="width: 100px; height: 40px;">
-		</a>
-		<script type="text/javascript">
-			$(".select-view").on("click", function() {
-				var view = $(this).attr("view");
-				if (view == "timeline-view") {
-					$(".timeline-view").show();
-					$(".grid-view").hide();
-				} else {
-					$(".timeline-view").hide()
-					$(".grid-view").show();
-				}
-			});
-		</script>
-	</div>						
-
-<div class="timeline-view">
 <%				
 
 //				***********************게시글 영역 시작*************************
 				for (BoardDto bdto: blist) {
 					String bnow = fdao.followNow(bdto.getUser_id(), userId);
 %>		
-
-
-<!-- *****POST 형식 게시글 출력***** -->		
+		
 		<!-- 게시글, -->
-  <div class="post-container">
-  <input type="hidden" name="postnum" class="postnum" value="<%=bdto.getId()%>">
-    <div class="wrap">
+		  <div class="post-container">
+		  <input type="hidden" name="postnum" class="postnum" value="<%=bdto.getId()%>">
+		    <div class="wrap">
 
-      <div class="post">
-      
-      
-       
-       
-         <!-- 뉴스피드 헤드 -->
-        <div class="post-header" >
-          <!-- 프로필사진 -->
-          <a href="#" class="profile"><img src="../Post/image/0.gif" alt=""></a>
-          
-          <!-- 작성자 이름  -->
-          <a href="#"><%=bdto.getUser_id() %></a>
-          
-             
-          <!-- 메뉴 더 보기 출력 -->
-            <a href="#"><img src="Post/image/more.PNG" width="32px" height="20px" id="trigger" 
-              name="trigger" class="trigger" alt="" style="float: right;"></a>
-            <!-- 다른 앱에 게시, 링크 복사, 공유하기, 보관, 수정, 삭제, 댓글기능 해제 -->
-              <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog" style="z-index:9999;">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-      
-        <div class="modal-body" style="padding:40px 50px;">
-          <form role="form">
-               <button type="button" class="btn btn-default btn-block">게시물로 이동</button>
-                <button type="button" class="btn btn-default btn-block">링크 복사</button>
-                <button type="button" class="btn btn-default btn-block">공유하기</button>
-                <button type="button" class="btn btn-default btn-block">보관</button>
-                <button type="button" class="btn btn-default btn-block"
-                      onclick="location.href='Post/Post_Update_Form.jsp'">수정</button>
-                <button type="button" class="btn btn-default btn-block"
-                      onclick="location.href='Post/Post_Delete_Action.jsp?id=<%=bdto.getId()%>'">삭제</button>
-                <button type="button" class="btn btn-default btn-block">댓글 기능 해제</button>
-          </form>
-        </div>
-     </div>
-      
-    </div>
-  </div> <!-- modal 끝 -->
-
-     
-            
-            
-            
-            
-        </div> <!-- 뉴스피드 헤더 끝 -->
-        
-        <!-- 업로드한 사진 -->
-        <div class="sajin">
-          <img src="Post/image/ramgi.jpeg" alt="">
-        </div>
-        
-        <!-- ------------------------------------------- -->
-        
-        
-        <!-- 사진 아래부분 -->
-        <div class="post-footer">
-           <!-- 버튼 컨테이너 -->
-          <ul class="btn-container">
-             <!-- 페어런트로 버튼컨테이너까지 호출한 뒤 next span으로 좋아요를 찾자 -->
-             <!-- 좋아요 버튼 -->
-            <li><img src="../Post/image/heart.png" board_id="<%=bdto.getId()%>"
-            width="42px" height="32px"  class="heart" name="heart" alt="" ></li>
-            
-            <!-- 댓글달기 버튼 -->
-            <li><img src="../Post/image/balloon.png" width="41px" height="32px" alt=""></li>
-            
-            <!-- 공유하기 버튼 -->
-            <li><img src="../Post/image/plane.png" width="42px" height="32px" alt=""></li>
-            
-             <!-- 북마크 버튼 -->
-             <img src="../Post/image/bookmark.png" width="43px" height="32px" class="bookmark" name="bookmark" alt="" style="float: right;">
-           
-          </ul>
-          
-          
-          
-          <!-- 좋아요 텍스트 -->
-          <div class="like-container">
-            <a href="#">좋아요&nbsp;<span class="cnt"><%=bdto.getLike_count()%></span>개</a>
-          </div>
-          
-          <!-- 내용 -->
-          <div class="text-container">
-            <a href="#"><%=bdto.getUser_id() %></a>
-              
-              <span class="contents" id="contents">
-              <h5><%=bdto.getContent() %></h5>
-              </span>
-              <span>
-             
-               <button type="button" id="more" style="border: none; background-color:#fff; color:#8e8e8e;">...더 보기</button>
-              </span>   
-          </div>
-          
-          <!-- 몇분전에 올린 게시글인지 표시 -->
-          <div class="time-container"><%=bdto.getCreated_at() %></div>
-          
-          
-          <!-- 댓글 -->
-          <div class="comment-container">
-             <!-- 댓글을 달 텍스트에리어 -->
-            <textarea name="comment" placeholder="댓글 달기..." style="float: left; width:535px;"></textarea>
-            
-            <!-- 댓글 게시하기 버튼 -->
-            
-            <button type="submit" class="gesi">게시</button>
-            <!-- <a href="#"><img src="Post/image/gesi.png" alt=""></a> -->
-          </div>
-        </div> <!-- post footer -->
-      </div> <!-- post -->
-
-    </div> <!-- wrap -->
-  </div> <!-- post-container -->
-  <!-- post-container -->
- 
-  
- <%}%>
-   </div>
-  
-   <div class="tail">
-   </div>
-   
-  <button type="button" id="list_more">더 보기</button> 
-  <!-- 더보기 버튼 구현 생략 -->
-  
-           
-<!-- *****POST 형식 게시글 출력 끝***** -->     
-
-
-
-
-	
-<!-- ************* 사진 타임라인 시작************** -->	
-<main class="grid-view">
-	<div class="container">
-		<div class="gallery">
-<%
-	for (BoardDto bdto: blist) {
-%>		
-			<div class="gallery-item" tabindex="0">
-				<img src="../images/iz_one.jpg" class="gallery-image" alt="">
-				<div class="gallery-item-info">
-					<ul>
-						<li class="gallery-item-likes">
-							<span class="visually-hidden">Likes: </span>
-							<i class="fas fa-heart" aria-hidden="true"></i><%=bdto.getLike_count() %>
-						</li>
-						<li class="gallery-item-comments">
-							<span class="visually-hidden">Comments: </span>
-							<i class="fas fa-comment" aria-hidden="true"></i><%=bdto.getComment_count() %>
-						</li>
-					</ul>
-				</div>
-			</div>
+		      <div class="post">
+		      
+		       <!--뉴스피드 헤드-->
+		        <div class="post-header" style="border: solid; border-width: 1px;"align="right" >
+		        
+		         <!-- 프로필사진 -->
+		          <a href="#" class="profile">
+		          <img src="./image/0.gif" alt="" align=""></a>
+		          
+		          <!-- 작성자 이름,팔로우,더보기 버튼까지  -->
+		          <div class="head" style="; overflow : inherit; position: relative; top:40%">
+		        
+		          <a href="#" style="float: left;">작성자 <%=bdto.getNickname() %>(<%=bdto.getName() %>)</a>
+			
+			<!-- 팔로우 여기에 작성하겠습니다 BY 김령주 -->
+					<span id="btnFollow" style="cursor: pointer;"
+						userId="<%=userId %>" thisId="<%=bdto.getUser_id() %>" now="<%=bnow%>"><%=bnow %></span>
+			<!-- 여기까지 팔로우 작업이었습니다 BY 김령주 -->
+		          
+		          <a href="#"><img src="./image/more.PNG" width="60px" height="30px" id="trigger" 
+		              name="trigger" class="trigger" alt="" style="float: right;"></a>
+		              
+		              <div class="modal fade" id="myModal" role="dialog">
+		    <div class="modal-dialog">
+		    
+		      <!-- Modal content-->
+		      <div class="modal-content">
+		      
+		        <div class="modal-body" style="padding:40px 50px;">
+		          <form role="form">
+		      			<button type="button" class="btn btn-default btn-block">게시물로 이동</button>
+		                <button type="button" class="btn btn-default btn-block">링크 복사</button>
+		                <button type="button" class="btn btn-default btn-block">공유하기</button>
+		                <button type="button" class="btn btn-default btn-block">보관</button>
+		                <button type="button" class="btn btn-default btn-block">수정</button>
+		                <button type="button" class="btn btn-default btn-block">삭제</button>
+		                <button type="button" class="btn btn-default btn-block">댓글 기능 해제</button>
+		          </form>
+		        </div>
+		     </div>
+		      
+		    </div>
+		  </div> <!-- modal 끝 -->
+		              
+		          </div><!-- head -->
+		          
+		        
+		        
+		        </div> <!-- 뉴스피드 헤드 끝 -->
+		         <div class="text-container" align="right" style="border-width: 1px;">
+		             <!-- 프로필사진 -->
+		          <a href="#" class="profile">
+		          <img src="./image/0.gif" alt="" align=""></a>
+		             <a href="#" style="display: block; overflow: inherit; position: relative; top: 11%; float: left;" >작성자: <%=bdto.getNickname() %></a>
+		                <span style="float: left; margin: 0px 20px 20px 20px;">
+		                   4월9일 목요일 오후4시 스토리보드 발표.
+			              4월21일 화요일 중간프로젝트 발표.<br>
+			              <%=bdto.getContent() %>
+		                </span>
+		                <time style="float: left; opacity: 0.7; clear: both; margin: 10px 20px 20px 20px; font-size: 10px;">n일전 / 작성일: <%=bdto.getCreated_at() %></time>
+		             
+		             
+		         
+		          </div> 
+		          	<!-- 버튼 컨테이너 -->
+		         <div class="btn1" align="right" style="border-width: 1px;">
+		           <ul class="btn-container">
+		          	
+		          	<!-- 좋아요 버튼 -->
+		            <li><a href="#"><img src="./image/heart.png" width="42px" height="32px" id="heart" class="heart" name="heart" alt="" ></li>
+		            
+		            <!-- 댓글달기 버튼 -->
+		            <li><a href="#"><img src="./image/balloon.png" width="41px" height="32px" alt=""></a></li>
+		            
+		            <!-- 공유하기 버튼 -->
+		            <li><a href="#"><img src="./image/plane.png" width="42px" height="32px" alt=""></a></li>
+		            
+		             <!-- 북마크 버튼 -->
+		             <a href="#"><img src="./image/bookmark.png" width="43px" height="32px" id="bookmark" class="bookmark" name="bookmark" alt="" style="float: right;"></a>
+		           
+		          </ul>
+		          	<!-- 좋아요 버튼 -->
+		              <div class="like-container" style="overflow: inherit; float: left; margin-left: 10px;">
+		            <a href="#">좋아요 <%=bdto.getLike_count() %>개</a>
+		              </div>
+		              <time style="float: left; opacity: 0.7; clear: both; margin-left: 10px;">n일 전</time>
+		              
+		         </div> <!-- 버튼 컨테이너 -->
+		         
+		         <!-- 댓글 -->
+		         <div class="ans" align="right" style="border-width: 1px;">
+		         	<!-- 댓글을 달 텍스트에리어 -->
+		            <textarea name="comment" placeholder="댓글 달기..." 
+		            style="float: left;width:350px; margin-top: 16px; margin-bottom: 3px; height: 25px; border: none;"></textarea>
+		            
+		            <!-- 댓글 게시하기 버튼 -->
+		            
+		            <button type="submit" class="gesi" 
+		            style="border: none; color: #0095f6; cursor: pointer; opacity: 0.7; margin-top: 16px; height: 25px; margin-right: 3px;">
+		                게시</button>
+		         </div>
+		          
+		     
+		        
+		         <div class="sajin" style="width:598px;
+			           height: 598px;">
+		          <img src="./image/ramgi.jpeg" align="left" class="sajinimg" style="width:598px; 
+			            height: 598px;" alt="">
+			            
+			            
+		        </div>
+		        </div>
+		        </div>
+		        </div>
+		
+		
 <%	}
-%>
-</div>
-		<!-- End of gallery -->
-	</div>
-	<!-- End of container -->
-
-</main>
-
-<!-- ************* 사진 타임라인 끝************** -->
-
-      
-           
+	
+		// 전체출력 후 "더보기" 버튼 구현
+		
+%>		<button type="button" id="more" style="font-weight: bold;">더보기</button>
+		<script type="text/javascript">
+			$("#more").on("click", function() {
+				var size = $("#boardsize").val();
+				var last = $(".postnum").eq(size-1).val();
+				var userId = $("#userId").val();
+				console.log(size, last, userId);
+				
+				$.ajax({
+					type: "post",
+					dataType: "xml",
+					data: {"userId": userId, "boardId": last},
+					url: "../Post/form2copyaction.jsp",
+					success: function(data) {
+						var str = "";	// html 출력문에 넣을 텍스트
+						
+						$(data).find("data").each(function(i) {
+							var dt = $(this);		// 한 줄짜리 데이터
+							var boardId = dt.find("boardId").text();
+							var userId = dt.find("userId").text();
+							var content = dt.find("content").text();
+							var commentCount = dt.find("commentCount").text();
+							var likeCount = dt.find("likeCount").text();
+							var viewCount = dt.find("viewCount").text();
+							var shareCount = dt.find("shareCount").text();
+							var createdAt = dt.find("createdAt").text();
+							var name = dt.find("name").text();
+							var nickname = dt.find("nickname").text();
+							var profileImg = dt.find("profileImg").text();
+							var originName = dt.find("originName").text();
+							var saveName = dt.find("saveName").text();
+							
+							str += "<h2>여기에 게시글의 태그를 그대로 써 주시면 됩니다</h2>";
+							str += "예시: <br>";
+							str += "boardId : " + boardId;
+						});
+						// $(영역).html(str);
+					}
+				});
+			});
+		</script>
 <%		
 //	**********게시글 영역 끝***********
 %>
@@ -840,11 +696,6 @@ textarea:focus{outline:none;}
 				onclick="location.href='login_signup/logoutaction.jsp'">로그아웃</button>
 		</div>
 	</wrapper>
-	
-	
-	
-
-
 <!-- ***********본문 페이지 영역 끝************ -->	
 	<bottom>
 	

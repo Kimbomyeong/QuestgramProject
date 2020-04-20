@@ -14,6 +14,18 @@ import mysql.db.DbConnect;
 public class BoardDao {
    DbConnect db = new DbConnect();
    
+	/*
+	 * // insert AND select test method public void hashtag(String board_id, String
+	 * hashtag) { String sql = "INSERT hashtag VALUES(null, ?, ?, now());";
+	 * Connection conn = null; PreparedStatement pstmt = null; conn =
+	 * db.getConnection(); try { pstmt = conn.prepareStatement(sql);
+	 * 
+	 * } catch (SQLException e) { System.out.println("getAllDatas method error : " +
+	 * e.getMessage()); } finally { db.dbClose(pstmt, conn); }
+	 * 
+	 * }
+	 */
+   
    // 유저 프로필의 게시물만 5개씩 가져오기
       public List<BoardDto> getPrfBoard(String thisId, String boardId) {
          List<BoardDto> list = new ArrayList<BoardDto>();
@@ -388,4 +400,65 @@ public class BoardDao {
             db.dbClose(pstmt, conn);
          }
       }//조회수 끝
+
+      
+   // board_id로 작성자의 user_id 얻기
+         public String getUser_id(String board_id) {
+            String user_id = "";
+            Connection conn = db.getConnection();
+            String sql = "SELECT user_id FROM Board WHERE id = ?";
+            PreparedStatement pstmt = null;
+            ResultSet rs = null;
+            try {
+               pstmt = conn.prepareStatement(sql);
+            } catch (SQLException e) {
+               System.out.println("board_id로 user_id얻기 : "+e.getMessage());
+            } finally {
+               db.dbClose(rs, pstmt, conn);
+            }
+            return user_id;   
+         }
+   
+   //보드id로 해당 보드 데이터를 가져오는 메소드
+   public BoardDto getBoardDataWithUser(String board_id){
+      BoardDto dto = new BoardDto();
+
+      Connection conn = null;
+      PreparedStatement pstmt = null;
+      ResultSet rs = null;
+      String sql="SELECT Board.id, Board.content, Board.user_id, Board.comment_count, Board.like_count, Board.view_count, Board.share_count, Board.created_at, Board.updated_at, User.id usernum, User.name, User.nickname, User.profile_img FROM Board JOIN User ON Board.user_id = User.id WHERE Board.ID = ?";
+
+      conn=db.getConnection();
+
+      try {
+         pstmt = conn.prepareStatement(sql);
+
+         pstmt.setString(1, board_id);
+         rs=pstmt.executeQuery();
+
+         if(rs.next())
+         {
+            dto.setId(rs.getString("id"));
+            dto.setUser_id(rs.getString("user_id"));
+            dto.setContent(rs.getString("content"));
+            dto.setComment_count(rs.getString("comment_count"));
+            dto.setLike_count(rs.getString("like_count"));
+            dto.setView_count(rs.getString("view_count"));
+            dto.setShare_count(rs.getString("share_count"));
+            dto.setCreated_at(rs.getTimestamp("created_at"));
+            dto.setUpdated_at(rs.getTimestamp("updated_at"));
+            dto.setNickname(rs.getString("nickname"));
+            dto.setName(rs.getString("name"));
+            dto.setProfile_img(rs.getString("Profile_img"));
+         }
+      } catch (SQLException e) {
+         System.out.println("getBoardData 오류 : "+e.getMessage());
+
+         e.printStackTrace();
+      }finally {
+         db.dbClose(rs, pstmt, conn);
+      }
+
+      return dto;
+   }
 }
