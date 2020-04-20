@@ -25,13 +25,13 @@ public class ImageDao {
 			
 			pstmt.execute();
 		} catch (SQLException e) {
-			System.out.println("사진 INSERT 문 오류 "+e.getMessage());
+			System.out.println("���� INSERT �� ���� "+e.getMessage());
 		} finally {
 			db.dbClose(pstmt, conn);
 		}
 	}
 	
-	// 글에 사진이 몇개있는지 숫자로 반환하는 메소드 
+	// �ۿ� ������ ��ִ��� ���ڷ� ��ȯ�ϴ� �޼ҵ� 
 	public int getImageCount(String board_id) {
 		int imageCount = 0;
 		Connection conn = db.getConnection();
@@ -47,7 +47,7 @@ public class ImageDao {
 			}
 			
 		} catch (SQLException e) {
-			System.out.println("게시글에 사진 갯수 반환하는 메소드 : "+e.getMessage());
+			System.out.println("�Խñۿ� ���� ���� ��ȯ�ϴ� �޼ҵ� : "+e.getMessage());
 		} finally {
 			db.dbClose(rs, pstmt, conn);
 		}
@@ -55,7 +55,7 @@ public class ImageDao {
 		return imageCount;
 	}
 	
-	// board_id에 해당하는 사진의 저장이름 반환하기 
+	// board_id�� �ش��ϴ� ������ �����̸� ��ȯ�ϱ� 
 	public List<String> boardIdImage(String board_id) {
 		List<String> list = new ArrayList<String>();
 		Connection conn = db.getConnection();
@@ -71,14 +71,14 @@ public class ImageDao {
 				list.add(rs.getString("save_name"));
 			}			
 		} catch (SQLException e) {
-			System.out.println("board_id에 해당하는 저장이름 반환 : "+e.getMessage());
+			System.out.println("board_id�� �ش��ϴ� �����̸� ��ȯ : "+e.getMessage());
 		} finally {
 			db.dbClose(rs, pstmt, conn);
 		}
 		return list;
 	}
 
-	// board_id를 가져오는 메소드
+	// board_id�� �������� �޼ҵ�
 	public String getBoard_id(String id) {
 		String board_id = "";
 		Connection conn = db.getConnection();
@@ -97,11 +97,36 @@ public class ImageDao {
 				board_id = rs.getString("Board.id");
 			}
 		} catch (SQLException e) {
-			System.out.println("board_id 반환 메소드 오류 : "+e.getMessage());
+			System.out.println("board_id ��ȯ �޼ҵ� ���� : "+e.getMessage());
 		} finally {
 			db.dbClose(rs, pstmt, conn);
 		}
 		return board_id;
+	}
+	
+	// user_id가 올린 이미지들의 저장된이름 모두 얻기 메소드
+	public List<String> getAllImages(String user_id){
+		List<String> list = new ArrayList<String>();
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT save_name FROM Image JOIN Board ON Image.board_id = Board.id WHERE Board.user_id = ?";
+		try {
+			pstmt= conn.prepareStatement(sql);
+			pstmt.setString(1, user_id);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				list.add(rs.getString("save_name"));
+			}
+		} catch (SQLException e) {
+			System.out.println("유저아이디가 업로드한 모든 사진 getAllImages error : "+e.getMessage());
+			e.printStackTrace();
+		} finally {
+			db.dbClose(rs, pstmt, conn);
+		}
+		
+		return list;
 	}
 	
 }

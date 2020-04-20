@@ -24,7 +24,8 @@ $(function(){
 					console.log("profile : "+profile_img);   // 
 					console.log("hosturl : "+hosturl);   //    localhost:9000
 					console.log("context : "+context);  //     /QuestProject
-					$("#search ul").append("<a href='profile/usermain.jsp?id='"+userid+"'><li>"
+					console.log("user:" + userid);
+					$("#search ul").append("<a href='profile/usermain.jsp?thisId="+userid+"'><li>"
 							+"<div><img src='http://"+hosturl+context+"/profile/images/"+profile_img+"' /></div>"	
 							+"&nbsp;&nbsp&nbsp"+nickname+"</li></a>").append("<br>");
 					

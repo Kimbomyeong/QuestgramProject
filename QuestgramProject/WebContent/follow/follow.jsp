@@ -121,6 +121,7 @@ $(function() {
 		List<FollowDto> werlist = fdao.getFollowers(thisid);
 		for (FollowDto wer: werlist) {
 	%>		<span>
+				<input type="hidden" user_id="<%=wer.getId()%>">
 				<a href="#">사진 url : <%=wer.getProfile_img() %></a>
 				<b><%=wer.getNickname() %> (<%=wer.getName() %>)</b>
 			</span><hr>
@@ -134,6 +135,7 @@ $(function() {
 		List<FollowDto> inglist = fdao.getFollowings(thisid);
 		for (FollowDto ing: inglist) {
 	%>		<span>
+				<input type="hidden" user_id="<%=ing.getId()%>">
 				<a href="#">사진 url : <%=ing.getProfile_img() %></a>
 				<b><%=ing.getNickname() %> (<%=ing.getName() %>)</b>
 			</span><hr>
@@ -147,6 +149,7 @@ $(function() {
 	</div>
 	
 	<hr>
+	
 	<div id="recommend">
 		<h3>팔로워 추천</h3>
 	<%	

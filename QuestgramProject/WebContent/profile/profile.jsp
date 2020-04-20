@@ -88,7 +88,7 @@
 	<header>
 		<div id="box">
 			<div id="logo">
-				<a href="main.jsp"><img src="../images/logo.png"></a>
+				<a href="../main.jsp"><img src="../images/logo.png"></a>
 			</div>
 			<div id="search">
 				<span id="glass"><i class="xi-search si-x"></i></span> <input
@@ -96,17 +96,17 @@
 			</div>
 			<nav>
 				<ul>
-					<li class="nav" id="home" width="35px" height="34px"><a
-						href="../main.jsp"><img src="../images/home_b.PNG" /></a></li>
-					<li class="nav" id="compass" width="33px" height="34px"><a
-						href="#"><img src="../images/compass.PNG" /></a></li>
-					<li class="nav" id="mainheart" width="34px" height="34px"><a
-						href="#"><img src="../images/mainheart.PNG" /></a></li>
-					<li class="nav"><a href="#"><div class="info"></div></a></li>
-					<a href="../login_signup/logoutaction.jsp"> 
-					<span class="glyphicon glyphicon-off"
-						style="font-size: 25px; margin-left: 20px; color: black;"></span>
-					</a>
+					<li class="nav" id="home" width="35px" height="34px">
+						<a href="../main.jsp"><img src="../images/home_b.PNG"/></a></li>
+					<li class="nav" id="compass" width="33px" height="34px">
+						<a href="#"><img src="../images/compass.PNG"/></a></li>
+					<li class="nav" id="mainheart" width="34px" height="34px"><a href="#"><img src="../images/mainheart.PNG"/></a></li>
+					<li class="nav"><a href="usermain.jsp?thisId=<%=id %>"><div class="info"></div></a></li>
+					<a href="../login_signup/logoutaction.jsp">
+          				<span class="glyphicon glyphicon-off" 
+          					style="font-size: 25px; margin-left: 20px; "></span>
+        			</a>
+        			
 				</ul>
 			</nav>
 		</div>

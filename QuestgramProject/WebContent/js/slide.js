@@ -1,5 +1,3 @@
-
-
 //current position
 //var pos = 0;
 //number of slides
@@ -184,8 +182,3 @@ function pagination(boardId, pos){
     //$('.pagination-wrap ul li').removeClass('active');
     //$('.pagination-wrap ul li:eq('+pos+')').addClass('active');
 }
-
-
-
-
-

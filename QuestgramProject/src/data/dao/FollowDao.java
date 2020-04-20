@@ -14,12 +14,12 @@ import mysql.db.DbConnect;
 public class FollowDao {
 	DbConnect db = new DbConnect();
 	
-	// ï¿½È·Î¿ï¿½
-	// (ï¿½ßºï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½. ï¿½È·Î¿ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ È°ï¿½ï¿½È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½.)
+	// ÆÈ·Î¿ì
+	// (Áßº¹Á¦°Å Á¶°Ç ±¸Çö ¾È ÇÔ. ÆÈ·Î¿ì ¹öÆ°ÀÌ È°¼ºÈ­µÇÁö ¾ÊÀ¸¹Ç·Î.)
 	public void insertFollow(String add, String target) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String sql = "INSERT Follow VALUES(null, ?, ?, now())";
+		String sql = "INSERT follow VALUES(null, ?, ?, now())";
 		
 		conn = db.getConnection();
 		try {
@@ -30,18 +30,18 @@ public class FollowDao {
 			pstmt.execute();
 			
 		} catch (SQLException e) {
-			System.out.println("insert Follow error : " + e.getMessage());
+			System.out.println("insert follow error : " + e.getMessage());
 		} finally {
 			db.dbClose(pstmt, conn);
 		}
 		
 	}
 	
-	// ï¿½È·Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// ÆÈ·Î¿ì »èÁ¦
 	public void deleteFollow(String add, String target) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String sql = "DELETE FROM Follow WHERE add_user_id = ? AND target_user_id = ?";
+		String sql = "DELETE FROM follow WHERE add_user_id = ? AND target_user_id = ?";
 		
 		conn = db.getConnection();
 		try {
@@ -59,17 +59,17 @@ public class FollowDao {
 		
 	}
 	
-	// ï¿½È·Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// ÆÈ·Î¿ö ¸®½ºÆ® °¡Á®¿À±â
 	public List<FollowDto> getFollowers(String id) {
 		List<FollowDto> list = new ArrayList<FollowDto>();
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT User.id, User.name, User.nickname, User.profile_img, Follow.created_at "
-				+ "FROM User "
-				+ "JOIN (SELECT add_user_id, created_at FROM Follow WHERE target_user_id = ?) Follow "
-				+ "ON User.id = Follow.add_user_id;";
+		String sql = "SELECT user.id, user.name, user.nickname, user.profile_img, follow.created_at "
+				+ "FROM user "
+				+ "JOIN (SELECT add_user_id, created_at FROM follow WHERE target_user_id = ?) follow "
+				+ "ON user.id = follow.add_user_id;";
 		
 		conn = db.getConnection();
 		try {
@@ -83,8 +83,8 @@ public class FollowDao {
 				dto.setName(rs.getString("name"));
 				dto.setNickname(rs.getString("nickname"));
 				dto.setProfile_img(rs.getString("profile_img"));
-				// follow, user ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ ï¿½ï¿½ Ä®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ created_atï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Æ¼ï¿½
-				// followï¿½ï¿½ dto ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ followed_at ï¿½ï¿½ï¿½ï¿½ ï¿½Û¼ï¿½ï¿½ï¿½
+				// follow, user Å×ÀÌºí µÑ ´Ù Ä®·³¸íÀÌ created_atÀ¸·Î °°¾Æ¼­
+				// followÀÇ dto º¯¼ö¸íÀ» followed_at À¸·Î ÀÛ¼ºÇÔ
 				dto.setFollowed_at(rs.getTimestamp("created_at"));
 				
 				list.add(dto);
@@ -97,17 +97,17 @@ public class FollowDao {
 		return list;
 	}
 	
-	// ï¿½È·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// ÆÈ·ÎÀ× ¸®½ºÆ® °¡Á®¿À±â
 	public List<FollowDto> getFollowings(String id) {
 		List<FollowDto> list = new ArrayList<FollowDto>();
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT User.id, User.name, User.nickname, User.profile_img, Follow.created_at "
-				+ "FROM User "
-				+ "JOIN (SELECT target_user_id, created_at FROM Follow WHERE add_user_id = ?) Follow "
-				+ "ON User.id = Follow.target_user_id;";
+		String sql = "SELECT user.id, user.name, user.nickname, user.profile_img, follow.created_at "
+				+ "FROM user "
+				+ "JOIN (SELECT target_user_id, created_at FROM follow WHERE add_user_id = ?) follow "
+				+ "ON user.id = follow.target_user_id;";
 		
 		conn = db.getConnection();
 		try {
@@ -121,8 +121,8 @@ public class FollowDao {
 				dto.setName(rs.getString("name"));
 				dto.setNickname(rs.getString("nickname"));
 				dto.setProfile_img(rs.getString("profile_img"));
-				// follow, user ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ ï¿½ï¿½ Ä®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ created_atï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Æ¼ï¿½
-				// followï¿½ï¿½ dto ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ followed_at ï¿½ï¿½ï¿½ï¿½ ï¿½Û¼ï¿½ï¿½ï¿½
+				// follow, user Å×ÀÌºí µÑ ´Ù Ä®·³¸íÀÌ created_atÀ¸·Î °°¾Æ¼­
+				// followÀÇ dto º¯¼ö¸íÀ» followed_at À¸·Î ÀÛ¼ºÇÔ
 				dto.setFollowed_at(rs.getTimestamp("created_at"));
 				
 				list.add(dto);
@@ -135,13 +135,13 @@ public class FollowDao {
 		return list;
 	}
 	
-	// ï¿½ï¿½ï¿½ï¿½ ï¿½È·Î¿ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ ï¿½Ë¾Æºï¿½ï¿½ï¿½
+	// ³»°¡ ÆÈ·Î¿ìÇÏ´ÂÁö ¾Ë¾Æº¸±â
 	public String followNow(String id, String userid) {
 		String now = "follow";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT count(*) FROM Follow "
+		String sql = "SELECT count(*) FROM follow "
 				+ "WHERE add_user_id = ? AND target_user_id = ?";
 		
 		conn = db.getConnection();
@@ -165,20 +165,20 @@ public class FollowDao {
 		return now;
 	}
 	
-	// ï¿½È·Î¿ï¿½ ï¿½ï¿½Ãµ
-	// ï¿½ï¿½ Ä£ï¿½ï¿½ï¿½ï¿½ ï¿½È·Î¿ï¿½ï¿½Ï´ï¿½ Ä£ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½Ö±Ù¿ï¿½ ï¿½È·Î¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// ÆÈ·Î¿ì ÃßÃµ
+	// ³» Ä£±¸°¡ ÆÈ·Î¿ìÇÏ´Â Ä£±¸µé ¸®½ºÆ®¸¦, °¡Àå ÃÖ±Ù¿¡ ÆÈ·Î¿ìÇÑ ¼ø¼­´ë·Î
 	public List<FollowDto> rcmmdFollow(String userid) {
 		List<FollowDto> list = new ArrayList<FollowDto>();
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT User.id, User.name, User.nickname, User.profile_img, Follow.created_at "
-				+ "FROM User JOIN (SELECT * FROM Follow "
-				+ "WHERE add_user_id IN (SELECT target_user_id FROM Follow "
-				+ "WHERE add_user_id = ?)) Follow "
-				+ "ON User.id = Follow.target_user_id "
-				+ "ORDER BY Follow.created_at DESC;";
+		String sql = "SELECT user.id, user.name, user.nickname, user.profile_img, follow.created_at "
+				+ "FROM user JOIN (SELECT * FROM follow "
+				+ "WHERE add_user_id IN (SELECT target_user_id FROM follow "
+				+ "WHERE add_user_id = ?)) follow "
+				+ "ON user.id = follow.target_user_id "
+				+ "ORDER BY follow.created_at DESC;";
 		
 		conn = db.getConnection();
 		try {

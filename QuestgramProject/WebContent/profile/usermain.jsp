@@ -1,3 +1,5 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="data.dao.ImageDao"%>
 <%@page import="data.dto.BoardDto"%>
 <%@page import="data.dto.FollowDto"%>
 <%@page import="java.util.List"%>
@@ -12,7 +14,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>MAIN COPY 2</title>
+<title>USER MAIN</title>
+<script src="../js/slide.js"></script>
+<link rel="stylesheet" href="../Post/css/slidestyle.css" type="text/css">
 <style>
 body{
 	background-color:#fafafa;
@@ -410,6 +414,28 @@ textarea:focus{outline:none;}
 			$("#mainheart img").attr("src","../images/mainheart_b.PNG");
 		});
 		
+		//하트 클릭
+		$('.heart').on({
+		   'click':function(){
+				var src=($(this).attr('src')==='Post/image/heart.png')
+				 ?'Post/image/red.png'
+			     :'Post/image/heart.png';
+				$(this).attr('src',src);
+			}
+		
+		}); // 하트 클릭 
+		
+		//북마크 클릭
+		$('.bookmark').on({
+		   'click':function(){
+				var src=($(this).attr('src')==='Post/image/bookmark.png')
+				 ?'Post/image/black.png'
+			     :'Post/image/bookmark.png';
+				$(this).attr('src',src);
+			}
+		
+		}); // 북마크 클릭 
+		
 		
 //		*************여기서부터 팔로우 영역***************
 		
@@ -418,7 +444,7 @@ textarea:focus{outline:none;}
 			var now = $(this).attr("now");
 			var userId = $(this).attr("userId");
 			var thisId = $(this).attr("thisId");		// 임의값. 변경해야 함.
-			console.log(now, userId, thisId);
+			
 			$.ajax({
 				type: "post",
 				dataType: "xml",
@@ -474,8 +500,9 @@ textarea:focus{outline:none;}
 		// 시작 시 뉴스피드 타입 게시글 hide
 		$(document).ready(function() {
 			$(".timeline-view").hide();
-		})
-
+		});
+		// 뉴스피드/그리드 게시글 선택 토글
+		
 	});
 </script>
 </head>
@@ -484,11 +511,13 @@ textarea:focus{outline:none;}
 	FollowDao fdao = new FollowDao();
 	BoardDao bdao = new BoardDao();
 	CommentDao cdao = new CommentDao();
+	ImageDao idao = new ImageDao();
+	BoardDao bdb = new BoardDao();
 	
 	// 유저 식별, 정보 가져오기
-	String thisId = "3";
+	// String thisId = "1";
 	// 임의로 줬지만, 원래는 앞 페이지에서 넘어온 프로필id값
-	// String thisId = request.getParameter("thisId");
+	String thisId = request.getParameter("thisId");
 	UserDto udto = udao.getUser(thisId);
 	
 //	**********팔로우 영역 구현*********
@@ -500,13 +529,42 @@ textarea:focus{outline:none;}
 	List<FollowDto> inglist = fdao.getFollowings(thisId);	// 보던 프로필의 팔로잉들
 //	**********팔로우 영역 끝*********
 
+	// root 경로 - 이미지 경로 
+   String context = request.getContextPath();
+
+	// 내가 쓴글에 들어있는 사진
+	List<String> AllSaveName = idao.getAllImages(thisId);
+	
+	
+	
+
 
 //	**********게시글 영역 구현*********
 	String boardId = "start";	// 최초 실행 값
 	
 	String howMany = bdao.howMany(thisId);
 	List<BoardDto> blist = bdao.getPrfBoard(thisId, boardId);
+	
 //	**********게시글 영역 끝***********
+	
+	System.out.println(thisId + userId);
+	if (thisId == userId) {
+%>		<script type="text/javascript">
+			$(function() {
+				$("#btnfollow").hide();
+				$("#myinfo").show();
+			});
+			
+		</script>
+<%	} else {
+%>		<script type="text/javascript">
+		$(function() {
+			$("#btnfollow").show();
+			$("#myinfo").hide();
+		});
+		
+		</script>
+<%	}
 
 %>
 <body>
@@ -521,10 +579,16 @@ textarea:focus{outline:none;}
 			</div>
 			<nav>
 				<ul>
-					<li class="nav" id="home" width="35px" height="34px"><a href="main.jsp"><img src="../images/home_b.PNG"/></a></li>
-					<li class="nav" id="compass" width="33px" height="34px"><a href="#"><img src="../images/compass.PNG"/></a></li>
-					<li class="nav" id="mainheart" width="34px" height="34px"><a href="#"><img src="../images/mainheart.PNG"/></a></li>
+					<li class="nav" id="home" width="35px" height="34px">
+						<a href="../main.jsp"><img src="../images/home_b.PNG"/></a></li>
+					<li class="nav" id="compass" width="33px" height="34px">
+						<a href="../profile/profile.jsp"><img src="../images/compass.PNG"/></a></li>
+					<li class="nav" id="mainheart" width="34px" height="34px">
+						<a href="#"><img src="../images/mainheart.PNG"/></a></li>
 					<li class="nav"><a href="#"><div class="info"></div></a></li>
+					<a href="login_signup/logoutaction.jsp">
+          			<span class="glyphicon glyphicon-off" style="font-size: 25px; margin-left: 20px; "></span>
+        			</a>
 				</ul>
 			</nav>
 		</div>
@@ -544,7 +608,7 @@ textarea:focus{outline:none;}
 		<div class="profile-button">
 			<div class="profile-logo">
 				<canvas class="profile-canvas"></canvas>
-				<img class="profile-img" src="../images/iz_one.jpg">
+				<img class="profile-img" src="http://localhost:9000<%= context %>/save/<%= udto.getProfile_img() %>">
 			</div>
 		</div>		
 		
@@ -553,6 +617,7 @@ textarea:focus{outline:none;}
 				<h2 class="nickname" style="margin-left: 20px;"><%=udto.getNickname() %></h2>
 				<span id="btnFollow" style="cursor: pointer;"
 				 	userId="<%=userId %>" thisId="<%=thisId %>" now="<%=now%>"><%=now %></span>
+				<button type="button" id="myinfo">정보수정</button>
 			</div>
 			<ul class="status">
 				<li>게시물&nbsp;<%=howMany %></li>
@@ -561,7 +626,7 @@ textarea:focus{outline:none;}
 					<%
 						for (FollowDto wer: werlist) {
 					%>		<span>
-								<a href="#">사진 url : <%=wer.getProfile_img() %></a>
+								<img src="<%=wer.getProfile_img() %>">(사진 url)&nbsp;
 								<b><%=wer.getNickname() %> (<%=wer.getName() %>)</b>
 							</span><hr>
 					<%	}
@@ -573,7 +638,7 @@ textarea:focus{outline:none;}
 					<%
 						for (FollowDto ing: inglist) {
 					%>		<span>
-								<a href="#">사진 url : <%=ing.getProfile_img() %></a>
+								<img src="<%=ing.getProfile_img() %>">(사진 url)&nbsp;
 								<b><%=ing.getNickname() %> (<%=ing.getName() %>)</b>
 							</span><hr>
 					<%	}
@@ -604,22 +669,38 @@ textarea:focus{outline:none;}
 		<script type="text/javascript">
 			$(".select-view").on("click", function() {
 				var view = $(this).attr("view");
-				console.log(view);
+				if (view == "timeline-view") {
+					$(".timeline-view").show();
+					$(".grid-view").hide();
+				} else {
+					$(".timeline-view").hide()
+					$(".grid-view").show();
+				}
 			});
 		</script>
 	</div>						
 
+<div class="timeline-view">
 <%				
-
+				List<String> listImage = new ArrayList<String>();
 //				***********************게시글 영역 시작*************************
 				for (BoardDto bdto: blist) {
 					String bnow = fdao.followNow(bdto.getUser_id(), userId);
+					
+					
+					// board_id에 해당하는 이미지 
+					listImage = idao.boardIdImage(bdto.getId());
+				
+				  	
+				  	// board_id로 작성자 uesr_id 얻기
+				  	String create_user_id = bdb.getUser_id(boardId);
+				  
 %>		
 
 
 <!-- *****POST 형식 게시글 출력***** -->		
 		<!-- 게시글, -->
-  <div class="post-container" class="timeline-view">
+  <div class="post-container">
   <input type="hidden" name="postnum" class="postnum" value="<%=bdto.getId()%>">
     <div class="wrap">
 
@@ -631,10 +712,10 @@ textarea:focus{outline:none;}
          <!-- 뉴스피드 헤드 -->
         <div class="post-header" >
           <!-- 프로필사진 -->
-          <a href="#" class="profile"><img src="Post/image/0.gif" alt=""></a>
+          <a href="#" class="profile"><img src="http://localhost:9000<%=context %>/save/<%=bdto.getProfile_img() %>" style="border-radius: 100%;"></a>
           
           <!-- 작성자 이름  -->
-          <a href="#"><%=bdto.getUser_id() %></a>
+          <a href="#"><%=udto.getNickname() %></a>
           
              
           <!-- 메뉴 더 보기 출력 -->
@@ -666,17 +747,77 @@ textarea:focus{outline:none;}
     </div>
   </div> <!-- modal 끝 -->
 
-     
-            
-            
-            
-            
+      
         </div> <!-- 뉴스피드 헤더 끝 -->
         
+        
         <!-- 업로드한 사진 -->
+          <%
+      // 쓴글에 이미지가 있을때만 사진영역 출력하기 
+      int imageCount = idao.getImageCount(bdto.getId());
+          System.out.println(imageCount);
+      // 보드 아이디의 user_id와 현재 로그인된 user_id 비교 
+      
+          
+       %>
         <div class="sajin">
-          <img src="Post/image/ramgi.jpeg" alt="">
-        </div>
+          <div id="wrapper_<%= boardId %>" class="wrapper">
+          <input type="hidden" id="imgPos_<%=boardId%>" pos="0" totalSlides="<%= listImage.size() %>" sliderwidth="">
+      		<div id="slider-wrap_<%= boardId %>" class="slider-wrap" board_id="<%= boardId %>"  onmouseover="" onmouseout="">
+          		<ul id="slider_<%= boardId %>" class="slider">
+          <%
+          for(String str : listImage){
+          %>
+		        	<li class="imgli_<%= boardId %>">                
+						<img src="http://localhsot:9000<%= context %>/save/<%= str %>" />	
+		            </li> 
+         <%  
+         }
+          %>            
+          		</ul>
+        	<!--controls-->       	 
+            <div class="btns next" onclick="slideRight(<%=boardId%>);" id="next_<%= boardId %>"><i class="fa fa-chevron-circle-right fa-2x" aria-hidden="true"></i></div>
+            <div class="btns previous" onclick="slideLeft(<%=boardId%>);" id="previous_<%= boardId %>"><i class="fa fa-chevron-circle-left fa-2x"></i></div>
+            <div class="counter" id="counter_<%= boardId %>"></div>            
+            <!--controls--> 
+      		
+       		</div>	
+   		</div>
+            
+       </div>	
+   	<%  
+      %>
+          		
+          		
+          		
+        
+        <!-- ------------------------------------------- -->
+        <!-- 이미지 출력에 필요한 자바스크립트 변수 -->
+        <script type="text/javascript" class="script">
+		//current position
+		$(document).ready(function(){
+			addImageSlide(<%= boardId %>, <%= listImage.size()%>);
+		});
+		
+		function addImageSlide(boardId, size) {
+			//number of slides
+			//var board_id = $('.slider-wrap ul li').attr("board_id");
+			//get the slide width
+			$('#imgPos_'+boardId).attr("sliderwidth", 600);
+			$('#slider_'+boardId).width(size * 600);
+			$.each($('#slider-wrap_'+boardId +' ul li'), function() { 
+			       //create a pagination
+			       var li = document.createElement('li');
+			       $('#pagination-wrap_'+boardId+' ul').append(li);    
+			    });
+			pagination(boardId, 0);
+		}
+		
+ 		</script> 
+        
+        
+        
+
         
         <!-- ------------------------------------------- -->
         
@@ -696,6 +837,14 @@ textarea:focus{outline:none;}
             <!-- 공유하기 버튼 -->
             <li><img src="../Post/image/plane.png" width="42px" height="32px" alt=""></li>
             
+             <% 
+            if(imageCount > 1){ %>
+            <!-- 사진 옆으로 밀때 표시되는 동그라미  -->
+            <li><span class="pagination-wrap" id="pagination-wrap_<%= boardId %>" style="margin-left: 350px;"> <ul> </ul> </span></li>
+            
+           <%   
+            } %>
+            
              <!-- 북마크 버튼 -->
              <img src="../Post/image/bookmark.png" width="43px" height="32px" class="bookmark" name="bookmark" alt="" style="float: right;">
            
@@ -710,7 +859,7 @@ textarea:focus{outline:none;}
           
           <!-- 내용 -->
           <div class="text-container">
-            <a href="#"><%=bdto.getUser_id() %></a>
+            <a href="#"><%=udto.getNickname() %></a>
               
               <span class="contents" id="contents">
               <h5><%=bdto.getContent() %></h5>
@@ -764,24 +913,34 @@ textarea:focus{outline:none;}
 	<div class="container">
 		<div class="gallery">
 <%
-	for (BoardDto bdto: blist) {
+
+
+		
+	for (String str : AllSaveName) {
+		
 %>		
-			<div class="gallery-item" tabindex="0">
-				<img src="../images/iz_one.jpg" class="gallery-image" alt="">
+			<div class="gallery-item" tabindex="0" style="float: left; margin: 0 40px;">
+				<img src="http://localhost:9000<%= context %>/save/<%= str %>" class="gallery-image" alt="">
 				<div class="gallery-item-info">
+					
 					<ul>
 						<li class="gallery-item-likes">
 							<span class="visually-hidden">Likes: </span>
-							<i class="fas fa-heart" aria-hidden="true"></i><%=bdto.getLike_count() %>
+							<i class="fas fa-heart" aria-hidden="true"></i>
 						</li>
 						<li class="gallery-item-comments">
 							<span class="visually-hidden">Comments: </span>
-							<i class="fas fa-comment" aria-hidden="true"></i><%=bdto.getComment_count() %>
+							<i class="fas fa-comment" aria-hidden="true"></i>
 						</li>
 					</ul>
+					
 				</div>
 			</div>
-<%	}
+			
+			
+<%
+		
+}
 %>
 </div>
 		<!-- End of gallery -->

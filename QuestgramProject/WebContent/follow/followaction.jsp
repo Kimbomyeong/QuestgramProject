@@ -3,18 +3,18 @@
     pageEncoding="UTF-8"%>
 <%
 	request.setCharacterEncoding("utf-8");
-
-	String id = request.getParameter("id");
-	String myid = request.getParameter("myid");
-	String now = request.getParameter("now");
 	
+	String id = request.getParameter("id");
+	String userid = request.getParameter("userid");
+	String now = request.getParameter("now");
+	System.out.println(id + userid + now);
 	FollowDao fdb = new FollowDao();
 	
 	if (now.equals("follow")) {
-		fdb.insertFollow(myid, id);
+		fdb.insertFollow(userid, id);
 		now = "unfollow";
 	} else {
-		fdb.deleteFollow(myid, id);
+		fdb.deleteFollow(userid, id);
 		now = "follow";
 	}
 %>

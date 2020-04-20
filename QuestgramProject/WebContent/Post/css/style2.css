@@ -3,6 +3,119 @@ body{
 	background-color:#fafafa;
 }
 
+li{
+	list-style:none; text-decoration:none;
+	display:inline-block;
+}
+a{
+	cursor:pointer;
+}
+body{
+	background-color:#fafafa;
+	overflow-x: hidden;
+}
+
+input:focus{outline:none;}
+button:focus{outline:none;}
+textarea:focus{outline:none;}
+/*header*/
+
+header{
+	background-color:white;
+	position:fixed;
+	width:100%;
+	height:55px;
+	border-bottom:1px solid #dbdbdb;
+	z-index:999;
+}
+
+#box{
+	max-width:980px;
+	min-width:490px;
+	margin:0 auto;
+}
+#logo{
+	float:left; 
+	margin:15px 0 0 20px;
+	z-index:9999;
+}
+#logo img{
+	 width:105px; 
+	 height:30px;
+}
+#search{
+	float:left;
+	width: 500px;
+    height: 60px;
+    position:absolute;
+    left:35%;
+}
+#search #glass{
+	color:#dbdbdb;
+	position: relative;
+    left:44.2%;
+    top:18px;
+    z-index:9999;
+}
+#search input{
+	background-color:#fafafa;
+	border:1px solid #dbdbdb;
+	border-radius:3px;
+	width:215px;
+	height:30px;
+	margin-top: 12px;
+	position: absolute;
+    left: 29.2%;
+}
+#search input::placeholder{
+	color:#8e8e8e;
+	text-align:center;
+	}
+nav{
+	float:right;
+	width:310px;
+}
+nav img{
+	margin-top: -20px;
+	margin-right:5px;
+}
+.nav{
+	margin-right:4px;
+}
+.nav:hover{
+	cursor:pointer;
+}
+.form2nav{
+	margin-left:98.5px;
+	padding:0;
+	margin-top:30px;
+}
+#home{
+	margin-top: -2px;
+}
+#compass{
+	margin-top: -1px;
+	
+}
+#mainheart{
+	margin-top: -2px;
+}
+#logout{
+	margin-top:-16px;
+	margin-left:-0.5px;
+}
+.info{
+	background-color:#dbdbdb; 
+	margin-left:10px;
+	margin-top:-17px;
+	width:25px; 
+	height:25px; 
+	border-radius:100%;
+}
+.info:hover{
+	cursor:pointer;
+}
+
 /*container*/
 
 .post-container {
@@ -30,8 +143,27 @@ body{
 	width: 400px;
 	height: 230px;
 	float: right;
+	padding: 0 30px 0 0;
+	overflow-x: hidden;
+	overflow-y:scroll;
 }
 
+.text-container ::-webkit-scrollbar {
+    display: none;
+}
+.firstcomment{
+	word-break: break-all;
+    padding-top: 25px;
+    margin-left: 0px;
+    display: block;
+    height: auto;
+    text-align: left;
+}
+.commentincontent{
+	clear:both;
+    margin-left: 15px;
+    min-height: 60px;
+}
 .btn1 {
 	clear: both;
 	float: right;
@@ -63,7 +195,7 @@ a.profile {
 	left: -30%;
 	width: 32px;
 	height: 32px;
-	border-radius: 50%;
+	border-radius: 100%;
 }
 
 .profile>img {
@@ -75,6 +207,14 @@ a.profile {
 	width: 32px;
 	height: 32px;
 	border-radius: 50%;
+}
+
+.submenubtn{
+    width: 30px;
+    background-color: rgba(255,255,255,.7);
+ 	margin-left: 170px;
+    float: left;
+    cursor:pointer;
 }
 
 
@@ -291,7 +431,7 @@ img {
 }
 
 .container {
-    max-width: 93.5rem;
+    max-width: 103rem;
     margin: 0 auto;
     padding: 0 2rem;
 }
@@ -331,7 +471,7 @@ img {
     background-color: #fff;
     color: #b3dffc;
     cursor: pointer;
-    margin-top: 16px;
+    margin-top: 6px;
     height: 25px;
     font-weight: bold;
     margin-right: 10px;
@@ -431,9 +571,16 @@ img {
 .gallery-item {
     position: relative;
     flex: 1 0 22rem;
-    margin: 1rem;
+    margin: 0.6rem;
     color: #fff;
     cursor: pointer;
+    height:300px;
+}
+
+.gallery-item-info ul {
+	float: left;
+	width: 435px;
+	margin-left: 6rem;
 }
 
 .gallery-item:hover .gallery-item-info,
@@ -454,12 +601,12 @@ img {
 
 .gallery-item-info li {
     display: inline-block;
-    font-size: 1.7rem;
+    font-size: 1.9rem;
     font-weight: 600;
 }
 
 .gallery-item-likes {
-    margin-right: 2.2rem;
+    margin-right: 4rem;
 }
 
 .gallery-item-type {
@@ -584,11 +731,8 @@ img {
 }
 
 /*
-
 The following code will only run if your browser supports CSS grid.
-
 Remove or comment-out the code block below to see how the browser will fall-back to flexbox & floated styling. 
-
 */
 
 @supports (display: grid) {
@@ -606,7 +750,7 @@ Remove or comment-out the code block below to see how the browser will fall-back
 
     .gallery {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
         grid-gap: 2rem;
     }
 
@@ -617,7 +761,6 @@ Remove or comment-out the code block below to see how the browser will fall-back
     .gallery-item,
     .gallery {
         width: auto;
-        margin: 0;
     }
 
     @media (max-width: 40rem) {

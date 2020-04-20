@@ -83,7 +83,7 @@
 .tag-editor .tag-editor-delete i:before {
   font-size: 16px;
   color: white;
-  content: "Ã—";
+  content: "¡¿";
   font-style: normal;
 }
 .tag-editor .tag-editor-delete:hover i:before {

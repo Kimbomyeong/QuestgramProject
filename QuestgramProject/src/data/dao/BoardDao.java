@@ -14,17 +14,29 @@ import mysql.db.DbConnect;
 public class BoardDao {
    DbConnect db = new DbConnect();
    
-   // 유저 프로필의 게시물만 5개씩 가져오기
+	/*
+	 * // insert AND select test method public void hashtag(String board_id, String
+	 * hashtag) { String sql = "INSERT hashtag VALUES(null, ?, ?, now());";
+	 * Connection conn = null; PreparedStatement pstmt = null; conn =
+	 * db.getConnection(); try { pstmt = conn.prepareStatement(sql);
+	 * 
+	 * } catch (SQLException e) { System.out.println("getAllDatas method error : " +
+	 * e.getMessage()); } finally { db.dbClose(pstmt, conn); }
+	 * 
+	 * }
+	 */
+   
+   // ���� �������� �Խù��� 5���� ��������
       public List<BoardDto> getPrfBoard(String thisId, String boardId) {
          List<BoardDto> list = new ArrayList<BoardDto>();
          Connection conn = null;
          PreparedStatement pstmt = null;
          ResultSet rs = null;
-         String sql = "SELECT Board.*, User.name, User.nickname, User.profile_img "
-               + "FROM Board JOIN User "
-               + "ON Board.user_id = ? "
-               + "WHERE Board.id < (SELECT IF(? = 'start', MAX(id)+1, ?) FROM Board) "
-               + "GROUP BY Board.id ORDER BY Board.id DESC LIMIT 5;";
+         String sql = "SELECT board.*, user.name, user.nickname, user.profile_img "
+               + "FROM board JOIN user "
+               + "ON board.user_id = ? "
+               + "WHERE board.id < (SELECT IF(? = 'start', MAX(id)+1, ?) FROM board) "
+               + "GROUP BY board.id ORDER BY board.id DESC LIMIT 5;";
          
          conn = db.getConnection();
          try {
@@ -59,13 +71,13 @@ public class BoardDao {
          return list;
       }
       
-      // 유저의 전체 게시물 갯수 구하기
+      // ������ ��ü �Խù� ���� ���ϱ�
       public String howMany(String thisId) {
          String howMany = "";
          Connection conn = null;
          PreparedStatement pstmt = null;
          ResultSet rs = null;
-         String sql = "SELECT count(*) FROM Board WHERE user_id = ?";
+         String sql = "SELECT count(*) FROM board WHERE user_id = ?";
          
          conn = db.getConnection();
          try {
@@ -91,7 +103,7 @@ public class BoardDao {
       Connection conn = null;
       PreparedStatement pstmt=null;
       ResultSet rs = null;
-      String sql ="SELECT * FROM Board ORDER BY created_at DESC";
+      String sql ="SELECT * FROM board ORDER BY created_at DESC";
       
       conn=db.getConnection();
       
@@ -115,7 +127,7 @@ public class BoardDao {
          }
       } catch (SQLException e) {
          // TODO Auto-generated catch block
-         System.out.println("list2 출력 오류: "+e.getMessage());
+         System.out.println("list2 ��� ����: "+e.getMessage());
          
       }
       finally {
@@ -124,26 +136,26 @@ public class BoardDao {
       
       return list2;
    }
-   //list2 끝
+   //list2 ��
    
    
    
-   // 게시글 출력
-      // 최신순, 페이지의 마지막 게시물로부터 5개만! 더 로드
-      // 나 자신과, 내 팔로워들의 게시물만 받아옴
+   // �Խñ� ���
+      // �ֽż�, �������� ������ �Խù��κ��� 5����! �� �ε�
+      // �� �ڽŰ�, �� �ȷο����� �Խù��� �޾ƿ�
       public List<BoardDto> getAllDatas(String user_id, String board_id) {
          List<BoardDto> list = new ArrayList<BoardDto>();
          Connection conn = null;
          PreparedStatement pstmt = null;
          ResultSet rs = null;
          String sql = "SELECT Board.*, User.name, User.nickname, User.profile_img "
-               + "FROM Board JOIN (SELECT DISTINCT * FROM User "
-               + "WHERE User.id IN ((SELECT target_user_id FROM Follow WHERE add_user_id = ?),?)) User "
-               + "ON Board.user_id = User.id "
-               + "WHERE Board.id < (SELECT IF(? = 'start', MAX(id)+1, ?) FROM Board) "
-               + "ORDER BY Board.id DESC LIMIT 5";
-               // SELECT IF(조건, 값1, 값2)
-               // : 조건이 참이면 값1, 거짓이면 값2를 반환
+	               + "FROM Board JOIN (SELECT DISTINCT * FROM User "  
+	              + "WHERE User.id IN ((SELECT target_user_id FROM Follow WHERE add_user_id = ?),?)) User "
+	               + "ON Board.user_id = User.id "  
+	               + "WHERE Board.id < (SELECT IF(? = 'start', MAX(id)+1, ?) FROM Board) " 
+	              + "ORDER BY Board.id DESC LIMIT 5";
+               // SELECT IF(����, ��1, ��2)
+               // : ������ ���̸� ��1, �����̸� ��2�� ��ȯ
          conn = db.getConnection();
          try {
             pstmt = conn.prepareStatement(sql);
@@ -178,46 +190,47 @@ public class BoardDao {
          }
          
          return list;
-      } //출력 끝
+      } //��� ��
    
+   //�Խù� �ø���(�߰�)
    
-   //게시물 올리기(추가)
+   //�Խù� �ø���(�߰�)
    
       public void insertBoard(BoardDto dto)
       {
          Connection conn=db.getConnection();
          PreparedStatement pstmt=null;
-         String sql="INSERT INTO Board (user_id, content, comment_count,"
+         String sql="INSERT INTO board (user_id, content, comment_count,"
                + "like_count, view_count, share_count, created_at, updated_at) "
                + "VALUES (?, ?, 0, 0, 0, 0, now(), now())";
          
          try {
-            pstmt = conn.prepareStatement(sql); //sql 검사
+            pstmt = conn.prepareStatement(sql); //sql �˻�
             
-            //바인딩
+            //���ε�
             pstmt.setString(1, dto.getUser_id());
             pstmt.setString(2, dto.getContent());
          
             
-            pstmt.execute(); //실행
+            pstmt.execute(); //����
             
             
             
          } catch (SQLException e) {
-            System.out.println("Insert문 오류: "+ e.getMessage());
+            System.out.println("Insert�� ����: "+ e.getMessage());
             e.printStackTrace();
          } finally {
             db.dbClose(pstmt, conn);
          }
          
-      } //insert 끝
+      } //insert ��
       
       
-      //게시글 삭제
+      //�Խñ� ����
       public void deleteBoard(String id)
       {
          Connection conn = db.getConnection();
-         String sql = "DELETE FROM Board WHERE ID = ?";
+         String sql = "DELETE FROM board WHERE ID = ?";
          PreparedStatement pstmt = null;
          
          try {
@@ -227,12 +240,12 @@ public class BoardDao {
             pstmt.execute();
             
          } catch (SQLException e) {
-            System.out.println("DELETE문 오류: "+e.getMessage());
+            System.out.println("DELETE�� ����: "+e.getMessage());
             e.printStackTrace();
          }
-      } //삭제 끝
+      } //���� ��
       
-      //유저id로 해당 유저의 정보 수정폼에 dto를 보낼 메소드
+      //����id�� �ش� ������ ���� �������� dto�� ���� �޼ҵ�
       public BoardDto getBoardData(String id)
       {
          BoardDto dto = new BoardDto();
@@ -240,7 +253,7 @@ public class BoardDao {
          Connection conn = null;
          PreparedStatement pstmt = null;
          ResultSet rs = null;
-         String sql="SELECT * FROM Board WHERE ID = ?";
+         String sql="SELECT * FROM board WHERE ID = ?";
          
          conn=db.getConnection();
          
@@ -265,7 +278,7 @@ public class BoardDao {
                
             }
          } catch (SQLException e) {
-            System.out.println("getBoardData 오류 : "+e.getMessage());
+            System.out.println("getBoardData ���� : "+e.getMessage());
             
             e.printStackTrace();
          }finally {
@@ -273,14 +286,14 @@ public class BoardDao {
          }
          
          return dto;
-      }//getBoardData 끝
+      }//getBoardData ��
       
-      //게시물 수정
-      //내용(content), 수정날짜(updated_at) 
+      //�Խù� ����
+      //����(content), ������¥(updated_at) 
       public void updateBoard(BoardDto dto) 
       {
          Connection conn = db.getConnection();
-         String sql = "UPDATE Board SET content=?, updated_at=now() WHERE ID = ?";
+         String sql = "UPDATE board SET content=?, updated_at=now() WHERE ID = ?";
          PreparedStatement pstmt = null;
          
          try {
@@ -290,15 +303,15 @@ public class BoardDao {
             
             pstmt.execute();
          } catch (SQLException e) {
-            System.out.println("게시물 수정 오류 : "+ e.getMessage());
+            System.out.println("�Խù� ���� ���� : "+ e.getMessage());
             e.printStackTrace();
             
          }finally {
             db.dbClose(pstmt, conn);
          }
-      } //수정 끝
+      } //���� ��
       
-      //좋아요
+      //���ƿ�
       public void updateLikecount(String like_count,String id)
       {
          System.out.println(like_count);
@@ -311,25 +324,25 @@ public class BoardDao {
          
          if(like_count.equals("1"))
          {
-            sql="UPDATE Board SET like_count = like_count+1 WHERE id = ?";
+            sql="UPDATE board SET like_count = like_count+1 WHERE id = ?";
          }
          else
-            sql="UPDATE Board SET like_count = like_count-1 WHERE id = ?";
+            sql="UPDATE board SET like_count = like_count-1 WHERE id = ?";
          
          try {
             pstmt=conn.prepareStatement(sql);
             pstmt.setString(1, id);
             pstmt.execute();
          } catch (SQLException e) {
-            System.out.println("좋아요 오류: "+e.getMessage());
+            System.out.println("���ƿ� ����: "+e.getMessage());
             e.printStackTrace();
             
          }finally {
             db.dbClose(pstmt, conn);
          }
-      } //좋아요 끝
+      } //���ƿ� ��
       
-      //id에 해당하는 좋아요 숫자 반환 메소드
+      //id�� �ش��ϴ� ���ƿ� ���� ��ȯ �޼ҵ�
       public int getLikecount(String id)
       {
          Connection conn=null;
@@ -339,7 +352,7 @@ public class BoardDao {
          int j=0;
          
          conn=db.getConnection();
-         sql="SELECT like_count FROM Board WHERE id=?";
+         sql="SELECT like_count FROM board WHERE id=?";
          
          try {
             pstmt=conn.prepareStatement(sql);
@@ -348,12 +361,12 @@ public class BoardDao {
             
             if(rs.next())
             {
-               j=rs.getInt(1);//칼럼명으로도 가능
+               j=rs.getInt(1);//Į�������ε� ����
                
             }
             
          } catch (SQLException e) {
-            System.out.println("좋아요 반환 오류: "+e.getMessage());
+            System.out.println("���ƿ� ��ȯ ����: "+e.getMessage());
             e.printStackTrace();
          }finally {
             db.dbClose(rs, pstmt, conn);
@@ -361,14 +374,14 @@ public class BoardDao {
          
          
          return j;
-      }//좋아요 숫자반환 끝
+      }//���ƿ� ���ڹ�ȯ ��
       
-      //id에 해당하는 조회수 1증가 메소드
+      //id�� �ش��ϴ� ��ȸ�� 1���� �޼ҵ�
       public void updateViewcount(String id)
       {
          Connection conn=null;
          PreparedStatement pstmt=null;
-         String sql="UPDATE Board SET view_count=view count+1 WHERE id=?";
+         String sql="UPDATE board SET view_count=view count+1 WHERE id=?";
          
          conn=db.getConnection();
          
@@ -378,17 +391,17 @@ public class BoardDao {
             pstmt.execute();
             
          } catch (SQLException e) {
-            System.out.println("조회수 증가문 오류: "+e.getMessage());
+            System.out.println("��ȸ�� ������ ����: "+e.getMessage());
             e.printStackTrace();
             
          }finally
          {
             db.dbClose(pstmt, conn);
          }
-      }//조회수 끝
+      }//��ȸ�� ��
 
       
-   // board_id로 작성자의 user_id 얻기
+   // board_id�� �ۼ����� user_id ���
          public String getUser_id(String board_id) {
             String user_id = "";
             Connection conn = db.getConnection();
@@ -397,15 +410,22 @@ public class BoardDao {
             ResultSet rs = null;
             try {
                pstmt = conn.prepareStatement(sql);
+               
+               pstmt.setString(1, board_id);
+               rs = pstmt.executeQuery();
+               
+               if(rs.next()) {
+            	   user_id = rs.getString("user_id");
+               }
             } catch (SQLException e) {
-               System.out.println("board_id로 user_id얻기 : "+e.getMessage());
+               System.out.println("board_id�� user_id��� : "+e.getMessage());
             } finally {
                db.dbClose(rs, pstmt, conn);
             }
             return user_id;   
          }
    
-   //보드id로 해당 보드 데이터를 가져오는 메소드
+   //����id�� �ش� ���� �����͸� �������� �޼ҵ�
    public BoardDto getBoardDataWithUser(String board_id){
       BoardDto dto = new BoardDto();
 
@@ -438,7 +458,7 @@ public class BoardDao {
             dto.setProfile_img(rs.getString("Profile_img"));
          }
       } catch (SQLException e) {
-         System.out.println("getBoardData 오류 : "+e.getMessage());
+         System.out.println("getBoardData ���� : "+e.getMessage());
 
          e.printStackTrace();
       }finally {
@@ -448,40 +468,39 @@ public class BoardDao {
       return dto;
    }
    
-   
-// 해시태그 생성
-   public void insertHashtag(String board_id, String hashtag) {
- 	  Connection conn = null;
- 	  PreparedStatement pstmt = null;
- 	  String sql = "insert into Hashtag (board_id, hashtag, created_at) values (?, ?, now())";
- 	  
- 	  conn = db.getConnection();
- 	  
- 	  try {
- 		  pstmt = conn.prepareStatement(sql);
- 		  pstmt.setString(1, board_id);
- 		  pstmt.setString(2, hashtag);
- 		  
- 		  pstmt.execute();
- 	  } catch (SQLException e) {
- 		  // TODO Auto-generated catch block
- 		  e.printStackTrace();
- 	  } finally {
- 		  db.dbClose(pstmt, conn);
- 	  }
-   }
-   
-   // 해시태그 출력
-   public List<String> hashtagList(String board_id) {
- 	  List<String> list = new Vector<String>();
- 	  Connection conn = null;
- 	  PreparedStatement pstmt = null;
- 	  ResultSet rs = null;
- 	  String sql = "select hashtag from Hashtag where board_id = ?";
- 	  
- 	  conn = db.getConnection();
- 	  
- 	  try {
+// �ؽ��±� ����
+	public void insertHashtag(String board_id, String hashtag) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "insert into Hashtag (board_id, hashtag, created_at) values (?, ?, now())";
+
+		conn = db.getConnection();
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, board_id);
+			pstmt.setString(2, hashtag);
+
+			pstmt.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(pstmt, conn);
+		}
+	}
+
+	// �ؽ��±� ���
+	public List<String> hashtagList(String board_id) {
+		List<String> list = new Vector<String>();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select hashtag from Hashtag where board_id = ?";
+
+		conn = db.getConnection();
+
+		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, board_id);
 			rs = pstmt.executeQuery();
@@ -494,20 +513,20 @@ public class BoardDao {
 		} finally {
 			db.dbClose(rs, pstmt, conn);
 		}
- 	  return list;
-   }
-   
-   // 해시태그 번호 값 반환
-   public String getHashId(String board_id, String hashtag) {
- 	  String hashid = "";
- 	  Connection conn = null;
- 	  PreparedStatement pstmt = null;
- 	  ResultSet rs = null;
- 	  String sql = "select id from Hashtag where board_id = ? and hashtag = ?";
- 	  
- 	  conn = db.getConnection();
- 	  
- 	  try {
+		return list;
+	}
+
+	// �ؽ��±� ��ȣ �� ��ȯ
+	public String getHashId(String board_id, String hashtag) {
+		String hashid = "";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select id from Hashtag where board_id = ? and hashtag = ?";
+
+		conn = db.getConnection();
+
+		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, board_id);
 			pstmt.setString(2, hashtag);
@@ -521,19 +540,19 @@ public class BoardDao {
 		} finally {
 			db.dbClose(rs, pstmt, conn);
 		}
- 	  
- 	  return hashid;
-   }
-   
-   // 해시태그 삭제
-   public void deleteHash(String hashid) {
- 	  Connection conn = null;
- 	  PreparedStatement pstmt = null;
- 	  String sql = "delete from Hashtag where id = ?";
- 	  
- 	  conn = db.getConnection();
- 	  
- 	  try {
+
+		return hashid;
+	}
+
+	// �ؽ��±� ����
+	public void deleteHash(String hashid) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "delete from Hashtag where id = ?";
+
+		conn = db.getConnection();
+
+		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, hashid);
 			pstmt.execute();
@@ -543,6 +562,31 @@ public class BoardDao {
 		} finally {
 			db.dbClose(pstmt, conn);
 		}
-   }
-   
+	}
+	
+	// 유저 아이디로 해당 유저가 작성한 글의 번호 얻기
+	public List<String> getAllBoardId(String user_id) {
+		List<String> list = new ArrayList<String>();
+		Connection conn = db.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT id FROM Board WHERE user_id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, user_id);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				list.add(rs.getString("id"));
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("getAllBoardId : "+e.getMessage());
+			e.printStackTrace();
+		} finally {
+			db.dbClose(rs, pstmt, conn);
+		}
+		return list;
+	}
 }

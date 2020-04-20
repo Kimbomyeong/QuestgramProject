@@ -141,7 +141,7 @@ border: solid;
 
 <div> 
 
-<textarea name="content" placeholder="문구 입력..." 
+<textarea name="content" placeholder="문구 입력…" 
   style="float: left;width:500px; height: 194px; border: none;"></textarea> </div>
   
 <hr style="clear: both;">

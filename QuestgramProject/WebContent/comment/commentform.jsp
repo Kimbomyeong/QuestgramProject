@@ -11,11 +11,27 @@
 <meta charset="utf-8">
 <title>Insert title here</title>
 <link href="comment/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+$(function() {
+	$(".content").click(function() {
+		console.log("click");
+		$(this).focus(function() {
+			console.log("focus");
+		});
+	});
+});
+
+
+function commentfocus(board_id){
+	var ss = $("textarea").attr("id");
+	console.log(ss);
+	$("#content_"+board_id).focus();
+}
+</script>
 </head>
 <%
 	String board_id=request.getParameter("id");	
 	String user_id=request.getParameter("user_id");
-
 %>
 <body>
          <!-- 댓글 -->
@@ -30,7 +46,7 @@
         <table>
 		<tr>
 			<td> <!-- 댓글을 달 텍스트에리어 -->
-			<textarea class="content" name="content" placeholder="댓글 달기..."></textarea>
+			<textarea class="content contentfocus" name="content" placeholder="댓글 달기..." id="content_<%=board_id %>"></textarea>
             </td>
 			<td> <!-- 댓글 전송하기 버튼 -->
 			<button type="submit" class="send">게시</button>
@@ -39,6 +55,7 @@
 		</tr>
 	</table>
 	</form>
+	</div>
           	
 </body>
 </html>

@@ -3,7 +3,6 @@
     pageEncoding="UTF-8"%>
 <%
 	request.setCharacterEncoding("utf-8");
-
 	String board_id = request.getParameter("board_id");
 	String hashtag = request.getParameter("hashtag");
 	

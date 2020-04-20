@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Profile Main</title>
 <style type="text/css">
 	* {
@@ -186,9 +186,9 @@ $(function() {
 	CommentDao cdao = new CommentDao();
 	
 	// 유저 식별, 정보 가져오기
-	String thisId = "3";
+	/* String thisId = "3"; */
 	// 임의로 줬지만, 원래는 앞 페이지에서 넘어온 프로필id값
-	// String thisId = request.getParameter("thisId");
+	String thisId = request.getParameter("thisId");
 	UserDto udto = udao.getUser(thisId);
 	
 //	**********팔로우 영역 구현*********

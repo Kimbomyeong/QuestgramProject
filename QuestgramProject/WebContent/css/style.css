@@ -65,8 +65,8 @@ header{
 #search input::placeholder{
 	color:#8e8e8e;
 	text-align:center;
-	}
 	
+}
 #search ul {
 	position: absolute;
 	margin-top: 21px;
@@ -99,7 +99,6 @@ header{
 	border-radius: 100px;
 	float: left;
 }
-
 nav{
 	float:right;
 }
@@ -139,9 +138,12 @@ wrapper{
 	width:690px;
 	height:1000px;
 }
+#side{
+	width:300px;
+	float:right;
+}
 #profile{
 	float:right;
-	border:1px solid red;
 	color:red;
 	width:299px;
 	height:60px;
@@ -150,41 +152,59 @@ wrapper{
 	margin-top:10px;
 	margin-left:10px;
 	float:left;
-	color:red;
+	color:black;
+	font-weight:bold;
+	font-size:13px;
 }
 #profile #name{
 	color:#777;
-	font-size:10px;
+	font-size:11px;
 	float:left;
 	margin-top:30px;
-	margin-left:-40px;
+	margin-left:-38px;
 	
-}
-#side{
-	width:300px;
-	float:right;
 }
 #notice{
 	float:right;
-	border:1px solid red;
-	color:red;
 	width:299px;
 	height:300px;
+	border:1px solid #dbdbdb;
+	border-radius:5px;
+	background-color:#fff;
+	margin-top:10px; 
+	color:#777;
+	font-weight:bold;
+	padding:15px 0 0 15px;
 }
 #recommand{
+	padding:15px 0 0 15px;
 	float:right;
-	border:1px solid red;
-	color:red;
+	color:#777;
+	font-weight:bold;
 	width:299px;
 	height:200px;
+	border:1px solid #dbdbdb;
+	border-radius:5px;
+	background-color:#fff;
+	margin-top:10px; 
 }
 #qna{
 	float:right;
-	border:1px solid red;
 	color:red;
 	width:299px;
 	height:100px;
+	color:#dbdbdb;
+	font-size:11.5px;
+	font-weight:bold;
+	margin-top:10px;
 }
+#qna p{
+	margin-top:15px;
+}
+#recentcomment {
+	overflow-y:scroll;
+}
+
 
 
 
@@ -393,6 +413,4 @@ wrapper{
 	max-width:240px;
 	}
 }
-
-
 

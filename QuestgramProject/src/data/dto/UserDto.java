@@ -95,7 +95,4 @@ public class UserDto {
 	public void setUpdated_at(Timestamp updated_at) {
 		this.updated_at = updated_at;
 	}
-	
-	
-		
 }
