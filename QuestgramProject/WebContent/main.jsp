@@ -16,6 +16,8 @@ body{
 <link rel="shortcut icon" type="image/x-icon" href="images/questgram.ico">
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <link rel="stylesheet"	href="css/style.css">
+<link rel="stylesheet" href="css/jquery.tag-editor.css" />
+<link rel="stylesheet" href="css/questionform.css" />
 
 <script src="js/script.js"></script>
 <script type="text/javascript">
