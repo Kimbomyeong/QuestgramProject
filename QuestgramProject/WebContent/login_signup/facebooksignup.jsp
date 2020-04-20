@@ -140,31 +140,30 @@
 			});
 		}
 	</script>
+	<%
+		String facebookname = request.getParameter("facebookname");
+		String facebookemail = request.getParameter("facebookemail");
+		
+		session.setAttribute("facebookname", facebookname);
+		session.setAttribute("facebookemail", facebookemail);
+		session.setMaxInactiveInterval(60 * 10);
+	%>
 	<div class="outDiv">
 		<form name="signupInfo" method="post" action="signupaction.jsp">
 			<div class="logoDiv">
 				<img class="act" src="../images/logo.png" />
 			</div>
-			<fb:login-button scope="public_profile,email"
-			onlogin="checkLoginState();" data-width="60" data-size="medium"
-			data-button-type="login_with" data-layout="default"
-			data-auto-logout-link="false" data-use-continue-as="false">페이스북으로 회원가입</fb:login-button>
-			<div id="fb-root"></div>
 			<br>
-			<br>
-			<hr style="width: 120px; border: 0.5px solid #BDBDBD; margin-bottom: -5px; margin-left: 1px;">
-			<p style="color: #BDBDBD; font-weight: bold; margin-top: -5px;">또는</p>
-			<hr style="width: 120px; border: 0.5px solid #BDBDBD; float: right; margin-top: -10px;">
 			<br>
 			<div class="inputDiv">
 				<input class="input1" type="text" id="email" name="email"
 					oninput="buttonColor()" placeholder=" 이메일" required="required"
-					maxlength="30">
+					maxlength="30" value="<%=facebookemail %>" readonly="readonly">
 			</div>
 			<div class="inputDiv">
 				<input class="input1" type="text" id="name" name="name"
 					oninput="buttonColor()" placeholder=" 성명" required="required"
-					maxlength="10">
+					maxlength="10" value="<%=facebookname %>" readonly="readonly">
 			</div>
 			<div class="inputDiv">
 				<input class="input1" type="text" id="nickname" name="nickname"
@@ -178,10 +177,7 @@
 			<div class="buttonDiv">
 				<button class="act" type="submit">가입</button>
 			</div>
-			<br> <br> <span style="font-size: 14px;">계정이 있으신가요?
-				<a href="loginform.jsp"
-				style="text-decoration: none; font-weight: bold; color: #4FC9DE;">로그인</a>
-			</span>
+			<div id="fb-root"></div>
 		</form>
 	</div>
 </body>

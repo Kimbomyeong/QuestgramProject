@@ -17,6 +17,12 @@
 	boolean dupcheckemail = dao.dupCheckEmail(email);
 	boolean dupchecknick = dao.dupCheckNickname(nickname);
 	
+	session.removeAttribute("facebookname");
+	session.removeAttribute("facebookemail");
+	
+	System.out.println("facebookname session delete : " + session.getAttribute("facebookname"));
+	System.out.println("facebookemail session delete : " + session.getAttribute("facebookemail"));
+	
 	if(dupcheckemail == true && dupchecknick == true) {
 		dto.setEmail(email);
 		dto.setName(name);
