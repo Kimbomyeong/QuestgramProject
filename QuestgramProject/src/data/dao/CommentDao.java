@@ -112,28 +112,63 @@ public class CommentDao {
 			return dto;
 		}
 		
-		public void updateComment(String content, String id)
+		public void updatelike_count(String like_count,String id)
 		{
 			Connection conn=null;
 			PreparedStatement pstmt=null;
-			String sql="update comment set content=?,updated_at=now() where id=?";
-		
+			String sql="";
+			
 			conn=db.getConnection();
+			if(like_count.equals("1"))
+				sql="update comment set like_count=like_count+1 where id=?";
+			else
+				sql="update comment set like_count=like_count-1 where id=?";
+			
 			try {
 				pstmt=conn.prepareStatement(sql);
-				pstmt.setString(1, content);
-				pstmt.setString(2, id);
-
+				//바인딩
+				pstmt.setString(1, id);
+				//실행
 				pstmt.execute();
-				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				System.out.println("update 오류:"+e.getMessage());
 				e.printStackTrace();
-			}finally{
+			}finally {
 				db.dbClose(pstmt, conn);
 			}
 		}
+		
+		//num 에 해당하는 좋아요 숫자 반환하는 메서드
+		public int getlike_count(String id)
+		{
+			Connection conn=null;
+			PreparedStatement pstmt=null;
+			ResultSet rs=null;
+			String sql="";
+			int j=0;
+			
+			conn=db.getConnection();
+			sql="select like_count from comment where id=?";
+			try {
+				pstmt=conn.prepareStatement(sql);
+				//바인딩
+				pstmt.setString(1, id);
+				//실행
+				rs=pstmt.executeQuery();
+				
+				if(rs.next())
+				{
+					j=rs.getInt(1);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				db.dbClose(rs, pstmt, conn);
+			}
+			return j;		
+		}
+
 
 		public void deleteComment(String id) {
 			Connection conn=null;

@@ -61,6 +61,7 @@ header{
 	margin-top: 12px;
 	position: absolute;
     left: 70%;
+    line-height: 30px;
 }
 #search input::placeholder{
 	color:#8e8e8e;

@@ -30,12 +30,62 @@
 <link rel="stylesheet" href="Post/css/style.css">
 <script type="text/javascript">
 $(function(){
-	$(".form2").click(function(){
-		var b=$("#board_id").val();
-		var u=$("#user_id").val();
-		$("#maincontent").html("<embed class='embed' src='Post/form2.jsp?board_id="+b+"&user_id="+u+"'/>");
-		$(".embed").css("width","1050px").css("height","2300px").css("margin-left","-25px").css("margin-top","-50px");
+	//submenubtn 숨기고 댓글에 마우스 올리면 나타나게 하기
+	$(".submenubtn").hide();
+	$(".commentlist").hover(function(){
+		$(this).next(".submenubtn").show();
+	}, function() {
+		$(this).next(".submenubtn").hide();
+	}); 
+	//submenubtn 클릭시 서브메뉴 보이기
+	$(".submenubtn").click(function(){
+		$("#submenu").modal();
+	}); 
+	 
+	
+	$(".delete").click(function(){
+		//태그 안에 넣어둔 num 읽기
+		var commentno=$(this).attr("commentno");
+		$.ajax({
+			type:"get",
+			url:"commentdelete.jsp",
+			dataType:"html",
+			data:{"commentno":commentno},
+			success:function(data) {
+				$(this).parents().parents().parents().parents().parents().parents().siblings(".commentincontent").remove();
+			}
+		});
 	});
+	
+	$(".joayo").click(function() {
+		var joayo=0;//빨간 하트는 1로 변경
+		var num=0;//해당 글의 num값
+		var class1 = $(this).children("img").attr("src");
+		num=$(this).children("img").attr("num");//클릭한 곳의 속성 num 얻기
+		 if (class1=="Post/image/joayo.png") {
+			$(this).children("img").attr("src","Post/image/joayo_r.png").css("width","19px").css("height","19px");
+			joayo=1;
+		 } else {
+			$(this).children("img").attr("src","Post/image/joayo.png").css("width","19px").css("height","19px").css("opacity","0.6");
+			joayo=0;
+		 } 
+		
+		console.log(num,joayo);
+		//내가 클릭한 span.joayo의 요소값을 따로 저장해둔다
+		var sthis=$(this);
+		$.ajax({
+			type:"get",
+			url:"Ex5_MemoJoayoDb.jsp",
+			dataType:"json",
+			data:{"num":num,"joayo":joayo},
+			success:function(data){
+				//alert(data.joayo);
+				
+				$(sthis).next().text(data.joayo);
+			}
+		});
+	});
+	
 	//하트 클릭
 	$('.heart').on({
 	   'click':function(){
@@ -213,19 +263,38 @@ $(document).ready(function(){
            CommentDao cdao=new CommentDao();
            List<CommentDto> list=cdao.getComment(board_id);
            if(list.size()>2){ %>
-           <a class="form2" style="cursor:pointer; margin-left:15px; color:#8e8e8e;">댓글 <%=list.size()%>개 모두 보기</a>
+           <a class="form2" href="Post/form2.jsp?board_id=<%=board_id%>&user_id=<%=user_id%>" style="cursor:pointer; margin-left:15px; color:#8e8e8e;">댓글 <%=list.size()%>개 모두 보기</a>
            <div class="ex-comment">
 	           <% for(int j=0;j<2;j++){
 	          	 CommentDto cdto=list.get(j);%>
 	          	 <div class="commentlist" style="margin: 10px 15px; height: 15px;">
-	        	    <div style="float:left; width: 450px;">
+	          	 	<input type="hidden" name="couser_id"  value="<%=cdto.getUser_id()%>" >
+	        	    <div style="float: left; width: 580px; padding-right: 20px;">
 						<b class="id" name="id"><%=cdto.getId()%></b>&nbsp;
 						<p style="display:inline; width: 350px; background-color: white; border: none;"><%=cdto.getContent()%></p>
 					</div>
-					<div style="float:right;">
-						<a href="#" class="joayo" onclick="change()"><img src="images/mainheart.PNG"width="19px" height="19px" style="opacity: 0.6;"/></a>
+					<div style="margin: 0 0 0 550px">
+						<a  num="<%=cdto.getId()%> like_count="<%=cdto.getLike_count()%>><img class="joayo" src="Post/image/joayo.png" width="19px" height="19px" style="opacity: 0.6;"/></a>
 					</div>
-        		</div>
+        		 </div>
+        		<div class="submenubtn" style=" z-index:9999;"><img style="cursor:pointer;" src="Post/image/more.PNG"/></div>
+        	</div>
+        	
+		        	<div class="submenu modal fade" id="submenu" role="dialog" style="z-index:9999;">
+				    <div class="modal-dialog">
+				      <!-- Modal content-->
+				      <div class="modal-content" style="margin-top: 250px;">
+				        <div class="smodal-body" style="padding:40px 50px;">
+				          <form role="form" >
+			      			<button type="button" class="btn btn-default btn-block" style="color:red;"><b>신고</b></button>
+			                <button type="delete" commentno="<%=cdto.getCommentno()%>" class="btn btn-default btn-block"><b>삭제</b></button>
+			                <button type="button" class="btn btn-default btn-block" onclick="$('.submenu').modal('hide')"><b>취소</b></button>
+				          </form>
+				        </div>
+				     </div>
+				    </div>
+				  </div> <!-- modal 끝 -->
+        		
         	<%}
 	        }else{ %>
 	           <jsp:include page="../comment/commentlist.jsp">		  
@@ -248,10 +317,7 @@ $(document).ready(function(){
     </div> <!-- wrap -->
   </div> <!-- post-container -->
   <!-- post-container -->
-  	<span id="hide">
-  	<span id="board_id"><%=board_id%></span>
-  	<span id="user_id"><%=user_id%></span>
-  	</span>
+  
  <%}%>
   
       <!-- 다른 앱에 게시, 링크 복사, 공유하기, 보관, 수정, 삭제, 댓글기능 해제 -->

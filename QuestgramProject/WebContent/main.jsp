@@ -20,6 +20,7 @@ body{
 <script src="js/script.js"></script>
 <script type="text/javascript">
 	$(function(){
+		
 		$("#home").click(function(){
 			$("#home img").attr("src","images/home_b.PNG");
 			$("#compass img").attr("src","images/compass.PNG");
